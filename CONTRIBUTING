@@ -1,0 +1,34 @@
+# Contribute to BauhiniaApp
+This is the contribution guide for BauhiniaApp. Great to have you here! Here are a few ways you can help make this project better.
+
+## Code style
+
+Please adhere to our eslint rules. If you're using vscode, please install the following extension:
+* The [eslint extension](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+
+## Bug triage
+Found a bug? Don't worry, we'll fix it, or you can ;)
+
+Please report a bug report on our issues page. There:
+
+1. Label the issue as bug.
+2. Explain what the bug is in clear English.
+3. Include reproduction steps. This can be an example project, code snippet, etc.
+4. Include the expected behaviour.
+5. Include actual behaviour.
+
+### Maintainers
+If you find interesting bug you want to fix, please do `assign` yourself, or ask someone to assign you.
+If you are assigned, but you can't fix issue for some reason, or you are close to fixing it, but need some help, put a note on the issue or create pull request and ask there.
+Remember not to push to `main`. Create your own branches. You can name them in some nice way, for example: `your_name-fixing_this_bug` or `your_name-solving_this_issue(for example: patryk-#123)`
+Remember to add:
+fixes: #issue_number
+if there was an issue added.
+Each PR should have at least 2 reviews and should be passing continuous integration step. Do not merge without these two requirements.
+
+## New features
+Please do any feature on your own branch(es). Name them in some nice way, for example: `your_name-adding_this_feature`
+Remember to add:
+fixes: #issue_number
+if there was an issue added.
+Each PR should have at least 2 reviews and should be passing continuous integration step. Do not merge without these two requirements.
