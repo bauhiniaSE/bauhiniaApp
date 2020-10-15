@@ -1,0 +1,17 @@
+{
+  "lerna": "3.22.1",
+  "packages": [
+    "packages/*"
+  ],
+  "version": "1.0.0",
+  "command": {
+    "version": {
+      "allowBranch": [
+        "main"
+      ],
+      "conventionalCommits": true,
+      "forcePublish": true,
+      "exact": true
+    }
+  }
+}
