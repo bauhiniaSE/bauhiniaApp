@@ -1,8 +1,13 @@
 {
   "files": [],
   "references": [
-    { "path": "packages/api" },
-    { "path": "packages/util" },
-    { "path": "packages/core" }
+    { "path": "packages/authentication" },
+    { "path": "packages/database-manager" },
+    { "path": "packages/map-builder" },
+    { "path": "packages/map-gui" },
+    { "path": "packages/map-manager" },
+    { "path": "packages/save-system" },
+    { "path": "packages/simulation-service" },
+    { "path": "packages/util" }
   ]
 }
