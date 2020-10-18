@@ -1,5 +1,6 @@
 {
   "name": "bauhinia-save-system",
+  "description": "Component used to save users games",
   "version": "1.0.0",
   "scripts": {
     "test": "nyc npm run test:unit",

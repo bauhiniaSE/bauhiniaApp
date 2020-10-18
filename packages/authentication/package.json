@@ -1,5 +1,6 @@
 {
   "name": "bauhinia-authentication",
+  "description": "Component used to track authentication and authorization, register new users, defining roles, generating JWT tokens, etc.",
   "version": "1.0.0",
   "scripts": {
     "test": "nyc npm run test:unit",
