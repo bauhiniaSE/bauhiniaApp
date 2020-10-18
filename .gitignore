@@ -1,32 +1,26 @@
 node_modules
 lerna-debug.log
 npm-debug.log
-stryker.log
 lint.log
 
 coverage
 reports
 .tscache
-stryker-tmp
-.stryker-tmp
-.stryker-tmp-2
 *.map
 # Ignore heap dumps
 packages/report.*.json
 
-e2e/module/*.js
-e2e/module/*.map
-e2e/module/*.d.ts
-e2e/*.js
-e2e/*.map
-e2e/*.d.ts
+packages/*/src/*.js
+packages/*/src/*.d.ts
 packages/*/src/**/*.js
-packages/*/test/**/*.js
 packages/*/src/**/*.d.ts
+
+packages/*/test/*.js
+packages/*/test/*.d.ts
+packages/*/test/**/*.js
 packages/*/test/**/*.d.ts
 packages/*/dist
-e2e/test/*/dist
-e2e/test/*/dist-test
+
 .idea
 *.iml
 *.tmp.txt
