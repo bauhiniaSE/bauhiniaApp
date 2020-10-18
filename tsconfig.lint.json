@@ -4,6 +4,6 @@
   "include": [
     "packages/*/src",
     "packages/*/test",
-    "packages/*/index.ts"
+    "packages/*/*.ts"
   ]
 }
