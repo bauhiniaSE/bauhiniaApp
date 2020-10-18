@@ -1,5 +1,5 @@
 {
-  "name": "bauhinia-api",
+  "name": "bauhinia-database-manager",
   "version": "1.0.0",
   "scripts": {
     "test": "nyc npm run test:unit",

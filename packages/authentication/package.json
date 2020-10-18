@@ -1,11 +1,11 @@
 {
-  "name": "bauhinia-core",
+  "name": "bauhinia-authentication",
   "version": "1.0.0",
   "scripts": {
     "test": "nyc npm run test:unit",
     "test:unit": "mocha \"test/unit/**/*.js\""
   },
-  "devDependencies": {
-    "bauhinia-api": "1.0.0"
+  "dependencies": {
+    "bauhinia-database-manager": "1.0.0"
   }
 }
