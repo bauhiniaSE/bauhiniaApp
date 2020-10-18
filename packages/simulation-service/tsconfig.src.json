@@ -5,7 +5,7 @@
   },
   "include": [
     "src",
-    "index.ts"
+    "simulation-service.ts"
   ],
   "references": []
 }

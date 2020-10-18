@@ -5,7 +5,9 @@
   },
   "include": [
     "src",
-    "index.ts"
+    "map-repository.ts",
+    "objects-repository.ts",
+    "user-repository.ts"
   ],
   "references": []
 }
