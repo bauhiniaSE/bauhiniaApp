@@ -1,0 +1,16 @@
+{
+  "name": "bauhinia-map-gui",
+  "description": "Component used to create the views",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "nyc npm run test:unit",
+    "test:unit": "mocha \"test/unit/**/*.js\""
+  },
+  "dependencies": {
+    "bauhinia-authentication": "1.0.0",
+    "bauhinia-save-system": "1.0.0",
+    "bauhinia-map-manager": "1.0.0",
+    "bauhinia-map-builder": "1.0.0",
+    "bauhinia-simulation-service": "1.0.0"
+  }
+}

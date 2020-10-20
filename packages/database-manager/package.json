@@ -1,0 +1,9 @@
+{
+  "name": "bauhinia-database-manager",
+  "description": "Component used to manage database access",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "nyc npm run test:unit",
+    "test:unit": "mocha \"test/unit/**/*.js\""
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "extends": "../../tsconfig.settings.json",
+  "compilerOptions": {
+    "rootDir": "."
+  },
+  "include": [
+    "src",
+    "map-repository.ts",
+    "objects-repository.ts",
+    "user-repository.ts"
+  ],
+  "references": []
+}

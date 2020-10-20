@@ -1,0 +1,52 @@
+{
+  "name": "bauhinia-parent",
+  "private": true,
+  "scripts": {
+    "all": "npm run clean && npm run build && npm run lint && npm run test",
+    "postinstall": "lerna bootstrap --no-ci && link-parent-bin",
+    "lint": "eslint . --resolve-plugins-relative-to . --ext .ts,.tsx",
+    "lint:log": "eslint . --resolve-plugins-relative-to . --ext .ts,.tsx -f compact -o lint.log",
+    "lint:fix": "eslint . --resolve-plugins-relative-to . --ext .ts,.tsx --fix",
+    "clean": "rimraf \"packages/*/+(test|src)/**/*+(.d.ts|.js|.map)\" \"packages/*/{.nyc_output,reports,coverage,src-generated,*.tsbuildinfo,dist,*+(.d.ts|.js|.map)}\"",
+    "build": "tsc -b && lerna run build",
+    "test": "lerna run test --stream --concurrency 4",
+    "release": "lerna version"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bauhiniaSE/bauhiniaApp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bauhiniaSE/bauhiniaApp/issues"
+  },
+  "homepage": "https://github.com/bauhiniaSE/bauhiniaApp#readme",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/chai": "4.2.14",
+    "@types/chai-as-promised": "7.1.3",
+    "@types/mocha": "8.0.3",
+    "@types/node": "^14",
+    "@types/rimraf": "3.0.0",
+    "@types/sinon": "9.0.8",
+    "@types/sinon-chai": "3.2.5",
+    "@typescript-eslint/eslint-plugin": "4.4.1",
+    "@typescript-eslint/parser": "4.4.1",
+    "chai": "4.2.0",
+    "chai-as-promised": "7.1.1",
+    "eslint": "7.11.0",
+    "eslint-config-prettier": "6.13.0",
+    "eslint-plugin-import": "2.22.1",
+    "eslint-plugin-prettier": "3.1.4",
+    "install-local": "3.0.1",
+    "lerna": "3.22.1",
+    "link-parent-bin": "1.0.2",
+    "mocha": "8.2.0",
+    "nyc": "15.1.0",
+    "prettier": "2.1.2",
+    "rimraf": "3.0.2",
+    "sinon": "9.2.0",
+    "sinon-chai": "3.5.0",
+    "source-map-support": "0.5.19",
+    "typescript": "4.0.3"
+  }
+}

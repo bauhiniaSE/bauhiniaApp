@@ -1,0 +1,6 @@
+{
+  "excludeAfterRemap": false,
+  "checkCoverage": true,
+  "reporter": "html",
+  "reportDir": "reports/coverage"
+}

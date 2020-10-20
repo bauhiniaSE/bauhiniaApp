@@ -1,0 +1,13 @@
+{
+  "files": [],
+  "references": [
+    { "path": "packages/authentication" },
+    { "path": "packages/database-manager" },
+    { "path": "packages/map-builder" },
+    { "path": "packages/map-gui" },
+    { "path": "packages/map-manager" },
+    { "path": "packages/save-system" },
+    { "path": "packages/simulation-service" },
+    { "path": "packages/util" }
+  ]
+}
