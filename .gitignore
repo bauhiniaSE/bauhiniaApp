@@ -10,14 +10,8 @@ reports
 # Ignore heap dumps
 packages/report.*.json
 
-packages/*/*.js
-packages/*/*.d.ts
-
-packages/*/src/**/*.js
-packages/*/src/**/*.d.ts
-
-packages/*/test/**/*.js
-packages/*/test/**/*.d.ts
+packages/*/**/*.js
+packages/*/**/*.d.ts
 
 packages/*/dist
 
