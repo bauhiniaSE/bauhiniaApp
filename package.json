@@ -10,7 +10,8 @@
     "clean": "rimraf \"packages/*/+(test|src)/**/*+(.d.ts|.js|.map)\" \"packages/*/{.nyc_output,reports,coverage,src-generated,*.tsbuildinfo,dist,*+(.d.ts|.js|.map)}\"",
     "build": "tsc -b && lerna run build",
     "test": "lerna run test --stream --concurrency 4",
-    "release": "lerna version"
+    "release": "lerna version",
+    "start:client": "cd packages/map-gui && npm run start && cd ../.."
   },
   "repository": {
     "type": "git",
