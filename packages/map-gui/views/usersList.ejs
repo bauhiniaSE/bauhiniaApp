@@ -1,0 +1,14 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Let's Use EJS</title>
+  </head>
+  <body>
+    <h1>Users: </h1>
+    <ul>
+      <% usersList.forEach(function(user){ %>
+        <li><%= user.firstname + " " + user.lastname %></li>
+      <% }); %>
+    </ul>
+  </body>
+</html>
