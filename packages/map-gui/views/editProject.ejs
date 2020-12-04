@@ -1,0 +1,76 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <style>
+
+        .grid-container {
+  display: grid;
+  column-count: 10;
+  grid-template-columns: 
+  75px  75px  75px  75px  75px
+  75px  75px  75px  75px  75px
+  ;
+  grid-template-rows: 
+  75px  75px  75px  75px  75px
+  75px  75px  75px  75px  75px;
+  grid-gap: none;
+}
+
+.grid-container > div {
+  background-color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+  padding: 20px 0;
+  
+  border: 1px solid black;
+  font-size: 30px;
+}
+
+/* .item1 {
+  grid-column-start: 1;
+  grid-column-end: 3;
+} */
+    </style>
+    <script>
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+
+        function drop(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            ev.target.appendChild(document.getElementById(data));
+        }
+    </script>
+</head>
+
+<body>
+
+    <p>Drag the image back and forth between the two div elements.</p>
+    <div class="grid-container">
+        <%for(var i = 0; i < 50; i++){%>
+            <div class="grid-item" id="div2" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+        <%}%>
+       
+      </div>
+        <!-- <div class="grid-item" id="div2" ondrop="drop(event)" ondragover="allowDrop(event)"></div> -->
+   
+
+    <!-- <div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)">
+        <img src="/images/LogoCC.png" draggable="true" ondragstart="drag(event)" id="drag1" width="88" height="31">
+    </div>
+
+    <div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)">
+        <img src="/images/LogoCC.png" draggable="true" ondragstart="drag(event)" id="drag2" width="88" height="31">
+    </div> -->
+
+
+
+
+</body>
+
+</html>
