@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <style>
+         @import url(https://fonts.googleapis.com/css?family=Roboto:300);
+        .grid-container {
+            display: grid;
+            column-count: 10;
+            grid-template-columns:
+                75px 75px 75px 75px 75px 75px 75px 75px 75px 75px 75px 75px 75px 75px 75px;
+            grid-template-rows:
+                75px 75px 75px 75px 75px;
+            grid-gap: none;
+        }
+
+        .grid-container>div {
+            background-color: rgba(255, 255, 255, 0.8);
+            text-align: center;
+
+            border: 1px solid black;
+            font-size: 20px;
+        }
+        img {
+            width: 70px;
+        }
+        .flex {
+            display: flex;
+            justify-content: center;
+        }
+
+        .flex-item+.flex-item {
+            margin-left: 10px;
+        }
+        button {
+            font-family: "Roboto", sans-serif;
+            background: #fdfffb;
+            box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+            margin-bottom: 50px;
+            margin-left: 10px;
+            margin-right: 10px;
+            color: #24616b;
+            padding: 25px;
+            font-size: 25px;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            width: 250px;
+        }
+        body {
+  background-image: -webkit-linear-gradient(0deg, #045714, #24616b);
+  font-family: "Roboto", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;      
+}
+    </style>
+</head>
+
+<body>
+    <div>
+        <div class="flex">
+            <form>
+                <button>Add object</button>
+                <button>Remove object</button>
+                <button formaction="/maps">Back</button>
+                <button formaction="/">Exit</button>
+            </form>
+            </div>
+        <div class="grid-container">
+            <%for(var i = 0; i < 500; i++){%>
+            <div class="grid-item" id="div2">
+                <img src="/images/pinkShop.png" onclick="this.style='border: solid red'"/>
+            </div>
+            <%}%>
+           
+          </div>
+    
+       
+    </div>
+ 
+
+
+</body>
+
+</html>
