@@ -96,17 +96,17 @@ export class Facet {
     return result;
   }
 
-  public getLowerZHalf(height: number): Facet {
+  public getLowerZHalf(cutZ: number): Facet {
     let result: Facet = this.clone();
-    result.height = height;
+    result.height = cutZ - this.bottom;
     result.shadowed = true;
     return result;
   }
 
-  public getUpperZHalf(height: number): Facet {
+  public getUpperZHalf(cutZ: number): Facet {
     let result: Facet = this.clone();
-    result.height = this.height - height;
-    result.bottom = height;
+    result.height = this.height + this.bottom - cutZ;
+    result.bottom = cutZ;
     return result;
   }
 }

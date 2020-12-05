@@ -129,19 +129,16 @@ describe('test', () => {
     fl.addFacet(new Facet(0, 0, 100, 60, Direction.E));
     fl.addFacet(new Facet(80, 0, 100, 80, Direction.W));
     fl.illuminateAndCrop(45, Direction.W);
-    //fl.printAllFacets();
     expect(fl.facets.length).equal(7);
 
-    let shadowedCount: number = 0;
+    let shadowedArea: number = 0;
+    let illuminatedArea: number = 0;
     fl.facets.forEach((f) => {
-      if (f.shadowed && f.x == 80 && f.y == 0 && f.width == 40 && f.height == 80) shadowedCount++;
+      if (f.shadowed) shadowedArea += f.width * f.height;
+      else illuminatedArea += f.width * f.height;
     });
-    expect(shadowedCount).equal(1);
-
-    fl.facets.forEach((f) => {
-      if (f.shadowed && f.x == 80 && f.y == 40 && f.width == 20 && f.height == 20) shadowedCount++;
-    });
-    expect(shadowedCount).equal(1);
+    expect(shadowedArea).closeTo(3600, 0.5);
+    expect(illuminatedArea).closeTo(14400, 0.5);
   });
 
   it('cascading shadow casting reversed', () => {
@@ -150,19 +147,24 @@ describe('test', () => {
     fl.addFacet(new Facet(60, 0, 100, 40, Direction.E));
     fl.addFacet(new Facet(80, 0, 100, 80, Direction.W));
     fl.illuminateAndCrop(45, Direction.W);
-    //fl.printAllFacets();
     expect(fl.facets.length).equal(7);
 
-    let shadowedCount: number = 0;
+    let shadowedArea: number = 0;
+    let illuminatedArea: number = 0;
     fl.facets.forEach((f) => {
-      if (f.shadowed && f.x == 80 && f.y == 0 && f.width == 40 && f.height == 80) shadowedCount++;
+      if (f.shadowed) shadowedArea += f.width * f.height;
+      else illuminatedArea += f.width * f.height;
     });
-    expect(shadowedCount).equal(1);
+    expect(shadowedArea).closeTo(3600, 0.5);
+    expect(illuminatedArea).closeTo(14400, 0.5);
+  });
 
-    fl.facets.forEach((f) => {
-      if (f.shadowed && f.x == 80 && f.y == 40 && f.width == 20 && f.height == 20) shadowedCount++;
-    });
-    expect(shadowedCount).equal(1);
+  it('roof shading', () => {
+    let fl: FacetList = new FacetList();
+    fl.addFacet(new Facet(0, 0, 100, 80, Direction.E));
+    fl.addFacet(new Facet(20, 0, 100, 80, Direction.W));
+    fl.addFacet(new Facet(20, 0, 80, 40, Direction.TOP));
+    fl.illuminateAndCrop(30, Direction.W);
   });
 
   it('overlapper test', () => {

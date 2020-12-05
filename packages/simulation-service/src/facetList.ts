@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/restrict-plus-operands */
 import { Direction, DirectionHandler } from './direction';
 import { Facet } from './facet';
 
@@ -10,11 +9,12 @@ export class FacetList {
 
     this.facets.forEach((casting) => {
       if (DirectionHandler.areOpposite(casting.direction, sunDirection)) {
-        let shadowLength: number = casting.height / Math.tan((sunAngle * Math.PI) / 180);
         let facetStorage: Facet[] = [];
 
         let counter: number = 0;
         this.facets.forEach((shadowed) => {
+          let shadowLength: number = casting.height / Math.tan((sunAngle * Math.PI) / 180);
+
           if (!shadowed.shadowed && shadowed.direction == sunDirection) {
             switch (sunDirection) {
               case Direction.W:
@@ -36,13 +36,15 @@ export class FacetList {
                   if (shadowed.width > 0) {
                     let distance: number = Math.abs(casting.x - shadowed.x);
                     let shadowHeight: number = casting.height - distance * Math.tan((sunAngle * Math.PI) / 180);
-                    facetStorage.push(shadowed.getLowerZHalf(shadowHeight));
-                    facetStorage.push(shadowed.getUpperZHalf(shadowHeight));
-                    this.facets.splice(counter, 1);
+                    if (shadowHeight > shadowed.bottom) {
+                      facetStorage.push(shadowed.getLowerZHalf(shadowHeight));
+                      facetStorage.push(shadowed.getUpperZHalf(shadowHeight));
+                      this.facets.splice(counter, 1);
+                    }
                   }
                 }
                 break;
-              case Direction.S:
+              case Direction.S: //When modifying anything, remember to change both WE and NS lines!
                 shadowLength *= -1;
               case Direction.N:
                 if (
@@ -72,25 +74,22 @@ export class FacetList {
             }
           }
           counter++;
+          this.facets = this.facets.concat(facetStorage);
+          facetStorage.splice(0);
         });
-        this.facets = this.facets.concat(facetStorage);
       }
     });
 
     this.facets.forEach((facet) => {
       let incidenceSin: number = 0;
-      //let counter: number = 0;
-      //console.log('trying to sin');
       if (!facet.shadowed) {
         if (facet.direction == Direction.TOP) {
           incidenceSin = Math.cos(((90 - sunAngle) * Math.PI) / 180);
         } else if (facet.direction == sunDirection) {
           incidenceSin = Math.cos((sunAngle * Math.PI) / 180);
-          //console.log('sinning for ' + counter);
         }
         facet.temperature += (sunPower * (1 - facet.albedo) * incidenceSin) / (facet.density * facet.specificHeat);
       }
-      //counter++;
     });
   }
 
@@ -110,9 +109,12 @@ export class FacetList {
           ', ' +
           facet.width.toLocaleString() +
           '; ' +
-          facet.shadowed.toString()
+          facet.shadowed.toString() +
+          '; ' +
+          facet.bottom.toLocaleString()
       );
     });
+    console.log(' ');
   }
 }
 
