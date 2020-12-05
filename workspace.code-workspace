@@ -72,7 +72,8 @@
     ],
     "editor.codeActionsOnSave": {
       "source.fixAll.eslint": true
-    }
+    },
+    "liveServer.settings.multiRootWorkspaceName": "simulation-service"
   },
   "extensions": {
     "recommendations": [
