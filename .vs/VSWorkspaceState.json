@@ -1,0 +1,13 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\packages",
+    "\\packages\\database-manager",
+    "\\packages\\database-manager\\test",
+    "\\packages\\database-manager\\test\\unit",
+    "\\packages\\map-manager",
+    "\\packages\\map-manager\\src"
+  ],
+  "SelectedNode": "\\packages\\map-manager\\src\\a.ts",
+  "PreviewInSolutionExplorer": false
+}
