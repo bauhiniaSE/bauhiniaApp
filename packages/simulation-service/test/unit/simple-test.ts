@@ -4,7 +4,7 @@ import { Direction, DirectionHandler } from '../../src/direction';
 
 import { Facet } from '../../src/facet';
 
-import { FacetList, Overlapper } from '../../src/facetList';
+import { FacetList } from '../../src/facetList';
 
 describe('test', () => {
   it('facet cloning', () => {
@@ -63,7 +63,6 @@ describe('test', () => {
     fl.addFacet(new Facet(0, 0, 200, 100, Direction.E));
     fl.addFacet(new Facet(20, 20, 100, 60, Direction.W));
     fl.illuminateAndCrop(30, Direction.E);
-    //expect(fl.facets.length).equal(4);
     expect(fl.facets.length).equal(5);
 
     let shadowedCount: number = 0;
@@ -84,8 +83,6 @@ describe('test', () => {
     fl.addFacet(new Facet(0, 40, 200, 100, Direction.S));
     fl.addFacet(new Facet(20, 20, 100, 70, Direction.N));
     fl.illuminateAndCrop(30, Direction.S);
-
-    //expect(fl.facets.length).equal(4);
     expect(fl.facets.length).equal(5);
 
     let shadowedCount: number = 0;
@@ -145,7 +142,6 @@ describe('test', () => {
     fl.addFacet(new Facet(0, 0, 100, 60, Direction.E));
     fl.addFacet(new Facet(80, 0, 100, 80, Direction.W));
     fl.illuminateAndCrop(45, Direction.W);
-    //expect(fl.facets.length).equal(7);
 
     let shadowedArea: number = 0;
     let illuminatedArea: number = 0;
@@ -163,7 +159,6 @@ describe('test', () => {
     fl.addFacet(new Facet(60, 0, 100, 40, Direction.E));
     fl.addFacet(new Facet(80, 0, 100, 80, Direction.W));
     fl.illuminateAndCrop(45, Direction.W);
-    //expect(fl.facets.length).equal(7);
 
     let shadowedArea: number = 0;
     let illuminatedArea: number = 0;
@@ -171,52 +166,47 @@ describe('test', () => {
       if (f.shadowed) shadowedArea += f.width * f.height;
       else illuminatedArea += f.width * f.height;
     });
-    expect(shadowedArea).closeTo(3600, 0.5);
-    expect(illuminatedArea).closeTo(14400, 0.5);
-  }); /*
+    expect(shadowedArea).closeTo(3600, 0.8);
+    expect(illuminatedArea).closeTo(14400, 0.8);
+  });
 
   it('simple roof shading', () => {
     let fl: FacetList = new FacetList();
-    fl.addFacet(new Facet(0, 0, 100, 80, Direction.E));
-    fl.addFacet(new Facet(20, 0, 60, 80, Direction.W));
-    fl.addFacet(new Facet(20, 0, 80, 120, Direction.TOP, 60));
+    fl.addFacet(new Facet(0, 0, 100, 60, Direction.E));
+    fl.addFacet(new Facet(20, 10, 45, 80, Direction.W));
+    fl.addFacet(new Facet(20, 10, 80, 120, Direction.TOP, 45));
     fl.illuminateAndCrop(30, Direction.W);
-    //fl.printAllFacets();
-    expect(fl.facets.length).equal(4);
+    expect(fl.facets.length).equal(6);
+
+    let shadowedCount: number = 0;
+    fl.facets.forEach((facet) => {
+      if (facet.shadowed) shadowedCount++;
+    });
+    expect(shadowedCount).equal(2);
+
     let shadowedArea: number = 0;
     let illuminatedArea: number = 0;
     fl.facets.forEach((f) => {
       if (f.shadowed) shadowedArea += f.width * f.height;
       else illuminatedArea += f.width * f.height;
     });
-    expect(shadowedArea).closeTo(8742.5, 0.5);
-    expect(illuminatedArea).closeTo(13657.5, 0.5);
+    expect(shadowedArea).closeTo(6013, 0.5);
+    expect(illuminatedArea).closeTo(13187, 0.5);
   });
 
   it('complex roof shading', () => {
     let fl: FacetList = new FacetList();
-    fl.addFacet(new Facet(100, 10, 80, 20, Direction.W));
-    fl.addFacet(new Facet(80, 0, 30, 50, Direction.E));
-    fl.addFacet(new Facet(0, 0, 50, 80, Direction.TOP, 30));
+    fl.addFacet(new Facet(120, 10, 80, 20, Direction.W));
+    fl.addFacet(new Facet(100, 0, 30, 50, Direction.E));
+    fl.addFacet(new Facet(0, 0, 50, 100, Direction.TOP, 30));
     fl.illuminateAndCrop(45, Direction.E);
-    //fl.printAllFacets();
     expect(fl.facets.length).equal(8);
 
     let shadowedCount: number = 0;
     fl.facets.forEach((facet) => {
       if (facet.shadowed) shadowedCount++;
     });
-    expect(shadowedCount).equal(1);
-  });*/
-
-  it('overlapper test', () => {
-    expect(Overlapper.checkOverlay(0, 10, 2, 8)).to.be.true;
-    expect(Overlapper.checkOverlay(5, 10, 2, 8)).to.be.true;
-    expect(Overlapper.checkOverlay(0, 5, 2, 8)).to.be.true;
-    expect(Overlapper.checkOverlay(2, 8, 0, 5)).to.be.true;
-
-    expect(Overlapper.checkOverlay(0, 4, 6, 8)).to.be.false;
-    expect(Overlapper.checkOverlay(6, 9, 2, 4)).to.be.false;
+    expect(shadowedCount).equal(2);
   });
 
   it('direction handler test', () => {
