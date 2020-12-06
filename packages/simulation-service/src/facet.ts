@@ -20,6 +20,11 @@ export class Facet {
   public x: number;
   public y: number;
 
+  /*public lowerBoundary: number;
+  public upperBoundary: number;
+  public anchor: number;
+  public crop: any;*/
+
   constructor(
     x: number,
     y: number,
@@ -68,6 +73,37 @@ export class Facet {
       this.density,
       this.specificHeat
     );
+  }
+
+  public getRoofyLowerXHalf(cutX: number, shade?: boolean): Facet {
+    console.log('Really roofy');
+    let result: Facet = this.clone();
+    result.width = cutX - this.x;
+    if (shade) result.shadowed = true;
+    return result;
+  }
+
+  public getRoofyUpperXHalf(cutX: number, shade?: boolean): Facet {
+    let result: Facet = this.clone();
+    result.width = this.width + this.x - cutX;
+    result.x = cutX;
+    if (shade) result.shadowed = true;
+    return result;
+  }
+
+  public getRoofyLowerYHalf(cutY: number, shade?: boolean): Facet {
+    let result: Facet = this.clone();
+    result.height = cutY - this.y;
+    if (shade) result.shadowed = true;
+    return result;
+  }
+
+  public getRoofyUpperYHalf(cutY: number, shade?: boolean): Facet {
+    let result: Facet = this.clone();
+    result.height = this.width + this.y - cutY;
+    result.y = cutY;
+    if (shade) result.shadowed = true;
+    return result;
   }
 
   public getLowerXHalf(cutX: number): Facet {
