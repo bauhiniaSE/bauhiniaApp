@@ -28,22 +28,14 @@ git commands:
           - git checkout <your-branch-name>  
           
           - git pull --rebase origin main
-            
-          - git push origin main 
 
-     
-
-          
-<<<<<<< HEAD
-          - git rebase main
-          
           - git checkout main
           
-          - git merge <your-branch-name> 
+          - git rebase <your-branch-name>
+          
+          - git push 
 
           
-=======
->>>>>>> update: README.md
           
 
 
