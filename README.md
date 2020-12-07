@@ -9,27 +9,35 @@ Add new branch:
 
 git command: `git checkout -b "your-branch-name"`
 
-When code review done => resolve comments
-
- Rebase branch with master and resolve conflicts (if any)
-
  
-git commands:
-
-          - git checkout main  
-          
-          - git pull --rebase origin main
-          
-          - git checkout <your-branch-name>
-          
-          - git rebase main
-
- 
-add your changes:
+After writing your changes:
 
            - git add .
            - git commit -m "commit message"
            - git push origin <your-branch-name>
+
+When code review done => resolve comments
+
+ Rebase branch with master and resolve conflicts (if any)
+
+
+
+ 
+git commands:
+
+          - git checkout <your-branch-name>  
+          
+          - git pull --rebase origin main
+          
+          - git rebase main
+          
+          - git checkout main
+          
+          - git merge <your-branch-name> 
+
+          
+          
+
 
 
 Before you start working on the project
