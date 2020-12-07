@@ -21,25 +21,17 @@ When code review done => resolve comments
  Rebase branch with master and resolve conflicts (if any)
 
 
-
- 
 git commands:
 
-          - git checkout <your-branch-name>  
+          - `git checkout master`  
           
-          - git pull --rebase origin main
-
-          - git checkout main
+          - `git pull --rebase origin master`
           
-          - git rebase <your-branch-name>
+          - `git checkout 'your branch'`
           
-          - git push 
+          - `git rebase master`
 
-          
-          
-
-
-
+ 
 Before you start working on the project
 ---
 
