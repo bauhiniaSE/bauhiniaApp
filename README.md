@@ -25,11 +25,7 @@ git commands:
 
           - git checkout main
           
-          - git pull --rebase origin main
-          
-          - git checkout <your-branch>
-          
-          - git rebase main
+          - git rebase <your-branch>
 
  
 Before you start working on the project
