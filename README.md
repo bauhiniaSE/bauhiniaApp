@@ -31,6 +31,7 @@ git commands:
           
           - git rebase main 
 
+
 In order to publish your changes in the main repository create new pull request. (See the issue on github repository)
 
 Before you start working on the project
