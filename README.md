@@ -23,13 +23,13 @@ When code review done => resolve comments
 
 git commands:
 
-          - `git checkout master`  
+          - git checkout main
           
-          - `git pull --rebase origin master`
+          - git pull --rebase origin main
           
-          - `git checkout 'your branch'`
+          - git checkout <your-branch>
           
-          - `git rebase master`
+          - git rebase main
 
  
 Before you start working on the project
