@@ -23,9 +23,17 @@ When code review done => resolve comments
 
 git commands:
 
+          - git checkout <your-branch>
+
+          - git pull --rebase origin main
+
           - git checkout main
           
           - git rebase <your-branch>
+
+          - git push
+
+
 
  
 Before you start working on the project
