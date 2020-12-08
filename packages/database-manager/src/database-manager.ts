@@ -1,4 +1,6 @@
-export class DatabaseManager {
+import { IDatabaseManager } from './idatabase-manager';
+
+export class DatabaseManager implements IDatabaseManager {
   private db: any;
   private readonly sqlite3: any;
   constructor() {
