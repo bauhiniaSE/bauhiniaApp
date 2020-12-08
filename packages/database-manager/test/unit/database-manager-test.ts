@@ -21,10 +21,6 @@ describe('executeQuery test', () => {
   it('should', () => {
     let dbm: DatabaseManager = new DatabaseManager();
     dbm.openConnection();
-    let rows: any = dbm.executeQuery('SELECT id as id, name as name FROM objects');
-    rows.array.forEach((row: any) => {
-      console.log(row.name);
-    });
     dbm.closeConnection();
     expect(true).equal(true);
   });

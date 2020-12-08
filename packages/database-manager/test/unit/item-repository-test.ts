@@ -4,10 +4,10 @@ import { DatabaseManager } from '../../src/database-manager';
 
 import { ItemRepository } from '../../src/item-repository';
 
-describe('test', () => {
+describe('itemtest', () => {
   it('should return true', () => {
     let dbm: DatabaseManager = new DatabaseManager();
-    let item: ItemRepository<T> = new ItemRepository<T>(dbm);
-    expect(true).equal(true);
+    let item: ItemRepository<number> = new ItemRepository<number>(dbm);
+    expect(item.remove('fff')).equal(true);
   });
 });
