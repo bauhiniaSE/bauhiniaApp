@@ -5,5 +5,8 @@
   "scripts": {
     "test": "nyc npm run test:unit",
     "test:unit": "mocha \"test/unit/**/*.js\""
+  },
+  "dependencies": {
+    "sqlite3": "^5.0.0"
   }
 }
