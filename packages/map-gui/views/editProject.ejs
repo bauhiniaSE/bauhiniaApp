@@ -3,12 +3,16 @@
 
 <head>
     <style>
-         @import url(https://fonts.googleapis.com/css?family=Roboto:300);
-        
+        @import url(https://fonts.googleapis.com/css?family=Roboto:300);
+
         rect {
-            border:#24616b;
-            background-color: rgba(255, 255, 255, 0.8);
-        }
+            font-family: "Roboto", sans-serif;
+            background: #fdfffb;
+            box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+            height: 100px;
+            width: 300px;
+              }
+
         .grid-container {
             margin-left: 30%;
             display: grid;
@@ -27,9 +31,11 @@
             border: 1px solid black;
             font-size: 20px;
         }
+
         img {
             width: 70px;
         }
+
         .flex {
             display: flex;
             justify-content: center;
@@ -38,6 +44,8 @@
         .flex-item+.flex-item {
             margin-left: 10px;
         }
+
+        input,
         button {
             font-family: "Roboto", sans-serif;
             background: #fdfffb;
@@ -55,12 +63,13 @@
             display: inline-block;
             width: 250px;
         }
+
         body {
-  background-image: -webkit-linear-gradient(0deg, #045714, #24616b);
-  font-family: "Roboto", sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;      
-}
+            background-image: -webkit-linear-gradient(0deg, #045714, #24616b);
+            font-family: "Roboto", sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
     </style>
 </head>
 
@@ -68,27 +77,26 @@
     <div>
         <div class="flex">
             <form>
-                <button>Simulate</button>
-                <button>Save</button>
+                <input type="button" onclick="simulate()" value="Simulate" />
+                <input type="button" value="Save" />
                 <!--<button formaction="/maps">Back</button>-->
                 <button formaction="/">Exit</button>
             </form>
-            </div>
-            <rect>Simulation results will be displayed here.</rect>
+        </div>
+        <rect id="r1">Simulation results will be displayed here.</rect>
+        <script>
+            function simulate() {
+                document.getElementById("r1").innerHTML = "Simulation results: 0.00";
+            }
+        </script>
         <div class="grid-container">
             <%for(var i = 0; i < 50; i++){%>
             <div class="grid-item" id="div2">
-               
+
             </div>
             <%}%>
-           
-          </div>
-    
-    
-    </div>
- 
-
-
-</body>
-
+            
+            </div>
+        </div>
+    </body>
 </html>
