@@ -58,6 +58,10 @@
             display: inline-block;
             width: 250px;
         }
+        button:hover, input[type=button]:hover {
+            background-color: #a4ccb9;
+            color: #133f46;
+        }
 
         .flex {
             display: flex;
@@ -83,7 +87,7 @@
             /* Stay in place */
             z-index: 1;
             /* Sit on top */
-            padding-top: 50px;
+            padding-top: 100px;
             /* Location of the box */
             left: 0;
             top: 0;
@@ -137,24 +141,23 @@
             margin: 0 0 15px;
             padding: 10px;
             box-sizing: border-box;
-            font-size: 24px;
+            font-size: 16px;
         }
 
         .popup input[type=submit] {
-            box-sizing: border-box;
             font-family: "Roboto", sans-serif;
+            text-transform: uppercase;
             outline: 0;
             background: #24616b;
             width: 20%;
             border: 0;
             padding: 5px;
             color: #ffffff;
-            font-size: 20px;
+            font-size: 14px;
             -webkit-transition: all 0.3 ease;
             transition: all 0.3 ease;
             cursor: pointer;
             float: right;
-
         }
 
         .popup input[type=submit]:hover,
@@ -164,6 +167,7 @@
             color: #000000;
         }
     </style>
+
 </head>
 
 <body>
@@ -194,12 +198,13 @@
             <span class="close">&times;</span>
             <div class="popup">
             <form>
-                <label for="name" >Object Name<br/></label>
+               
                 <input type="text" id="name" name="name" style="width: 50%;" placeholder="object name"><br/>
-                <label for="albedo">Albedo<br/></label>
-                <input type="text" id="albedo" name="albedo" style="width: 85px; text-align: center;"> <a>%<br/></a>
-                <label for="img">Upload an object representation picture<br/></label>
-                <input type="file" id="img" name="img" accept="image/*" style="width: 50%;">
+                
+                <input type="text" id="albedo" name="albedo" style="width: 85px; text-align: center;" placeholder="albedo"> <a>%</a><br/><br/>
+                <label for="img">Upload an object representation picture</label>
+                <input type="file" id="img" name="img" accept="image/*" onchange="loadFile(event);" style="width: 50%;">
+                <br/><img id="output" width="200" />
                 <input type="submit" id="submit_btn" value="Add" style="float: right;">
             </form>
             </div>
@@ -230,6 +235,12 @@
                 modal.style.display = "none";
             }
         }
+    </script>
+    <script>
+        var loadFile = function (event) {
+            var image = document.getElementById('output');
+            image.src = URL.createObjectURL(event.target.files[0]);
+        };
     </script>
 </body>
 
