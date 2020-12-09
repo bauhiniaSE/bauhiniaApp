@@ -3,72 +3,90 @@
 
 <head>
     <style>
-
+         @import url(https://fonts.googleapis.com/css?family=Roboto:300);
+        
+        rect {
+            border:#24616b;
+            background-color: rgba(255, 255, 255, 0.8);
+        }
         .grid-container {
-  display: grid;
-  column-count: 10;
-  grid-template-columns: 
-  75px  75px  75px  75px  75px
-  75px  75px  75px  75px  75px
-  ;
-  grid-template-rows: 
-  75px  75px  75px  75px  75px
-  75px  75px  75px  75px  75px;
-  grid-gap: none;
-}
+            margin-left: 30%;
+            display: grid;
+            column-count: 10;
+            grid-template-columns:
+                75px 75px 75px 75px 75px 75px 75px 75px 75px 75px;
+            grid-template-rows:
+                75px 75px 75px 75px 75px;
+            grid-gap: none;
+        }
 
-.grid-container > div {
-  background-color: rgba(255, 255, 255, 0.8);
-  text-align: center;
-  padding: 20px 0;
-  
-  border: 1px solid black;
-  font-size: 30px;
-}
+        .grid-container>div {
+            background-color: rgba(255, 255, 255, 0.8);
+            text-align: center;
 
-/* .item1 {
-  grid-column-start: 1;
-  grid-column-end: 3;
-} */
+            border: 1px solid black;
+            font-size: 20px;
+        }
+        img {
+            width: 70px;
+        }
+        .flex {
+            display: flex;
+            justify-content: center;
+        }
+
+        .flex-item+.flex-item {
+            margin-left: 10px;
+        }
+        button {
+            font-family: "Roboto", sans-serif;
+            background: #fdfffb;
+            box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+            margin-bottom: 50px;
+            margin-left: 10px;
+            margin-right: 10px;
+            color: #24616b;
+            padding: 25px;
+            font-size: 25px;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            width: 250px;
+        }
+        body {
+  background-image: -webkit-linear-gradient(0deg, #045714, #24616b);
+  font-family: "Roboto", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;      
+}
     </style>
-    <script>
-        function allowDrop(ev) {
-            ev.preventDefault();
-        }
-
-        function drag(ev) {
-            ev.dataTransfer.setData("text", ev.target.id);
-        }
-
-        function drop(ev) {
-            ev.preventDefault();
-            var data = ev.dataTransfer.getData("text");
-            ev.target.appendChild(document.getElementById(data));
-        }
-    </script>
 </head>
 
 <body>
-
-    <p>Drag the image back and forth between the two div elements.</p>
-    <div class="grid-container">
-        <%for(var i = 0; i < 50; i++){%>
-            <div class="grid-item" id="div2" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-        <%}%>
-       
-      </div>
-        <!-- <div class="grid-item" id="div2" ondrop="drop(event)" ondragover="allowDrop(event)"></div> -->
-   
-
-    <!-- <div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)">
-        <img src="/images/LogoCC.png" draggable="true" ondragstart="drag(event)" id="drag1" width="88" height="31">
+    <div>
+        <div class="flex">
+            <form>
+                <button>Simulate</button>
+                <button>Save</button>
+                <!--<button formaction="/maps">Back</button>-->
+                <button formaction="/">Exit</button>
+            </form>
+            </div>
+            <rect>Simulation results will be displayed here.</rect>
+        <div class="grid-container">
+            <%for(var i = 0; i < 50; i++){%>
+            <div class="grid-item" id="div2">
+               
+            </div>
+            <%}%>
+           
+          </div>
+    
+    
     </div>
-
-    <div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)">
-        <img src="/images/LogoCC.png" draggable="true" ondragstart="drag(event)" id="drag2" width="88" height="31">
-    </div> -->
-
-
+ 
 
 
 </body>
