@@ -11,10 +11,9 @@
             box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
             height: 100px;
             width: 300px;
-              }
+        }
 
         .grid-container {
-            margin-left: 30%;
             display: grid;
             column-count: 10;
             grid-template-columns:
@@ -28,6 +27,28 @@
             background-color: rgba(255, 255, 255, 0.8);
             text-align: center;
 
+            border: 1px solid black;
+            font-size: 20px;
+        }
+
+        .grid-container1 {
+            overflow: scroll;
+            height: 375px;
+            width: auto;
+            overflow-x: hidden;
+            display: grid;
+            column-count: 10;
+            grid-template-columns:
+                75px 75px 75px 75px 75px;
+            grid-template-rows:
+                75px 75px 75px 75px 75px;
+            grid-gap: none;
+        }
+
+        .grid-container1>div {
+            max-height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            text-align: center;
             border: 1px solid black;
             font-size: 20px;
         }
@@ -69,6 +90,7 @@
             font-family: "Roboto", sans-serif;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            overflow: hidden;
         }
     </style>
 </head>
@@ -79,24 +101,34 @@
             <form>
                 <input type="button" onclick="simulate()" value="Simulate" />
                 <input type="button" value="Save" />
-                <!--<button formaction="/maps">Back</button>-->
                 <button formaction="/">Exit</button>
             </form>
         </div>
         <rect id="r1">Simulation results will be displayed here.</rect>
+        <br></br>
         <script>
             function simulate() {
                 document.getElementById("r1").innerHTML = "Simulation results: 0.00";
             }
         </script>
-        <div class="grid-container">
-            <%for(var i = 0; i < 50; i++){%>
-            <div class="grid-item" id="div2">
 
+        <div class="flex">
+            <div class="grid-container">
+                <%for(var i = 0; i < 50; i++){%>
+                <div class="grid-item" id="div2">
+
+                </div>
+                <%}%>  
             </div>
-            <%}%>
-            
-            </div>
+            <pre>   </pre>
+                <div class="grid-container1" >
+                    <%for(var i = 0; i < 50; i++){%>
+                <div class="grid-item" id="div2">
+                    <img src="/images/pinkShop.png" />
+                </div>
+                <%}%>
+                </div>
         </div>
-    </body>
+    </div>
+</body>
 </html>
