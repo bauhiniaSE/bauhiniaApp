@@ -3,7 +3,8 @@
 
 <head>
     <style>
-         @import url(https://fonts.googleapis.com/css?family=Roboto:300);
+        @import url(https://fonts.googleapis.com/css?family=Roboto:300);
+
         .grid-container {
             overflow: scroll;
             height: 375px;
@@ -25,9 +26,11 @@
             border: 1px solid black;
             font-size: 20px;
         }
+
         img {
             width: 70px;
         }
+
         .flex {
             display: flex;
             justify-content: center;
@@ -36,7 +39,9 @@
         .flex-item+.flex-item {
             margin-left: 10px;
         }
-        button {
+
+        button,
+        input[type=button] {
             font-family: "Roboto", sans-serif;
             background: #fdfffb;
             box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
@@ -53,6 +58,7 @@
             display: inline-block;
             width: 250px;
         }
+
         .flex {
             display: flex;
             justify-content: center;
@@ -63,11 +69,100 @@
         }
 
         body {
-  background-image: -webkit-linear-gradient(0deg, #045714, #24616b);
-  font-family: "Roboto", sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;      
-}
+            background-image: -webkit-linear-gradient(0deg, #045714, #24616b);
+            font-family: "Roboto", sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* The Modal (background) */
+        .modal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Stay in place */
+            z-index: 1;
+            /* Sit on top */
+            padding-top: 50px;
+            /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Full width */
+            height: 100%;
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0);
+            /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.6);
+            /* Black w/ opacity */
+        }
+
+        /* Modal Content */
+        .modal-content {
+            font-size: 24px;
+            background: #f5ffe9;
+            box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+            margin: auto;
+            margin-top: 5px;
+            padding-top: 5px;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 60%;
+        }
+
+        /* The Close Button */
+        .close {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        input[type=text] {
+            font-family: "Roboto", sans-serif;
+            outline: 0;
+            background: #fdfffb;
+            width: 100%;
+            border: 0;
+            box-shadow: 0 0 10px 0 #a4ccb9, 0 3px 3px 0 #24616b;
+            margin: 0 0 15px;
+            padding: 10px;
+            box-sizing: border-box;
+            font-size: 24px;
+        }
+
+        .popup input[type=submit] {
+            box-sizing: border-box;
+            font-family: "Roboto", sans-serif;
+            outline: 0;
+            background: #24616b;
+            width: 20%;
+            border: 0;
+            padding: 5px;
+            color: #ffffff;
+            font-size: 20px;
+            -webkit-transition: all 0.3 ease;
+            transition: all 0.3 ease;
+            cursor: pointer;
+            float: right;
+
+        }
+
+        .popup input[type=submit]:hover,
+        .popup input[type=submit]:active,
+        .popup input[type=submit]:focus {
+            background: #a4ccb9;
+            color: #000000;
+        }
     </style>
 </head>
 
@@ -75,29 +170,67 @@
     <div>
         <div class="flex">
             <form>
-                <button>Add object</button>
+                <input type="button" id="add_btn" value="Add object"></button>
                 <button>Remove object</button>
                 <button formaction="/maps">Back</button>
                 <button formaction="/">Exit</button>
             </form>
-            </div>
-            <div class="flex">
-                <div class="grid-container">
-                    <%for(var i = 0; i < 500; i++){%>
-                    <div class="grid-item" id="div2">
-                        <img src="/images/pinkShop.png" onclick="this.style='border: solid red'"/>
-                    </div>
-                    <%}%>
-                   
+        </div>
+        <div class="flex">
+            <div class="grid-container">
+                <%for(var i = 0; i < 500; i++){%>
+                <div class="grid-item" id="div2">
+                    <img src="/images/pinkShop.png" onclick="this.style='border: solid red'" />
+                </div>
+                <%}%>
                   </div>
             </div>
-       
-    
-    
     </div>
- 
 
+     <!-- The Modal -->
+     <div id="myModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="popup">
+            <form>
+                <label for="name" >Object Name<br/></label>
+                <input type="text" id="name" name="name" style="width: 50%;" placeholder="object name"><br/>
+                <label for="albedo">Albedo<br/></label>
+                <input type="text" id="albedo" name="albedo" style="width: 85px; text-align: center;"> <a>%<br/></a>
+                <label for="img">Upload an object representation picture<br/></label>
+                <input type="file" id="img" name="img" accept="image/*" style="width: 50%;">
+                <input type="submit" id="submit_btn" value="Add" style="float: right;">
+            </form>
+            </div>
+        </div>
+    </div>
 
+    <script>
+        // Get the modal
+        var modal = document.getElementById("myModal");
+
+        // Get the button that opens the modal
+        var btn = document.getElementById("add_btn");
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks the button, open the modal 
+        btn.onclick = function () {
+            modal.style.display = "block";
+        }
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
 </body>
 
 </html>
