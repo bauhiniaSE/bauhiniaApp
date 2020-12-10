@@ -1,5 +1,4 @@
 export interface ISaveSystem {
-  convertMapToPicture(map: any): any;
+  convertMapToPicture(doc: any): boolean;
   saveMapToDatabase(map: any, id: string): boolean;
-  downloadPicture(picture: any): boolean;
 }
