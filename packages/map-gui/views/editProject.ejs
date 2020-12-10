@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-    <title>HTML TO IMAGE</title>
     <style>
         @import url(https://fonts.googleapis.com/css?family=Roboto:300);
 
@@ -102,9 +101,9 @@
     </style>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
     <script type="text/javascript">
-        function downloadimage() {
+        function downloadImage() {
             //var container = document.getElementById("image-wrap"); //specific element on page
-            var container = document.body; // full page 
+            var container = document.getElementById('grid_id'); // full page 
             html2canvas(container, { allowTaint: true }).then(function (canvas) {
 
                 var link = document.createElement("a");
@@ -117,16 +116,12 @@
         }
 
     </script>
-
-
-
 </head>
 
 <body style="text-align:center">
-    <i>This should not be saved.</i>
     <div>
-        <div id="my-node" class="flex">
-            <input type="button" onclick="downloadimage()" value="Download project as picture" />
+        <div  class="flex">
+            <input type="button" onclick="downloadImage()" value="Download project as picture" />
             <form>
                 <input type="button" onclick="simulate()" value="Simulate" />
                 <input type="button" value="Save" />
@@ -142,7 +137,7 @@
         </script>
 
         <div class="flex">
-            <div class="grid-container">
+            <div id="grid_id" class="grid-container">
                 <%for(var i = 0; i < 50; i++){%>
                 <div class="grid-item" id="div2">
 
