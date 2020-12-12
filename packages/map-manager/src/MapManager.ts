@@ -1,6 +1,11 @@
 class MapManager implements IMapManager {
+<<<<<<< HEAD
   //private readonly objectRepository: IObjectRepository;
   //private readonly mapRepository: IMapRepository;
+=======
+  private readonly objectRepository: IObjectRepository;
+  private readonly mapRepository: IMapRepository;
+>>>>>>> fix: IMapManager without errors
 
   public listAllUserGames(userId: string): MyMap[] {
     throw new Error('Method not implemented.');
