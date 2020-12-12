@@ -16,7 +16,7 @@ export class FacetList {
     let result: Facet[] = [];
 
     let timeLimit: number = this.facets.length * 20;
-    let careLimit: number = 0.005;
+    let careLimit: number = 0.0005;
 
     this.facets.forEach((facet) => {
       switch (facet.direction) {

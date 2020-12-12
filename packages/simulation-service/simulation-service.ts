@@ -1,1 +1,1 @@
-export { TestInterface } from './src/simple-type';
+export { ISimulationService as TestInterface } from './src/isimulation';

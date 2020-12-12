@@ -209,6 +209,37 @@ describe('test', () => {
     expect(shadowedCount).equal(2);
   });
 
+  it('full simulation', () => {
+    let fl: FacetList = new FacetList();
+    fl.addFacet(new Facet(0, 0, 60, 80, Direction.W));
+    fl.addFacet(new Facet(0, 0, 60, 10, Direction.S));
+    fl.addFacet(new Facet(10, 0, 60, 80, Direction.E));
+    fl.addFacet(new Facet(0, 80, 60, 10, Direction.N));
+    fl.addFacet(new Facet(0, 0, 80, 10, Direction.TOP, 60));
+
+    fl.addFacet(new Facet(40, 10, 30, 80, Direction.W));
+    fl.addFacet(new Facet(40, 10, 30, 10, Direction.S));
+    fl.addFacet(new Facet(50, 10, 30, 80, Direction.E));
+    fl.addFacet(new Facet(40, 90, 30, 10, Direction.N));
+    fl.addFacet(new Facet(40, 10, 80, 10, Direction.TOP, 30));
+
+    fl.addFacet(new Facet(0, 120, 10, 10, Direction.W));
+    fl.addFacet(new Facet(0, 120, 10, 10, Direction.S));
+    fl.addFacet(new Facet(10, 120, 10, 10, Direction.E));
+    fl.addFacet(new Facet(0, 130, 10, 10, Direction.N));
+    fl.addFacet(new Facet(0, 120, 10, 10, Direction.TOP, 10));
+    fl.illuminateAndCrop(20, Direction.W);
+
+    let shadowedArea: number = 0;
+    let illuminatedArea: number = 0;
+    fl.facets.forEach((f) => {
+      if (f.shadowed) shadowedArea += f.width * f.height;
+      else illuminatedArea += f.width * f.height;
+    });
+    expect(shadowedArea).closeTo(2800, 0.5);
+    expect(illuminatedArea).closeTo(15500, 0.5);
+  });
+
   it('direction handler test', () => {
     expect(DirectionHandler.areOpposite(Direction.S, Direction.N)).to.be.true;
     expect(DirectionHandler.areOpposite(Direction.E, Direction.W)).to.be.true;
