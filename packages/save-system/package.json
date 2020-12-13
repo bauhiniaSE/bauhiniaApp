@@ -8,6 +8,10 @@
   },
   "devDependencies": {
     "bauhinia-authentication": "1.0.0",
-    "bauhinia-database-manager": "1.0.0"
+    "bauhinia-database-manager": "1.0.0",
+    "@types/html2canvas": "0.0.36"
+  },
+  "dependencies": {
+    "html2canvas": "1.0.0-rc.7"
   }
 }
