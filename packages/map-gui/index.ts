@@ -10,7 +10,7 @@ const PORT = 8000;
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-app.get('/', (req, res) => res.send('Main route'));
+app.use(express.static(__dirname));
 
 app.use(express.json());
 app.use(routes);
