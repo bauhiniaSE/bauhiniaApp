@@ -5,3 +5,4 @@ interface IObjectRepository {
   set(id: string, element: MyElement): void;
   getAll(): MyElement[];
 }
+// TO BE REMOVED

@@ -33,3 +33,4 @@ class MapManager implements IMapManager {
     throw new Error('Method not implemented.');
   }
 }
+// DON'T REMOVE THAT
