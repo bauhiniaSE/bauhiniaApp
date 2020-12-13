@@ -10,3 +10,4 @@ interface IMapManager {
   getObjectType(objectId: string): string;
   startGame(gameId: string): void;
 }
+// DON'T REMOVE THAT

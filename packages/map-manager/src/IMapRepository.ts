@@ -6,3 +6,4 @@ interface IMapRepository {
   getAll(): MyElement[];
   getUsersAll(id: string): MyElement[];
 }
+// TO BE REMOVED
