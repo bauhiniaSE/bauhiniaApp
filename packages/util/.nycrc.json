@@ -2,5 +2,9 @@
   "excludeAfterRemap": false,
   "checkCoverage": true,
   "reporter": "html",
-  "reportDir": "reports/coverage"
+  "reportDir": "reports/coverage",
+  "lines": 0,
+  "statements": 0,
+  "functions": 0,
+  "branches": 0
 }

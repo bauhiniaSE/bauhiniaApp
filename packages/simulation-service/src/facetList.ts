@@ -7,16 +7,16 @@ export class FacetList {
 
   public illuminateAndCrop(sunAngle: number, sunDirection: Direction) {
     //SETUP
-    let castingWalls: Facet[] = [];
-    let toSunWalls: Facet[] = [];
-    let shadows: Shadow[] = [];
-    let passives: Facet[] = [];
+    const castingWalls: Facet[] = [];
+    const toSunWalls: Facet[] = [];
+    const shadows: Shadow[] = [];
+    const passives: Facet[] = [];
 
-    let vertCropped: Facet[] = [];
-    let result: Facet[] = [];
+    const vertCropped: Facet[] = [];
+    const result: Facet[] = [];
 
-    let timeLimit: number = this.facets.length * 20;
-    let careLimit: number = 0.0005;
+    const timeLimit: number = this.facets.length * 20;
+    const careLimit: number = 0.0005;
 
     this.facets.forEach((facet) => {
       switch (facet.direction) {
@@ -34,7 +34,7 @@ export class FacetList {
       }
     });
 
-    let tangent: number = Math.tan((sunAngle * Math.PI) / 180);
+    const tangent: number = Math.tan((sunAngle * Math.PI) / 180);
     castingWalls.forEach((wall) => {
       if (DirectionHandler.isWE(sunDirection)) {
         shadows.push(new Shadow(wall.height, tangent, wall.y, wall.y + wall.width, wall.x));
@@ -43,11 +43,11 @@ export class FacetList {
       }
     });
 
-    let cropWallByX = (wall: Facet, cutX: number) => {
-      let lowerHalf: Facet = wall.clone();
+    const cropWallByX = (wall: Facet, cutX: number) => {
+      const lowerHalf: Facet = wall.clone();
       lowerHalf.width = cutX - wall.x;
 
-      let upperHalf: Facet = wall.clone();
+      const upperHalf: Facet = wall.clone();
       upperHalf.x = cutX;
       upperHalf.width = wall.x + wall.width - cutX;
       if (lowerHalf.width > careLimit) upperHalf.x += careLimit / 2;
@@ -56,11 +56,11 @@ export class FacetList {
       toSunWalls.push(upperHalf);
     };
 
-    let cropWallByY = (wall: Facet, cutY: number) => {
-      let lowerHalf: Facet = wall.clone();
+    const cropWallByY = (wall: Facet, cutY: number) => {
+      const lowerHalf: Facet = wall.clone();
       lowerHalf.width = cutY - wall.y;
 
-      let upperHalf: Facet = wall.clone();
+      const upperHalf: Facet = wall.clone();
       upperHalf.y = cutY;
       upperHalf.width = wall.y + wall.width - cutY;
       if (lowerHalf.width > careLimit) upperHalf.y += careLimit / 2;
@@ -69,21 +69,21 @@ export class FacetList {
       toSunWalls.push(upperHalf);
     };
 
-    let cropRoofByX = (roof: Facet, cutX: number, whereToShade?: FourByFour) => {
-      let lowerHalf: Facet = roof.clone();
+    const cropRoofByX = (roof: Facet, cutX: number, whereToShade?: FourByFour) => {
+      const lowerHalf: Facet = roof.clone();
       lowerHalf.width = cutX - roof.x;
 
-      let upperHalf: Facet = roof.clone();
+      const upperHalf: Facet = roof.clone();
       upperHalf.x = cutX;
       upperHalf.width = roof.x + roof.width - cutX;
-      if (whereToShade == undefined) {
+      if (whereToShade === undefined) {
         if (lowerHalf.width > careLimit) upperHalf.x += careLimit / 2;
         if (upperHalf.width > careLimit) lowerHalf.width -= careLimit / 2;
         toSunWalls.push(lowerHalf);
         toSunWalls.push(upperHalf);
       }
 
-      if (whereToShade == FourByFour.LOWER) {
+      if (whereToShade === FourByFour.LOWER) {
         lowerHalf.shadowed = true;
         if (lowerHalf.width < careLimit) upperHalf.x += careLimit;
         if (upperHalf.width < careLimit) lowerHalf.width -= careLimit;
@@ -91,7 +91,7 @@ export class FacetList {
         result.push(lowerHalf);
       }
 
-      if (whereToShade == FourByFour.UPPER) {
+      if (whereToShade === FourByFour.UPPER) {
         upperHalf.shadowed = true;
         if (upperHalf.width < careLimit) lowerHalf.width -= careLimit / 2;
         if (lowerHalf.width < careLimit) upperHalf.x += careLimit / 2;
@@ -100,22 +100,22 @@ export class FacetList {
       }
     };
 
-    let cropRoofByY = (roof: Facet, cutY: number, whereToShade?: FourByFour) => {
-      let lowerHalf: Facet = roof.clone();
+    const cropRoofByY = (roof: Facet, cutY: number, whereToShade?: FourByFour) => {
+      const lowerHalf: Facet = roof.clone();
       lowerHalf.height = cutY - roof.y;
 
-      let upperHalf: Facet = roof.clone();
+      const upperHalf: Facet = roof.clone();
       upperHalf.y = cutY;
       upperHalf.height = roof.y + roof.height - cutY;
 
-      if (whereToShade == undefined) {
+      if (whereToShade === undefined) {
         if (lowerHalf.height < careLimit) upperHalf.y += careLimit / 2;
         if (upperHalf.height < careLimit) lowerHalf.height -= careLimit / 2;
         toSunWalls.push(lowerHalf);
         toSunWalls.push(upperHalf);
       }
 
-      if (whereToShade == FourByFour.LOWER) {
+      if (whereToShade === FourByFour.LOWER) {
         lowerHalf.shadowed = true;
         if (upperHalf.height < careLimit) lowerHalf.height -= careLimit / 2;
         if (lowerHalf.height < careLimit) upperHalf.y += careLimit / 2;
@@ -123,7 +123,7 @@ export class FacetList {
         vertCropped.push(upperHalf);
       }
 
-      if (whereToShade == FourByFour.UPPER) {
+      if (whereToShade === FourByFour.UPPER) {
         upperHalf.shadowed = true;
         if (upperHalf.height < careLimit) lowerHalf.height -= careLimit / 2;
         if (lowerHalf.height < careLimit) upperHalf.y += careLimit / 2;
@@ -132,12 +132,12 @@ export class FacetList {
       }
     };
 
-    let cropByAltitude = (wall: Facet, cutAltitude: number) => {
-      let lowerHalf: Facet = wall.clone();
+    const cropByAltitude = (wall: Facet, cutAltitude: number) => {
+      const lowerHalf: Facet = wall.clone();
       lowerHalf.height = cutAltitude - wall.bottom;
       lowerHalf.shadowed = true;
 
-      let upperHalf: Facet = wall.clone();
+      const upperHalf: Facet = wall.clone();
       upperHalf.height = wall.height + wall.bottom - cutAltitude;
       upperHalf.bottom = cutAltitude;
 
@@ -151,14 +151,14 @@ export class FacetList {
     let counter: number = 0;
     while (toSunWalls.length > 0 && counter < timeLimit) {
       counter++;
-      let sunWall: Facet = toSunWalls.shift() || new Facet(0, 0, -1, 0, Direction.TOP);
-      if (sunWall.height == -1 && sunWall.direction == Direction.TOP) {
+      const sunWall: Facet = toSunWalls.shift() || new Facet(0, 0, -1, 0, Direction.TOP);
+      if (sunWall.height === -1 && sunWall.direction === Direction.TOP) {
         break;
       }
       let lowerBoundary: number;
       let upperBoundary: number;
       let crop: any;
-      if (sunWall.direction == Direction.TOP) {
+      if (sunWall.direction === Direction.TOP) {
         if (DirectionHandler.isWE(sunDirection)) {
           lowerBoundary = sunWall.y;
           upperBoundary = sunWall.y + sunWall.height;
@@ -197,8 +197,8 @@ export class FacetList {
     counter = 0;
     while (vertCropped.length > 0 && counter < 20) {
       counter++;
-      let sunWall: Facet = vertCropped.shift() || new Facet(0, 0, -1, 0, Direction.TOP);
-      if (sunWall.height == -1 && sunWall.direction == Direction.TOP) {
+      const sunWall: Facet = vertCropped.shift() || new Facet(0, 0, -1, 0, Direction.TOP);
+      if (sunWall.height === -1 && sunWall.direction === Direction.TOP) {
         break;
       }
       let lowerBoundary: number;
@@ -208,14 +208,14 @@ export class FacetList {
       let crop: any;
       let isRoof: boolean = false;
       let depth: number;
-      if (sunWall.direction == Direction.TOP) {
+      if (sunWall.direction === Direction.TOP) {
         isRoof = true;
         if (DirectionHandler.isWE(sunDirection)) {
           depth = sunWall.width;
           lowerBoundary = sunWall.y;
           upperBoundary = sunWall.y + sunWall.height;
           crop = cropRoofByX; //Not Quite
-          if (sunDirection == Direction.W) {
+          if (sunDirection === Direction.W) {
             anchor = sunWall.x;
           } else {
             anchor = sunWall.x + sunWall.width;
@@ -225,7 +225,7 @@ export class FacetList {
           lowerBoundary = sunWall.x;
           upperBoundary = sunWall.x + sunWall.width;
           crop = cropRoofByY; //Not Quite
-          if (sunDirection == Direction.N) {
+          if (sunDirection === Direction.N) {
             anchor = sunWall.y;
           } else {
             anchor = sunWall.y + sunWall.height;
@@ -251,15 +251,15 @@ export class FacetList {
       let uncropped: boolean = true;
       shadows.forEach((shadow) => {
         if (
-          shouldAnchorBeMore == anchor > shadow.startingPoint &&
+          shouldAnchorBeMore === anchor > shadow.startingPoint &&
           upperBoundary <= shadow.upperBoundary &&
           lowerBoundary >= shadow.lowerBoundary &&
           uncropped
         ) {
-          let distance: number = Math.abs(anchor - shadow.startingPoint);
+          const distance: number = Math.abs(anchor - shadow.startingPoint);
           if (isRoof) {
-            let shadowLength: number = shadow.getLengthAt(sunWall.bottom);
-            let shadowDepth: number = shadowLength - distance;
+            const shadowLength: number = shadow.getLengthAt(sunWall.bottom);
+            const shadowDepth: number = shadowLength - distance;
             let shadowCut: number;
             let whichOneToShade: FourByFour;
             if (DirectionHandler.isWS(sunDirection)) {
@@ -269,7 +269,7 @@ export class FacetList {
               shadowCut = shadow.startingPoint - shadowLength;
               whichOneToShade = FourByFour.UPPER;
             }
-            if (shadowCut > anchor == DirectionHandler.isWS(sunDirection) && shadowDepth < anchor + depth) {
+            if (shadowCut > anchor === DirectionHandler.isWS(sunDirection) && shadowDepth < anchor + depth) {
               crop(sunWall, shadowCut, whichOneToShade);
               uncropped = false;
             } else if (shadowDepth > depth) {
@@ -278,7 +278,7 @@ export class FacetList {
               result.push(sunWall);
             }
           } else {
-            let shadowHeight: number = shadow.getHeightAt(distance);
+            const shadowHeight: number = shadow.getHeightAt(distance);
             if (shadowHeight < sunWall.height + sunWall.bottom && shadowHeight > sunWall.bottom) {
               crop(sunWall, shadowHeight);
               uncropped = false;
@@ -315,14 +315,14 @@ export class FacetList {
   }
 
   private illuminateFacets(sunAngle: number, sunDirection: Direction): void {
-    let sunPower: number = 1000 * 60 * 60 * 8;
+    const sunPower: number = 1000 * 60 * 60 * 8;
 
     this.facets.forEach((facet) => {
       let incidenceSin: number = 0;
       if (!facet.shadowed) {
-        if (facet.direction == Direction.TOP) {
+        if (facet.direction === Direction.TOP) {
           incidenceSin = Math.cos(((90 - sunAngle) * Math.PI) / 180);
-        } else if (facet.direction == sunDirection) {
+        } else if (facet.direction === sunDirection) {
           incidenceSin = Math.cos((sunAngle * Math.PI) / 180);
         }
         facet.temperature += (sunPower * (1 - facet.albedo) * incidenceSin) / (facet.density * facet.specificHeat);
@@ -335,7 +335,7 @@ export class FacetList {
   }
 
   public printAllFacets(parray?: Facet[]) {
-    let array: Facet[] = parray || this.facets;
+    const array: Facet[] = parray || this.facets;
     array.forEach((facet) => {
       console.log(
         // eslint-disable-next-line @typescript-eslint/restrict-plus-operands

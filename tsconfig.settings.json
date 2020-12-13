@@ -22,7 +22,8 @@
       "node"
     ],
     "lib": [
-      "ESNext"
+      "ESNext",
+      "DOM"
     ]
   }
 }

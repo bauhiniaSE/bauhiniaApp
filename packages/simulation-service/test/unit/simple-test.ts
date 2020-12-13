@@ -8,14 +8,14 @@ import { FacetList } from '../../src/facetList';
 
 describe('test', () => {
   it('facet cloning', () => {
-    let f: Facet = new Facet(0, 10, 200, 100, Direction.S);
-    let g: Facet = f.clone();
+    const f: Facet = new Facet(0, 10, 200, 100, Direction.S);
+    const g: Facet = f.clone();
     expect(f.direction).equal(Direction.S);
     expect(g.direction).equal(Direction.S);
   });
 
   it('illumination', () => {
-    let fl: FacetList = new FacetList();
+    const fl: FacetList = new FacetList();
     fl.addFacet(new Facet(0, 0, 200, 100, Direction.S));
     expect(fl.facets[0].temperature).equal(0);
     fl.illuminateAndCrop(60, Direction.S);
@@ -24,7 +24,7 @@ describe('test', () => {
   });
 
   it('illumination with horizontal crop', () => {
-    let fl: FacetList = new FacetList();
+    const fl: FacetList = new FacetList();
     fl.addFacet(new Facet(0, 0, 100, 100, Direction.E));
     fl.addFacet(new Facet(20, 0, 100, 100, Direction.W));
     expect(fl.facets.length).equal(2);
@@ -36,8 +36,8 @@ describe('test', () => {
     let westFacingCount: number = 0;
     fl.facets.forEach((facet) => {
       if (facet.shadowed) shadowedCount++;
-      if (facet.direction == Direction.E) eastFacingCount++;
-      if (facet.direction == Direction.W) westFacingCount++;
+      if (facet.direction === Direction.E) eastFacingCount++;
+      if (facet.direction === Direction.W) westFacingCount++;
     });
     expect(shadowedCount).equal(1);
     expect(eastFacingCount).equal(2);
@@ -45,10 +45,10 @@ describe('test', () => {
   });
 
   it('lambda modification test', () => {
-    let facet: Facet = new Facet(0, 0, 0, 0, Direction.S, 30);
-    let fl: FacetList = new FacetList();
-    let lambda = (f: Facet) => {
-      let g = f.clone();
+    const facet: Facet = new Facet(0, 0, 0, 0, Direction.S, 30);
+    const fl: FacetList = new FacetList();
+    const lambda = (f: Facet) => {
+      const g = f.clone();
       g.height = 10;
       f = g.clone();
       fl.facets.push(f);
@@ -59,7 +59,7 @@ describe('test', () => {
   });
 
   it('east-illumination with vertical crop', () => {
-    let fl: FacetList = new FacetList();
+    const fl: FacetList = new FacetList();
     fl.addFacet(new Facet(0, 0, 200, 100, Direction.E));
     fl.addFacet(new Facet(20, 20, 100, 60, Direction.W));
     fl.illuminateAndCrop(30, Direction.E);
@@ -70,8 +70,8 @@ describe('test', () => {
     let westFacingCount: number = 0;
     fl.facets.forEach((facet) => {
       if (facet.shadowed) shadowedCount++;
-      if (facet.direction == Direction.E) eastFacingCount++;
-      if (facet.direction == Direction.W) westFacingCount++;
+      if (facet.direction === Direction.E) eastFacingCount++;
+      if (facet.direction === Direction.W) westFacingCount++;
     });
     expect(shadowedCount).equal(1);
     expect(eastFacingCount).equal(4);
@@ -79,7 +79,7 @@ describe('test', () => {
   });
 
   it('south-illumination with vertical crop', () => {
-    let fl: FacetList = new FacetList();
+    const fl: FacetList = new FacetList();
     fl.addFacet(new Facet(0, 40, 200, 100, Direction.S));
     fl.addFacet(new Facet(20, 20, 100, 70, Direction.N));
     fl.illuminateAndCrop(30, Direction.S);
@@ -90,8 +90,8 @@ describe('test', () => {
     let northFacingCount: number = 0;
     fl.facets.forEach((facet) => {
       if (facet.shadowed) shadowedCount++;
-      if (facet.direction == Direction.S) southFacingCount++;
-      if (facet.direction == Direction.N) northFacingCount++;
+      if (facet.direction === Direction.S) southFacingCount++;
+      if (facet.direction === Direction.N) northFacingCount++;
     });
     expect(shadowedCount).equal(1);
     expect(southFacingCount).equal(4);
@@ -99,7 +99,7 @@ describe('test', () => {
   });
 
   it('perpendicular facets do not shade each other', () => {
-    let fl: FacetList = new FacetList();
+    const fl: FacetList = new FacetList();
     fl.addFacet(new Facet(0, 0, 200, 100, Direction.E));
     fl.addFacet(new Facet(10, 50, 100, 50, Direction.N));
     fl.illuminateAndCrop(30, Direction.W);
@@ -114,7 +114,7 @@ describe('test', () => {
   });
 
   it('simpler illumination', () => {
-    let fl: FacetList = new FacetList();
+    const fl: FacetList = new FacetList();
     fl.addFacet(new Facet(20, 20, 200, 50, Direction.S));
     fl.addFacet(new Facet(40, 0, 100, 40, Direction.N));
     fl.illuminateAndCrop(30, Direction.S);
@@ -122,7 +122,7 @@ describe('test', () => {
   });
 
   it('multiple shadows on a single facet', () => {
-    let fl: FacetList = new FacetList();
+    const fl: FacetList = new FacetList();
     fl.addFacet(new Facet(0, 0, 100, 40, Direction.N));
     fl.addFacet(new Facet(20, 20, 200, 60, Direction.S));
     fl.addFacet(new Facet(50, 0, 100, 40, Direction.N));
@@ -137,7 +137,7 @@ describe('test', () => {
   });
 
   it('cascading shadow casting', () => {
-    let fl: FacetList = new FacetList();
+    const fl: FacetList = new FacetList();
     fl.addFacet(new Facet(60, 0, 100, 40, Direction.E));
     fl.addFacet(new Facet(0, 0, 100, 60, Direction.E));
     fl.addFacet(new Facet(80, 0, 100, 80, Direction.W));
@@ -154,7 +154,7 @@ describe('test', () => {
   });
 
   it('cascading shadow casting reversed', () => {
-    let fl: FacetList = new FacetList();
+    const fl: FacetList = new FacetList();
     fl.addFacet(new Facet(0, 0, 100, 60, Direction.E));
     fl.addFacet(new Facet(60, 0, 100, 40, Direction.E));
     fl.addFacet(new Facet(80, 0, 100, 80, Direction.W));
@@ -171,7 +171,7 @@ describe('test', () => {
   });
 
   it('simple roof shading', () => {
-    let fl: FacetList = new FacetList();
+    const fl: FacetList = new FacetList();
     fl.addFacet(new Facet(0, 0, 100, 60, Direction.E));
     fl.addFacet(new Facet(20, 10, 45, 80, Direction.W));
     fl.addFacet(new Facet(20, 10, 80, 120, Direction.TOP, 45));
@@ -195,7 +195,7 @@ describe('test', () => {
   });
 
   it('complex roof shading', () => {
-    let fl: FacetList = new FacetList();
+    const fl: FacetList = new FacetList();
     fl.addFacet(new Facet(120, 10, 80, 20, Direction.W));
     fl.addFacet(new Facet(100, 0, 30, 50, Direction.E));
     fl.addFacet(new Facet(0, 0, 50, 100, Direction.TOP, 30));
@@ -210,7 +210,7 @@ describe('test', () => {
   });
 
   it('full simulation', () => {
-    let fl: FacetList = new FacetList();
+    const fl: FacetList = new FacetList();
     fl.addFacet(new Facet(0, 0, 60, 80, Direction.W));
     fl.addFacet(new Facet(0, 0, 60, 10, Direction.S));
     fl.addFacet(new Facet(10, 0, 60, 80, Direction.E));

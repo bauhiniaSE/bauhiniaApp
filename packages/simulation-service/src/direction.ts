@@ -12,13 +12,13 @@ export class DirectionHandler {
       case Direction.TOP:
         return false;
       case Direction.N:
-        return second == Direction.S;
+        return second === Direction.S;
       case Direction.E:
-        return second == Direction.W;
+        return second === Direction.W;
       case Direction.S:
-        return second == Direction.N;
+        return second === Direction.N;
       case Direction.W:
-        return second == Direction.E;
+        return second === Direction.E;
     }
   }
 
@@ -38,18 +38,18 @@ export class DirectionHandler {
   }
 
   public static isNS(input: Direction): boolean {
-    return input == Direction.N || input == Direction.S;
+    return input === Direction.N || input === Direction.S;
   }
 
   public static isWE(input: Direction): boolean {
-    return input == Direction.W || input == Direction.E;
+    return input === Direction.W || input === Direction.E;
   }
 
   public static isWS(input: Direction): boolean {
-    return input == Direction.W || input == Direction.S;
+    return input === Direction.W || input === Direction.S;
   }
 
   public static isEN(input: Direction): boolean {
-    return input == Direction.N || input == Direction.E;
+    return input === Direction.N || input === Direction.E;
   }
 }
