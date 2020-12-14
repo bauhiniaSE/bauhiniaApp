@@ -16,9 +16,6 @@ export class Facet {
 
   public height: number;
   public width: number;
-  public bottom: number;
-  public x: number;
-  public y: number;
 
   /*public lowerBoundary: number;
   public upperBoundary: number;
@@ -26,24 +23,21 @@ export class Facet {
   public crop: any;*/
 
   constructor(
-    x: number,
-    y: number,
+    public x: number,
+    public y: number,
     height: number,
     width: number,
     direction: Direction,
-    bottom?: number,
+    public bottom: number = 0,
     name?: string,
     albedo?: number,
     evapot?: boolean,
     density?: number,
     specificHeat?: number
   ) {
-    this.x = x;
-    this.y = y;
     this.height = height;
     this.width = width;
     this.direction = direction;
-    this.bottom = bottom || 0;
     this.name = name || 'not named';
     this.albedo = albedo || 0.2;
     this.evapot = evapot || false;
