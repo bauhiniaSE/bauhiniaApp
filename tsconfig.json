@@ -1,6 +1,7 @@
 {
   "files": [],
   "references": [
+    { "path": "packages/api" },
     { "path": "packages/authentication" },
     { "path": "packages/database-manager" },
     { "path": "packages/map-builder" },

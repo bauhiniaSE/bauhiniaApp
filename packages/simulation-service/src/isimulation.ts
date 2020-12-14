@@ -1,8 +1,8 @@
-import { MockMap } from './mockmap';
+import { IMap } from 'bauhinia-api/map';
 
 export interface ISimulationService {
-  simulateFromScratch(map: MockMap): void;
-  simulateFromCache(map: MockMap): void;
+  simulateFromScratch(map: IMap): void;
+  simulateFromCache(map: IMap): void;
 
   getTemperature(x: number, y: number, altitude?: number): number;
 }

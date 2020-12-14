@@ -1,6 +1,10 @@
 {
   "folders": [
     {
+      "name": "api",
+      "path": "packages/api"
+    },
+    {
       "name": "authentication",
       "path": "packages/authentication"
     },

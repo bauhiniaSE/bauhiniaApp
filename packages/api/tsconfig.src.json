@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.settings.json",
+  "compilerOptions": {
+    "rootDir": "."
+  },
+  "include": [
+    "map.ts",
+    "object.ts"
+  ],
+  "references": []
+}
