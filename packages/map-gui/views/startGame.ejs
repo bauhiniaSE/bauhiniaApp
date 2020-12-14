@@ -1,0 +1,118 @@
+<html>
+
+<head>
+    <style>
+        @import url(https://fonts.googleapis.com/css?family=Roboto:300);
+        /* Style The Dropdown Button */
+        .flex {
+            display: flex;
+            justify-content: center;
+        }
+
+        .flex-item+.flex-item {
+            margin-left: 10px;
+        }
+
+
+
+        .dropbtn {
+            font-family: "Roboto", sans-serif;
+            background: #fdfffb;
+            box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+            margin-top: 100px;
+            margin-left: 10px;
+            margin-right: 10px;
+            color: #24616b;
+            padding: 25px;
+            font-size: 25px;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            width: 200px;
+
+        }
+
+        /* The container <div> - needed to position the dropdown content */
+        .dropdown {
+            position: center;
+            display: inline-block;
+        }
+
+        /* Dropdown Content (Hidden by Default) */
+        .dropdown-content {
+            font-family: "Roboto", sans-serif;
+            margin-left: 10px;
+            margin-right: 10px;
+            display: none;
+            position: absolute;
+            background-color: #e5edf7;
+            width: 200px;
+            text-align: center;
+            box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+            z-index: 1;
+        }
+
+        /* Links inside the dropdown */
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        /* Change color of dropdown links on hover */
+        .dropdown-content a:hover {
+            background-color: #24616b;
+            color: white;
+        }
+
+        /* Show the dropdown menu on hover */
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* Change the background color of the dropdown button when the dropdown content is shown */
+        .dropdown:hover .dropbtn {
+            background-color: #a4ccb9;
+            color: #133f46;
+        }
+
+
+        body {
+            background-image: -webkit-linear-gradient(0deg, #045714, #24616b);
+            font-family: "Roboto", sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+    </style>
+    <title>Start Game</title>
+</head>
+
+<body>
+    <div class="flex">
+        <form>
+            <div class="dropdown">
+                <button class="dropbtn">Start Game</button>
+                <div class="dropdown-content">
+                    <a href="/game/edit">Blueprint 1</a>
+                    <a href="/game/edit">Blueprint 2</a>
+                    <a href="/game/edit">Blueprint 3</a>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <button class="dropbtn">Load Game</button>
+                <div class="dropdown-content">
+                    <a href="/game/edit">Game 1</a>
+                    <a href="/game/edit">Game 2</a>
+                    <a href="/game/edit">Game 3</a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</body>
+
+</html>

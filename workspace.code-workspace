@@ -1,6 +1,10 @@
 {
   "folders": [
     {
+      "name": "api",
+      "path": "packages/api"
+    },
+    {
       "name": "authentication",
       "path": "packages/authentication"
     },
@@ -72,7 +76,8 @@
     ],
     "editor.codeActionsOnSave": {
       "source.fixAll.eslint": true
-    }
+    },
+    "liveServer.settings.multiRootWorkspaceName": "simulation-service"
   },
   "extensions": {
     "recommendations": [
