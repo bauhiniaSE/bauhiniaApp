@@ -9,6 +9,8 @@ export interface IObject {
   canPlaceOn: boolean;
 
   material: Material;
+
+  price: number;
 }
 
 export interface Material {

@@ -1,1 +1,2 @@
-export { ISimulationService as TestInterface } from './src/isimulation';
+export { ISimulationService } from './src/isimulation';
+export { Direction } from './src/direction';

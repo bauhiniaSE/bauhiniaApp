@@ -1,10 +1,11 @@
 import { expect } from 'chai';
 
-import { Direction, DirectionHandler } from '../../src/direction';
+import { Direction } from '../../src/direction';
+import { DirectionHandler } from '../../src/direction-handler';
 
 import { Facet } from '../../src/facet';
 
-import { FacetList } from '../../src/facetList';
+import { FacetList } from '../../src/facet-list';
 
 describe('test', () => {
   it('facet cloning', () => {
