@@ -1,4 +1,5 @@
-import { Direction } from './direction';
+import { Direction } from '../direction';
+
 //import { Bubble } from './bubble';
 
 export class Facet {

@@ -1,4 +1,4 @@
-import { ISimulationService } from './isimulation';
+import { ISimulationService } from '../isimulation';
 
 export class simulator implements ISimulationService {
   public simulateFromScratch(): void {

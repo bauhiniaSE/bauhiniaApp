@@ -1,4 +1,6 @@
-import { Direction, DirectionHandler } from './direction';
+import { Direction } from '../direction';
+
+import { DirectionHandler } from './direction-handler';
 import { Facet } from './facet';
 import { Shadow } from './shadow';
 
@@ -309,7 +311,7 @@ export class FacetList {
       if (this.facets[counter].duplicated || this.facets[counter].width <= 0 || this.facets[counter].height <= 0) {
         this.facets.splice(counter, 1);
         counter--;
-        console.log('Consolidation');
+        //console.log('Consolidation');
       }
     }
   }

@@ -1,10 +1,4 @@
-export enum Direction {
-  N,
-  W,
-  S,
-  E,
-  TOP,
-}
+import { Direction } from '../direction';
 
 export class DirectionHandler {
   public static areOpposite(first: Direction, second: Direction): boolean {
