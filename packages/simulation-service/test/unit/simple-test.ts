@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 
-import { Direction } from '../../direction';
+import { Direction } from '../../src/direction';
 import { DirectionHandler } from '../../src/direction-handler';
 
 import { Facet } from '../../src/facet';

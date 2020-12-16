@@ -9,7 +9,7 @@
   },
   "include": [
     "test",
-	"direction.ts"
+	"src/direction.ts"
   ],
   "references": [
     {

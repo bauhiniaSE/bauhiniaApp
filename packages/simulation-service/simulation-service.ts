@@ -1,2 +1,2 @@
-export { ISimulationService } from './isimulation';
-export { Direction } from './direction';
+export { ISimulationService } from './src/isimulation';
+export { Direction } from './src/direction';

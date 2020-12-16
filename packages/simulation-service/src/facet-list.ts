@@ -1,4 +1,4 @@
-import { Direction } from '../direction';
+import { Direction } from './direction';
 
 import { DirectionHandler } from './direction-handler';
 import { Facet } from './facet';

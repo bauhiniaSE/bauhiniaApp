@@ -1,4 +1,4 @@
-import { Direction } from '../direction';
+import { Direction } from './direction';
 
 export class DirectionHandler {
   public static areOpposite(first: Direction, second: Direction): boolean {
