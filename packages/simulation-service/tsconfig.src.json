@@ -5,8 +5,6 @@
   },
   "include": [
     "src",
-    "simulation-service.ts", 
-    "src/direction.ts", 
-    "src/isimulation.ts"  ],
+    "simulation-service.ts"  ],
   "references": []
 }
