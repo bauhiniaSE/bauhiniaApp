@@ -1,15 +1,23 @@
+import { Weather } from './weather-constants';
+
 export class Bubble {
-  /*private readonly width: number;
-  private readonly height: number;
-  private readonly length: number;
+  public readonly width: number;
+  public readonly height: number;
+  public readonly length: number;
 
   public topBubble: Bubble;
   public northBubble: Bubble;
   public eastBubble: Bubble;
 
+  public temperature: number = Weather.ambientTemp;
+
   constructor(width: number, height: number, length: number) {
     this.height = height;
     this.width = width;
     this.length = length;
-  }*/
+  }
+
+  public getVolume(): number {
+    return this.width * this.length * this.height;
+  }
 }
