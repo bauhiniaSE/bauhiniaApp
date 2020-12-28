@@ -3,8 +3,8 @@ import { Weather } from './weather-constants';
 
 export class Bubble {
   public topBubble: Bubble;
-  public northBubble: Bubble;
-  public eastBubble: Bubble;
+  public southBubble: Bubble;
+  public westBubble: Bubble;
 
   public temperature: number = Weather.ambientTemp;
 

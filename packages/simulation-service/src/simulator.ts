@@ -247,6 +247,14 @@ export class Simulator implements ISimulationService {
     for (let index = 0; index < bubbleCount; index++) {
       this.bubbles.bubbles.push(new Bubble());
     }
+    for (let index = bubbleCountInARow; index < bubbleCount; index++) {
+      this.bubbles.bubbles[index].southBubble = this.bubbles.bubbles[index - bubbleCountInARow];
+    }
+    for (let index = 0; index < bubbleCount; index++) {
+      if (index % bubbleCountInARow !== 0) {
+        this.bubbles.bubbles[index].westBubble = this.bubbles.bubbles[index - 1];
+      }
+    }
 
     this.facets.facets.forEach((facet) => {
       const bubbleNo: number =

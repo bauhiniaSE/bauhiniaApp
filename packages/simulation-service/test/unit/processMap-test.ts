@@ -31,6 +31,23 @@ describe('process map - test', () => {
     expect(uppestFound).to.be.true;
   });
 
+  it('bubble creation', () => {
+    const s: Simulator = new Simulator();
+    const m: IMap = {
+      id: '',
+      height: 300,
+      width: 300,
+      tiles: [],
+    };
+    s.processMap(m);
+    expect(s.bubbles.bubbles.length).equal(36);
+    expect(s.bubbles.bubbles[8].westBubble).equal(s.bubbles.bubbles[7]);
+    expect(s.bubbles.bubbles[30].southBubble).equal(s.bubbles.bubbles[24]);
+
+    expect(s.bubbles.bubbles[5].southBubble).to.be.undefined;
+    expect(s.bubbles.bubbles[12].westBubble).to.be.undefined;
+  });
+
   it('simple processing', () => {
     const s: Simulator = new Simulator();
     const m: IMap = {
