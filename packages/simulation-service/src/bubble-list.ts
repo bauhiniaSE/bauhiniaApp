@@ -1,5 +1,5 @@
 import { Bubble } from './bubble';
 
 export class BubbleList {
-  public facets: Bubble[] = [];
+  public bubbles: Bubble[] = [];
 }

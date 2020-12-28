@@ -245,5 +245,10 @@ describe('process map - test', () => {
     expect(topArea).closeTo(5000, 0.5);
     expect(groundArea).closeTo(4300, 0.5);
     expect(s.facets.facets.length).equal(facetCount + 1);
+
+    s.facets.facets.forEach((f) => {
+      if (f.x !== 50) expect(f.borderingBubble).equal(s.bubbles.bubbles[0]);
+      else expect(f.borderingBubble).equal(s.bubbles.bubbles[1]);
+    });
   });
 });

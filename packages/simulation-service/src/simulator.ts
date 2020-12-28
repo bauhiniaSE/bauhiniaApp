@@ -1,6 +1,8 @@
 /* eslint-disable prefer-const */
 import { IMap, IObjectOnMap } from 'bauhinia-api/map';
 
+import { Bubble } from './bubble';
+
 import { BubbleList } from './bubble-list';
 
 import { Direction } from './direction';
@@ -237,6 +239,19 @@ export class Simulator implements ISimulationService {
           }
         });
       }
+    });
+
+    this.bubbles = new BubbleList();
+    const bubbleCountInARow: number = Math.ceil(map.width / Parameters.bubbleGrain);
+    const bubbleCount: number = bubbleCountInARow * Math.ceil(map.height / Parameters.bubbleGrain);
+    for (let index = 0; index < bubbleCount; index++) {
+      this.bubbles.bubbles.push(new Bubble());
+    }
+
+    this.facets.facets.forEach((facet) => {
+      const bubbleNo: number =
+        Math.floor(facet.x / Parameters.bubbleGrain) + Math.floor(facet.y / Parameters.bubbleGrain) * bubbleCountInARow;
+      facet.assignBubble(this.bubbles.bubbles[bubbleNo]);
     });
   }
 }
