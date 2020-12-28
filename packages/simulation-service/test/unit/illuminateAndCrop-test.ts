@@ -7,7 +7,7 @@ import { Facet } from '../../src/facet';
 
 import { FacetList } from '../../src/facet-list';
 
-describe('test', () => {
+describe('illuminate and crop - test', () => {
   it('facet cloning', () => {
     const f: Facet = new Facet(0, 10, 200, 100, Direction.S);
     const g: Facet = f.clone();

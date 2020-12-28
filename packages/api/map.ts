@@ -35,6 +35,7 @@ export interface IMap {
 //         albedo: 1,
 //         density: 2,
 //       },
+//       price: 0,
 //       position: {
 //         x: 1,
 //         y: 2,

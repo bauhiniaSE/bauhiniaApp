@@ -1,22 +1,130 @@
+/* eslint-disable @typescript-eslint/restrict-plus-operands */
 import { Direction } from './direction';
 
 import { DirectionHandler } from './direction-handler';
 import { Facet, HowToCrop } from './facet';
 import { Shadow } from './shadow';
+import { Parameters } from './technical-parameters';
 import { Weather } from './weather-constants';
 
 export class FacetList {
   public facets: Facet[] = [];
+  private timeLimit: number;
+
+  public cropFacetsByBubbles(bubbleGrain: number) {
+    const horizontals: Facet[] = [];
+    const verticals: Facet[] = [];
+    const roofs: Facet[] = [];
+
+    this.timeLimit = this.facets.length * Parameters.loopLimitFactor;
+    let counter: number = 0;
+
+    const result: Facet[] = [];
+    this.facets.forEach((facet) => {
+      switch (facet.direction) {
+        case Direction.N:
+        case Direction.S:
+          horizontals.push(facet);
+          break;
+        case Direction.E:
+        case Direction.W:
+          verticals.push(facet);
+          break;
+        case Direction.TOP:
+          roofs.push(facet);
+          break;
+      }
+    });
+
+    while (horizontals.length > 0 && counter < this.timeLimit) {
+      counter++;
+      const wall: Facet = horizontals.shift() || new Facet(-1, 0, -1, 0, Direction.TOP);
+      if (wall.direction !== Direction.TOP) {
+        wall.howToCrop = HowToCrop.BY_X;
+        if (Math.floor(wall.x / bubbleGrain) !== Math.ceil((wall.x + wall.width) / bubbleGrain) - 1) {
+          wall.crop((Math.floor(wall.x / bubbleGrain) + 1) * bubbleGrain);
+          result.push(wall.lowerHalf);
+          horizontals.push(wall.upperHalf);
+        } else {
+          result.push(wall);
+        }
+      }
+    }
+
+    counter = 0;
+    while (verticals.length > 0 && counter < this.timeLimit) {
+      counter++;
+      const wall: Facet = verticals.shift() || new Facet(-1, 0, -1, 0, Direction.TOP);
+      if (wall.direction !== Direction.TOP) {
+        wall.howToCrop = HowToCrop.BY_Y;
+        if (Math.floor(wall.y / bubbleGrain) !== Math.ceil((wall.y + wall.width) / bubbleGrain) - 1) {
+          wall.crop((Math.floor(wall.y / bubbleGrain) + 1) * bubbleGrain);
+          result.push(wall.lowerHalf);
+          verticals.push(wall.upperHalf);
+        } else {
+          result.push(wall);
+        }
+      }
+    }
+
+    counter = 0;
+    const halfResult: Facet[] = [];
+    while (roofs.length > 0 && counter < this.timeLimit) {
+      counter++;
+      const roof: Facet = roofs.shift() || new Facet(-1, 0, -1, 0, Direction.N);
+      if (roof.direction === Direction.TOP) {
+        roof.howToCrop = HowToCrop.ROOFY_BY_X;
+        if (Math.floor(roof.x / bubbleGrain) !== Math.ceil((roof.x + roof.width) / bubbleGrain) - 1) {
+          roof.crop((Math.floor(roof.x / bubbleGrain) + 1) * bubbleGrain);
+          halfResult.push(roof.lowerHalf);
+          roofs.push(roof.upperHalf);
+        } else {
+          halfResult.push(roof);
+        }
+      }
+    }
+
+    counter = 0;
+    while (halfResult.length > 0 && counter < this.timeLimit) {
+      counter++;
+      const roof: Facet = halfResult.shift() || new Facet(-1, 0, -1, 0, Direction.N);
+      if (roof.direction === Direction.TOP) {
+        roof.howToCrop = HowToCrop.ROOFY_BY_Y;
+        if (Math.floor(roof.y / bubbleGrain) !== Math.ceil((roof.y + roof.height) / bubbleGrain) - 1) {
+          roof.crop((Math.floor(roof.y / bubbleGrain) + 1) * bubbleGrain);
+          result.push(roof.lowerHalf);
+          halfResult.push(roof.upperHalf);
+        } else {
+          result.push(roof);
+        }
+      }
+    }
+
+    this.facets = result;
+    this.consolidateFacets();
+  }
 
   private consolidateFacets() {
     let counter: number = 0;
     for (counter = 0; counter < this.facets.length; counter++) {
-      if (this.facets[counter].duplicated || this.facets[counter].width <= 0 || this.facets[counter].height <= 0) {
+      if (
+        this.facets[counter].duplicated ||
+        this.facets[counter].width <= Parameters.careLimit ||
+        this.facets[counter].height <= Parameters.careLimit
+      ) {
         this.facets.splice(counter, 1);
         counter--;
-        //console.log('Consolidation');
+      } else {
+        this.facets[counter].x = this.roundNumber(this.facets[counter].x);
+        this.facets[counter].y = this.roundNumber(this.facets[counter].y);
+        this.facets[counter].width = this.roundNumber(this.facets[counter].width);
+        this.facets[counter].height = this.roundNumber(this.facets[counter].height);
       }
     }
+  }
+
+  private roundNumber(input: number): number {
+    return Math.round(input / Parameters.careLimit / 5) * Parameters.careLimit * 5;
   }
 
   public facetHeatTransfer() {
@@ -63,7 +171,9 @@ export class FacetList {
           '; b: ' +
           facet.bottom.toLocaleString() +
           '; du: ' +
-          facet.direction.toLocaleString()
+          facet.direction.toLocaleString() +
+          '; al: ' +
+          facet.albedo.toLocaleString()
       );
     });
     console.log(' ');
@@ -79,7 +189,7 @@ export class FacetList {
     const vertCropped: Facet[] = [];
     const result: Facet[] = [];
 
-    const timeLimit: number = this.facets.length * 20;
+    this.timeLimit = this.facets.length * Parameters.loopLimitFactor;
 
     //FACET SORTING
     this.facets.forEach((facet) => {
@@ -110,7 +220,7 @@ export class FacetList {
 
     //VERTICAL CROP
     let counter: number = 0;
-    while (toSunWalls.length > 0 && counter < timeLimit) {
+    while (toSunWalls.length > 0 && counter < this.timeLimit) {
       counter++;
       const sunWall: Facet = toSunWalls.shift() || new Facet(0, 0, -1, 0, Direction.TOP);
       if (sunWall.height === -1 && sunWall.direction === Direction.TOP) {
@@ -118,29 +228,24 @@ export class FacetList {
       }
       let lowerBoundary: number;
       let upperBoundary: number;
-      //let crop: any;
       if (sunWall.direction === Direction.TOP) {
         if (DirectionHandler.isWE(sunDirection)) {
           lowerBoundary = sunWall.y;
           upperBoundary = sunWall.y + sunWall.height;
           sunWall.howToCrop = HowToCrop.ROOFY_BY_Y;
-          //crop = cropRoofByY;
         } else if (DirectionHandler.isNS(sunDirection)) {
           lowerBoundary = sunWall.x;
           upperBoundary = sunWall.x + sunWall.width;
           sunWall.howToCrop = HowToCrop.ROOFY_BY_X;
-          //crop = cropRoofByX;
         }
       } else if (DirectionHandler.isWE(sunDirection)) {
         lowerBoundary = sunWall.y;
         upperBoundary = sunWall.y + sunWall.width;
         sunWall.howToCrop = HowToCrop.BY_Y;
-        //crop = cropWallByY;
       } else if (DirectionHandler.isNS(sunDirection)) {
         lowerBoundary = sunWall.x;
         upperBoundary = sunWall.x + sunWall.width;
         sunWall.howToCrop = HowToCrop.BY_X;
-        //crop = cropWallByX;
       }
 
       let uncropped: boolean = true;
@@ -164,7 +269,7 @@ export class FacetList {
 
     //HORIZONTAL CROP
     counter = 0;
-    while (vertCropped.length > 0 && counter < 20) {
+    while (vertCropped.length > 0 && counter < this.timeLimit) {
       counter++;
       const sunWall: Facet = vertCropped.shift() || new Facet(0, 0, -1, 0, Direction.TOP);
       if (sunWall.height === -1 && sunWall.direction === Direction.TOP) {
@@ -174,7 +279,6 @@ export class FacetList {
       let upperBoundary: number;
       let anchor: number;
       let shouldAnchorBeMore: boolean;
-      //let crop: any;
       let isRoof: boolean = false;
       let depth: number;
       if (sunWall.direction === Direction.TOP) {
@@ -184,7 +288,6 @@ export class FacetList {
           lowerBoundary = sunWall.y;
           upperBoundary = sunWall.y + sunWall.height;
           sunWall.howToCrop = HowToCrop.ROOFY_BY_X;
-          //crop = cropRoofByX; //Not Quite
           if (sunDirection === Direction.W) {
             anchor = sunWall.x;
           } else {
@@ -195,7 +298,6 @@ export class FacetList {
           lowerBoundary = sunWall.x;
           upperBoundary = sunWall.x + sunWall.width;
           sunWall.howToCrop = HowToCrop.ROOFY_BY_Y;
-          //crop = cropRoofByY; //Not Quite
           if (sunDirection === Direction.N) {
             anchor = sunWall.y;
           } else {
@@ -207,13 +309,11 @@ export class FacetList {
         upperBoundary = sunWall.y + sunWall.width;
         anchor = sunWall.x;
         sunWall.howToCrop = HowToCrop.BY_ALTITUDE;
-        //crop = cropByAltitude;
       } else if (DirectionHandler.isNS(sunDirection)) {
         lowerBoundary = sunWall.x;
         upperBoundary = sunWall.x + sunWall.width;
         anchor = sunWall.y;
         sunWall.howToCrop = HowToCrop.BY_ALTITUDE;
-        //crop = cropByAltitude;
       }
       if (DirectionHandler.isWS(sunDirection)) {
         shouldAnchorBeMore = true;
@@ -238,11 +338,9 @@ export class FacetList {
             if (DirectionHandler.isWS(sunDirection)) {
               shadowCut = shadow.startingPoint + shadowLength;
               shadeLower = true;
-              //whichOneToShade = FourByFour.LOWER;
             } else {
               shadowCut = shadow.startingPoint - shadowLength;
               shadeLower = false;
-              //whichOneToShade = FourByFour.UPPER;
             }
             if (shadowCut > anchor === DirectionHandler.isWS(sunDirection) && shadowDepth < anchor + depth) {
               sunWall.crop(shadowCut);

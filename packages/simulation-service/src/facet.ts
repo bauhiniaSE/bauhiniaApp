@@ -1,5 +1,6 @@
 import { Bubble } from './bubble';
 import { Direction } from './direction';
+import { Parameters } from './technical-parameters';
 import { Weather } from './weather-constants';
 
 //import { Bubble } from './bubble';
@@ -9,19 +10,6 @@ export class Facet {
   public temperature: number = 0;
   public shadowed: boolean = false;
   public duplicated: boolean = false;
-  public name: string;
-
-  public readonly direction: Direction;
-  public albedo: number;
-  public evapot: boolean;
-  public density: number;
-  public specificHeat: number;
-
-  public height: number;
-  public width: number;
-
-  private static readonly heatPenetrationDepth: number = 1; // [m]
-  private static readonly careLimit: number = 0.0005;
 
   public lowerHalf: Facet;
   public upperHalf: Facet;
@@ -35,25 +23,16 @@ export class Facet {
   constructor(
     public x: number,
     public y: number,
-    height: number,
-    width: number,
-    direction: Direction,
+    public height: number,
+    public width: number,
+    public readonly direction: Direction,
     public bottom: number = 0,
-    name?: string,
-    albedo?: number,
-    evapot?: boolean,
-    density?: number,
-    specificHeat?: number
-  ) {
-    this.height = height;
-    this.width = width;
-    this.direction = direction;
-    this.name = name || 'not named';
-    this.albedo = albedo || 0.2;
-    this.evapot = evapot || false;
-    this.density = density || 3150;
-    this.specificHeat = specificHeat || 700;
-  }
+    public name: string = 'not named',
+    public albedo: number = 0.2,
+    public evapot: boolean = false,
+    public density: number = 3150,
+    public specificHeat: number = 700
+  ) {}
 
   public assignBubble(bubble: Bubble) {
     this.borderingBubble = bubble;
@@ -97,7 +76,7 @@ export class Facet {
         this.borderingBubble.temperature = resultTemp;
       }
     } else {
-      resultTemp -= heatFlux / (this.density * this.specificHeat * Facet.heatPenetrationDepth);
+      resultTemp -= heatFlux / (this.density * this.specificHeat * Parameters.heatPenetrationDepth);
     }
   }
 
@@ -128,8 +107,8 @@ export class Facet {
     wall.upperHalf = wall.clone();
     wall.upperHalf.x = cutX;
     wall.upperHalf.width = wall.x + wall.width - cutX;
-    if (wall.lowerHalf.width > Facet.careLimit) wall.upperHalf.x += Facet.careLimit / 2;
-    if (wall.upperHalf.width > Facet.careLimit) wall.lowerHalf.width -= Facet.careLimit / 2;
+    if (wall.lowerHalf.width > Parameters.careLimit) wall.upperHalf.x += Parameters.careLimit / 2;
+    if (wall.upperHalf.width > Parameters.careLimit) wall.lowerHalf.width -= Parameters.careLimit / 2;
     /*toSunWalls.push(wall.lowerHalf);
     toSunWalls.push(wall.upperHalf);*/
   }
@@ -141,8 +120,8 @@ export class Facet {
     wall.upperHalf = wall.clone();
     wall.upperHalf.y = cutY;
     wall.upperHalf.width = wall.y + wall.width - cutY;
-    if (wall.lowerHalf.width > Facet.careLimit) wall.upperHalf.y += Facet.careLimit / 2;
-    if (wall.upperHalf.width > Facet.careLimit) wall.lowerHalf.width -= Facet.careLimit / 2;
+    if (wall.lowerHalf.width > Parameters.careLimit) wall.upperHalf.y += Parameters.careLimit / 2;
+    if (wall.upperHalf.width > Parameters.careLimit) wall.lowerHalf.width -= Parameters.careLimit / 2;
     /*toSunWalls.push(wall.lowerHalf);
     toSunWalls.push(wall.upperHalf);*/
   }
@@ -155,8 +134,8 @@ export class Facet {
     roof.upperHalf.x = cutX;
     roof.upperHalf.width = roof.x + roof.width - cutX;
 
-    if (roof.lowerHalf.width < Facet.careLimit) roof.upperHalf.x += Facet.careLimit;
-    if (roof.upperHalf.width < Facet.careLimit) roof.lowerHalf.width -= Facet.careLimit;
+    if (roof.lowerHalf.width < Parameters.careLimit) roof.upperHalf.x += Parameters.careLimit;
+    if (roof.upperHalf.width < Parameters.careLimit) roof.lowerHalf.width -= Parameters.careLimit;
 
     /*if (whereToShade === undefined) {
       if (roof.lowerHalf.width > Facet.careLimit) roof.upperHalf.x += Facet.careLimit / 2;
@@ -188,8 +167,8 @@ export class Facet {
     roof.upperHalf.y = cutY;
     roof.upperHalf.height = roof.y + roof.height - cutY;
 
-    if (roof.lowerHalf.height < Facet.careLimit) roof.upperHalf.y += Facet.careLimit / 2;
-    if (roof.upperHalf.height < Facet.careLimit) roof.lowerHalf.height -= Facet.careLimit / 2;
+    if (roof.lowerHalf.height < Parameters.careLimit) roof.upperHalf.y += Parameters.careLimit / 2;
+    if (roof.upperHalf.height < Parameters.careLimit) roof.lowerHalf.height -= Parameters.careLimit / 2;
 
     /*if (whereToShade === undefined) {      
       toSunWalls.push(roof.lowerHalf);
@@ -218,8 +197,8 @@ export class Facet {
     wall.upperHalf.height = wall.height + wall.bottom - cutAltitude;
     wall.upperHalf.bottom = cutAltitude;
 
-    if (wall.lowerHalf.height > Facet.careLimit) wall.upperHalf.bottom += Facet.careLimit / 2;
-    if (wall.upperHalf.height > Facet.careLimit) wall.lowerHalf.height -= Facet.careLimit / 2;
+    if (wall.lowerHalf.height > Parameters.careLimit) wall.upperHalf.bottom += Parameters.careLimit / 2;
+    if (wall.upperHalf.height > Parameters.careLimit) wall.lowerHalf.height -= Parameters.careLimit / 2;
     /*result.push(wall.lowerHalf);
     vertCropped.push(wall.upperHalf);*/
   }

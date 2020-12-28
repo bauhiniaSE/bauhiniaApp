@@ -1,23 +1,24 @@
 /* eslint-disable prefer-const */
-import { IMap } from 'bauhinia-api/map';
+import { IMap, IObjectOnMap } from 'bauhinia-api/map';
 
 import { BubbleList } from './bubble-list';
 
 import { Direction } from './direction';
-import { Facet } from './facet';
+import { Facet, HowToCrop } from './facet';
 import { FacetList } from './facet-list';
 import { ISimulationService } from './isimulation';
+import { Parameters } from './technical-parameters';
 import { Weather } from './weather-constants';
 
 export class Simulator implements ISimulationService {
-  public facets: FacetList;
-  public bubbles: BubbleList;
+  public facets: FacetList = new FacetList();
+  public bubbles: BubbleList = new BubbleList();
 
   public simulateFromScratch(map: IMap, sunDirection: Direction): void {
     this.processMap(map);
     this.facets.illuminateAndCrop(Weather.sunlightAngle, sunDirection);
     this.facets.facetHeatTransfer();
-    throw new Error('Method not finished.');
+    //throw new Error('Method not finished.');
   }
   public simulateFromCache(map: IMap, sunDirection: Direction): void {
     throw new Error('Method not implemented.');
@@ -27,13 +28,82 @@ export class Simulator implements ISimulationService {
   }
 
   public processMap(map: IMap): void {
-    map.tiles.forEach((building) => {
+    let buildings: IObjectOnMap[] = [];
+    let groundToCrop: IObjectOnMap[] = [];
+    let groundReady: IObjectOnMap[] = [];
+
+    map.tiles.forEach((object) => {
+      if (object.height !== undefined && object.height !== 0) buildings.push(object);
+      else if (!object.canPlaceOn) groundReady.push(object);
+      else groundToCrop.push(object);
+    });
+
+    let groundFList: FacetList = new FacetList();
+    let overlappers: FacetList = new FacetList();
+
+    groundToCrop.forEach((surface) => {
+      groundFList.addFacet(
+        new Facet(
+          surface.position.x,
+          surface.position.y,
+          surface.widthNS,
+          surface.widthWE,
+          Direction.TOP,
+          0,
+          '',
+          surface.material.albedo,
+          false,
+          surface.material.density
+        )
+      );
+    });
+
+    groundReady.forEach((surface) => {
+      overlappers.addFacet(
+        new Facet(
+          surface.position.x,
+          surface.position.y,
+          surface.widthNS,
+          surface.widthWE,
+          Direction.TOP,
+          0,
+          '',
+          surface.material.albedo,
+          false,
+          surface.material.density
+        )
+      );
+    });
+
+    buildings.forEach((building) => {
       if (building.height !== undefined) {
         this.facets.addFacet(
-          new Facet(building.position.x, building.position.y, building.height, building.widthNS, Direction.W)
+          new Facet(
+            building.position.x,
+            building.position.y,
+            building.height,
+            building.widthNS,
+            Direction.W,
+            0,
+            '',
+            building.material.albedo,
+            false,
+            building.material.density
+          )
         );
         this.facets.addFacet(
-          new Facet(building.position.x, building.position.y, building.height, building.widthWE, Direction.S)
+          new Facet(
+            building.position.x,
+            building.position.y,
+            building.height,
+            building.widthWE,
+            Direction.S,
+            0,
+            '',
+            building.material.albedo,
+            false,
+            building.material.density
+          )
         );
         this.facets.addFacet(
           new Facet(
@@ -41,7 +111,12 @@ export class Simulator implements ISimulationService {
             building.position.y,
             building.height,
             building.widthNS,
-            Direction.E
+            Direction.E,
+            0,
+            '',
+            building.material.albedo,
+            false,
+            building.material.density
           )
         );
         this.facets.addFacet(
@@ -50,18 +125,118 @@ export class Simulator implements ISimulationService {
             building.position.y + building.widthNS,
             building.height,
             building.widthWE,
-            Direction.N
+            Direction.N,
+            0,
+            '',
+            building.material.albedo,
+            false,
+            building.material.density
           )
         );
-        this.facets.addFacet(
-          new Facet(building.position.x, building.position.y, building.widthNS, building.widthWE, Direction.TOP)
+        overlappers.addFacet(
+          new Facet(
+            building.position.x,
+            building.position.y,
+            building.widthNS,
+            building.widthWE,
+            Direction.TOP,
+            building.height,
+            '',
+            building.material.albedo,
+            false,
+            building.material.density
+          )
         );
+
+        let counter: number = 0;
+        let timeLimit: number = (groundFList.facets.length + overlappers.facets.length) * Parameters.loopLimitFactor;
+        let halfResult: Facet[] = [];
+
+        this.facets.facets = this.facets.facets.concat(overlappers.facets);
+        this.facets.cropFacetsByBubbles(Parameters.bubbleGrain);
+        groundFList.cropFacetsByBubbles(Parameters.bubbleGrain);
+
+        while (groundFList.facets.length > 0 && counter < timeLimit) {
+          counter++;
+          const floor: Facet = groundFList.facets.shift() || new Facet(-1, 0, -1, 0, Direction.N);
+          floor.howToCrop = HowToCrop.ROOFY_BY_X;
+          if (floor.direction === Direction.TOP) {
+            let uncropped: boolean = true;
+            overlappers.facets.forEach((overlapper) => {
+              if (floor.y < overlapper.y + overlapper.height && floor.y + floor.height > overlapper.y) {
+                if (
+                  floor.x < overlapper.x + overlapper.width &&
+                  floor.x + floor.width > overlapper.x + overlapper.width &&
+                  uncropped
+                ) {
+                  floor.crop(overlapper.x + overlapper.width);
+                  groundFList.facets.push(floor.lowerHalf);
+                  groundFList.facets.push(floor.upperHalf);
+                  uncropped = false;
+                } else if (floor.x + floor.width > overlapper.x && floor.x < overlapper.x && uncropped) {
+                  floor.crop(overlapper.x);
+                  groundFList.facets.push(floor.lowerHalf);
+                  groundFList.facets.push(floor.upperHalf);
+                  uncropped = false;
+                }
+              }
+            });
+            if (uncropped) {
+              halfResult.push(floor);
+            }
+          }
+        }
+
+        counter = 0;
+        let resultGroundFList: FacetList = new FacetList();
+        while (halfResult.length > 0 && counter < timeLimit) {
+          counter++;
+          const floor: Facet = halfResult.shift() || new Facet(-1, 0, -1, 0, Direction.N);
+          floor.howToCrop = HowToCrop.ROOFY_BY_Y;
+          if (floor.direction === Direction.TOP) {
+            let uncropped: boolean = true;
+            overlappers.facets.forEach((overlapper) => {
+              if (floor.x < overlapper.x + overlapper.width && floor.x + floor.width > overlapper.x) {
+                if (
+                  floor.y < overlapper.y + overlapper.height &&
+                  floor.y + floor.height > overlapper.y + overlapper.height &&
+                  uncropped
+                ) {
+                  floor.crop(overlapper.y + overlapper.height);
+                  halfResult.push(floor.lowerHalf);
+                  halfResult.push(floor.upperHalf);
+                  uncropped = false;
+                } else if (floor.y + floor.height > overlapper.y && floor.y < overlapper.y && uncropped) {
+                  floor.crop(overlapper.y);
+                  halfResult.push(floor.lowerHalf);
+                  halfResult.push(floor.upperHalf);
+                  uncropped = false;
+                }
+              }
+            });
+            if (uncropped) {
+              resultGroundFList.facets.push(floor);
+            }
+          }
+        }
+
+        resultGroundFList.facets.forEach((floor) => {
+          let duplicate: boolean = false;
+          overlappers.facets.forEach((overlapper) => {
+            if (
+              floor.x >= overlapper.x &&
+              floor.y >= overlapper.y &&
+              floor.x + floor.width <= overlapper.x + overlapper.width &&
+              floor.y + floor.height <= overlapper.y + overlapper.height
+            ) {
+              duplicate = true;
+            }
+          });
+          if (!duplicate) {
+            this.facets.facets.push(floor);
+          }
+        });
       }
     });
-
-    /*let minX: number = map.tiles[0].position.x;
-    let maxX: number = map.tiles[0].position.x + map.tiles[0].widthWE;
-    let minY: number = map.tiles[0].position.y;
-    let maxY: number = map.tiles[0].position.y + map.tiles[0].widthNS;*/
   }
 }
