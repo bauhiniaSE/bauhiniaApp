@@ -62,13 +62,10 @@ export class Facet {
     let resultTemp: number = this.borderingBubble.temperature;
     const heatFlux: number = //Jurges Formula
       (6.15 + 4.18 * Weather.windVelocity) * (this.temperature - this.borderingBubble.temperature);
-    //console.log(heatFlux);
     if (heatFlux > 0) {
       resultTemp +=
         (heatFlux * this.width * this.height * 3600 * 6) /
         (Weather.airDensity * this.borderingBubble.getVolume() * Weather.airSpecificHeat);
-      //console.log(heatFlux * this.width * this.height * 3600 * 6); // 6 hours of most intense sunlight
-      //console.log(Weather.airDensity * this.borderingBubble.getVolume() * Weather.airSpecificHeat);
 
       if (resultTemp > this.temperature) {
         this.borderingBubble.temperature = this.temperature;

@@ -1,8 +1,10 @@
+import { IMap } from 'bauhinia-api/map';
 import { expect } from 'chai';
 
 import { Bubble } from '../../src/bubble';
 import { Direction } from '../../src/direction';
 import { Facet } from '../../src/facet';
+import { Simulator } from '../../src/simulator';
 //import { Simulator } from '../../src/simulator';
 import { Weather } from '../../src/weather-constants';
 
@@ -17,5 +19,49 @@ describe('heat transfer - test', () => {
 
     f.transferHeat();
     expect(b.temperature).greaterThan(Weather.ambientTemp);
+  });
+
+  it('horizontal bubble heat trasfer - temp 30C', () => {
+    const s: Simulator = new Simulator();
+    const m: IMap = {
+      id: '',
+      height: 300,
+      width: 300,
+      tiles: [],
+    };
+    s.processMap(m);
+    s.bubbles.bubbles[8].temperature = 30;
+    s.bubbles.horizontalHeatTransfer();
+    expect(s.bubbles.bubbles[8].temperature).greaterThan(s.bubbles.bubbles[7].temperature);
+    expect(s.bubbles.bubbles[7].temperature).greaterThan(s.bubbles.bubbles[6].temperature);
+    expect(s.bubbles.bubbles[6].temperature).greaterThan(Weather.ambientTemp);
+
+    expect(s.bubbles.bubbles[8].temperature).greaterThan(s.bubbles.bubbles[2].temperature);
+    expect(s.bubbles.bubbles[2].temperature).greaterThan(s.bubbles.bubbles[1].temperature);
+    expect(s.bubbles.bubbles[1].temperature).greaterThan(Weather.ambientTemp);
+
+    expect(s.bubbles.bubbles[7].temperature).closeTo(s.bubbles.bubbles[9].temperature, 0.0005);
+  });
+
+  it('horizontal bubble heat trasfer - temp 40C', () => {
+    const s: Simulator = new Simulator();
+    const m: IMap = {
+      id: '',
+      height: 300,
+      width: 300,
+      tiles: [],
+    };
+    s.processMap(m);
+    s.bubbles.bubbles[8].temperature = 40;
+    s.bubbles.horizontalHeatTransfer();
+    expect(s.bubbles.bubbles[8].temperature).greaterThan(s.bubbles.bubbles[7].temperature);
+    expect(s.bubbles.bubbles[7].temperature).greaterThan(s.bubbles.bubbles[6].temperature);
+    expect(s.bubbles.bubbles[6].temperature).greaterThan(Weather.ambientTemp);
+
+    expect(s.bubbles.bubbles[8].temperature).greaterThan(s.bubbles.bubbles[2].temperature);
+    expect(s.bubbles.bubbles[2].temperature).greaterThan(s.bubbles.bubbles[1].temperature);
+    expect(s.bubbles.bubbles[1].temperature).greaterThan(Weather.ambientTemp);
+
+    expect(s.bubbles.bubbles[7].temperature).closeTo(s.bubbles.bubbles[9].temperature, 0.0005);
   });
 });

@@ -7,4 +7,5 @@ export class Weather {
   public static readonly ambientTemp: number = 25; // [*C]
   public static readonly sunPower: number = 1000 * 60 * 60 * 6; // [J]
   public static readonly sunlightAngle: number = 60; // [degrees]
+  public static readonly airDiffusivity: number = (19 * 10000) / 36; //[m2/h]
 }
