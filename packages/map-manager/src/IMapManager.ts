@@ -4,10 +4,12 @@ interface IMapManager {
   listAllMapsToPlay(): MyMap[];
   saveGame(userId: string, game: MyMap): void;
   getObjectHeight(objectId: string): number;
+
+
+//================================================
   getObjectWidth(objectId: string): number;
   getObjectLength(objectId: string): number;
   getObjectPrice(objectId: string): number;
   getObjectType(objectId: string): string;
   startGame(gameId: string): void;
 }
-// DON'T REMOVE THAT

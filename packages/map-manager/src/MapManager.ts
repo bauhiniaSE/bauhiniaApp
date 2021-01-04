@@ -14,6 +14,8 @@ class MapManager implements IMapManager {
   public saveGame(userId: string, game: MyMap): void {
     throw new Error('Method not implemented.');
   }
+
+//==============================================================
   public getObjectHeight(objectId: string): number {
     throw new Error('Method not implemented.');
   }
@@ -33,4 +35,3 @@ class MapManager implements IMapManager {
     throw new Error('Method not implemented.');
   }
 }
-// DON'T REMOVE THAT
