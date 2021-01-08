@@ -1,9 +1,23 @@
-import { IObjectsRepository } from '../objects-repository';
+import firebase from 'firebase';
 
-import { Repository } from './repository';
+import { IObject } from 'bauhinia-api/object';
 
-export class ItemRepository<T> extends Repository<T> implements IObjectsRepository<T> {
-  public getAll(): T[] {
-    throw new Error('Not implemented');
+const firebaseConfig = {
+  apiKey: 'AIzaSyAL6nH17dJATWEMvOHNiqtO9KAqRwrZ658',
+  authDomain: 'bauhiniaapp.firebaseapp.com',
+  databaseURL: 'https://bauhiniaapp-default-rtdb.firebaseio.com',
+  projectId: 'bauhiniaapp',
+  storageBucket: 'bauhiniaapp.appspot.com',
+  messagingSenderId: '497286109863',
+  appId: '1:497286109863:web:cea0375376b2112bf65982',
+  measurementId: 'G-H3CP2N7F79',
+};
+
+export class ItemRepository {
+  s;
+  constructor() {
+    firebase.initializeApp(firebaseConfig);
   }
+
+  public addTail() {}
 }
