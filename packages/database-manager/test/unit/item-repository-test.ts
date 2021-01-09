@@ -8,12 +8,13 @@ let itemRepo: ItemRepository;
 
 beforeEach(() => {
   itemRepo = new ItemRepository();
+  console.log('Start');
 });
 
 afterEach(() => {
   itemRepo.terminate();
+  console.log('End');
 });
-
 class Item implements IObject {
   public id: string;
   public widthWE: number;
@@ -35,7 +36,7 @@ describe('item-add-test', () => {
     material.albedo = 1;
     material.density = 1;
     const item: Item = new Item();
-    item.id = 'tree';
+    item.id = 'test';
     item.widthNS = 1;
     item.widthWE = 1;
     item.height = 1;
@@ -49,14 +50,13 @@ describe('item-add-test', () => {
 
 describe('item-add-exception-test', () => {
   it('should return true', () => {
-    console.log('Test2');
     expect(true).equal(true);
   });
 });
 
 describe('item-read-test', () => {
   it('should return true', () => {
-    itemRepo.getTail('tree');
+    //itemRepo.getTail('tree');
     expect(true).equal(true);
   });
 });

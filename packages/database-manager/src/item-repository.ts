@@ -22,39 +22,17 @@ export class ItemRepository {
     this.database = this.firebaseApp.database();
   }
 
-  public addTail(object: IObject) {
-    const key = this.database.ref('/objects').push().key as string;
-    this.database
-      .ref(`/object/${key}`)
-      .set({
-        id: object.id,
-        widthWE: object.widthWE,
-        widthNS: object.widthNS,
-        height: object.height,
-        canPlaceOn: object.canPlaceOn,
-        albedo: object.material.albedo,
-        density: object.material.density,
-        price: object.price,
-      })
-      .then(() => {
-        console.log('Synchronization succeeded');
-      })
-      .catch((error) => {
-        console.log('Synchronization failed');
-        console.log(error);
-      });
+  public async addTail(object: IObject) {
+    const key = this.database.ref('objects').push().key as string;
+    console.log(key);
+    this.database.ref('objects/' + key).set({
+      test: 'test',
+    });
   }
 
   public removeTail(id: string) {}
 
-  public getTail(id: string) {
-    this.database.ref('/objects/').once('value', (snapshot) => {
-      snapshot.forEach((childSnapshot) => {
-        var dbItem = childSnapshot;
-        console.log(dbItem);
-      });
-    });
-  }
+  public getTail(id: string) {}
 
   public updateTail(tail: IObject) {}
 
