@@ -48,7 +48,22 @@ export class ItemRepository {
     return addSuccessful;
   }
 
-  public removeTail(id: string) {}
+  public async removeTail(id: string) {
+    let key: string;
+    let removeSuccessful = false;
+    await this.database.ref('objects').once('value', (snapshot) => {
+      snapshot.forEach((childSnapshot) => {
+        const childData = childSnapshot.val();
+        if (childData.id === id) {
+          key = childSnapshot.key as string;
+          this.database.ref('objects/' + key).remove();
+          removeSuccessful = true;
+        }
+      });
+    });
+
+    return removeSuccessful;
+  }
 
   public async getTail(id: string) {
     const returnItem: Item = new Item();
@@ -68,16 +83,69 @@ export class ItemRepository {
         }
       });
     });
+
     if (JSON.stringify(returnItem) === JSON.stringify({})) {
       throw new Error('Object does not exist');
     } else {
       return returnItem;
     }
   }
+  // you should not update id. To update id remove and add item.
+  public async updateTail(item: IObject) {
+    let key: string = '';
+    let itemFound = false;
+    await this.database.ref('objects').once('value', (snapshot) => {
+      snapshot.forEach((childSnapshot) => {
+        const childData = childSnapshot.val();
+        if (childData.id === item.id) {
+          key = childSnapshot.key as string;
+          itemFound = true;
+        }
+      });
+    });
 
-  public updateTail(tail: IObject) {}
+    if (itemFound) {
+      await this.database.ref(`objects/${key}`).set({
+        id: item.id,
+        widthWE: item.widthWE,
+        widthNS: item.widthNS,
+        height: item.height,
+        canPlaceOn: item.canPlaceOn,
+        albedo: item.material.albedo,
+        density: item.material.density,
+        price: item.price,
+      });
+      return true;
+    } else {
+      return false;
+    }
+  }
+  // last added item is first in the array
+  public async getAllTails() {
+    const listOfItems: Item[] = [];
+    await this.database.ref('objects').once('value', (snapshot) => {
+      snapshot.forEach((childSnapshot) => {
+        const childData = childSnapshot.val();
+        const returnItem: Item = new Item();
+        returnItem.id = childData.id;
+        returnItem.widthWE = childData.widthWE;
+        returnItem.widthNS = childData.widthNS;
+        returnItem.height = childData.height;
+        returnItem.canPlaceOn = childData.canPlaceOn;
+        returnItem.material = new Material();
+        returnItem.material.albedo = childData.albedo;
+        returnItem.material.density = childData.density;
+        returnItem.price = childData.price;
+        listOfItems.push(returnItem);
+      });
+    });
 
-  public getAllTails() {}
+    if (listOfItems.length === 0) {
+      throw Error('No objects found');
+    } else {
+      return listOfItems;
+    }
+  }
 
   public terminate() {
     this.firebaseApp.delete();
