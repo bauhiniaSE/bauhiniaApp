@@ -30,7 +30,7 @@ class Material implements IMaterial {
 }
 
 describe('item-add-test', () => {
-  it('should return true', () => {
+  it('should return true', async () => {
     const material: Material = new Material();
     material.albedo = 1;
     material.density = 1;
@@ -42,7 +42,7 @@ describe('item-add-test', () => {
     item.canPlaceOn = true;
     item.material = material;
     item.price = 10;
-    itemRepo.addTail(item);
+    await itemRepo.addTail(item);
     expect(true).equal(true);
   });
 });

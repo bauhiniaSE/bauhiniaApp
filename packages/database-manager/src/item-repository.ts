@@ -22,9 +22,9 @@ export class ItemRepository {
     this.database = this.firebaseApp.database();
   }
 
-  public addTail(object: IObject) {
+  public async addTail(object: IObject) {
     const key = this.database.ref('/objects').push().key as string;
-    this.database
+    await this.database
       .ref(`/object/${key}`)
       .set({
         id: object.id,
