@@ -23,9 +23,9 @@ export class ItemRepository {
   }
 
   public async addTail(object: IObject) {
-    const key = this.database.ref('/objects').push().key as string;
-    await this.database
-      .ref(`/object/${key}`)
+    const key = this.database.ref('objects').push().key as string;
+    const addSuccessful = await this.database
+      .ref(`objects/${key}`)
       .set({
         id: object.id,
         widthWE: object.widthWE,
@@ -38,16 +38,42 @@ export class ItemRepository {
       })
       .then(() => {
         console.log('Synchronization succeeded');
+        return true;
       })
       .catch((error) => {
         console.log('Synchronization failed');
         console.log(error);
+        return false;
       });
+    return addSuccessful;
   }
 
   public removeTail(id: string) {}
 
-  public getTail(id: string) {}
+  public async getTail(id: string) {
+    const returnItem: Item = new Item();
+    await this.database.ref('objects').once('value', (snapshot) => {
+      snapshot.forEach((childSnapshot) => {
+        const childData = childSnapshot.val();
+        if (childData.id === id) {
+          returnItem.id = childData.id;
+          returnItem.widthWE = childData.widthWE;
+          returnItem.widthNS = childData.widthNS;
+          returnItem.height = childData.height;
+          returnItem.canPlaceOn = childData.canPlaceOn;
+          returnItem.material = new Material();
+          returnItem.material.albedo = childData.albedo;
+          returnItem.material.density = childData.density;
+          returnItem.price = childData.price;
+        }
+      });
+    });
+    if (JSON.stringify(returnItem) === JSON.stringify({})) {
+      throw new Error('Object does not exist');
+    } else {
+      return returnItem;
+    }
+  }
 
   public updateTail(tail: IObject) {}
 

@@ -5,9 +5,21 @@ import { IObject, IMaterial } from 'bauhinia-api/object';
 import { ItemRepository } from '../../src/item-repository';
 
 let itemRepo: ItemRepository;
+let testItem: Item;
 
 beforeEach(() => {
   itemRepo = new ItemRepository();
+  testItem = new Item();
+  const material: Material = new Material();
+  material.albedo = 4;
+  material.density = 5;
+  testItem.id = 'test';
+  testItem.widthNS = 1;
+  testItem.widthWE = 2;
+  testItem.height = 3;
+  testItem.canPlaceOn = true;
+  testItem.material = material;
+  testItem.price = 10;
   console.log('Start');
 });
 
@@ -30,21 +42,19 @@ class Material implements IMaterial {
   public density: number;
 }
 
-describe('item-add-test', () => {
-  it('should return true', async () => {
-    const material: Material = new Material();
-    material.albedo = 1;
-    material.density = 1;
-    const item: Item = new Item();
-    item.id = 'test';
-    item.widthNS = 1;
-    item.widthWE = 1;
-    item.height = 1;
-    item.canPlaceOn = true;
-    item.material = material;
-    item.price = 10;
-    await itemRepo.addTail(item);
-    expect(true).equal(true);
+describe('item-add-and-get-test', () => {
+  it('should return true and the same object added to database', async () => {
+    const isAdded = await itemRepo.addTail(testItem);
+    expect(isAdded).equal(true);
+    const fromDatabaseItem: Item = await itemRepo.getTail('test');
+    expect(fromDatabaseItem.id).equal(testItem.id);
+    expect(fromDatabaseItem.widthNS).equal(testItem.widthNS);
+    expect(fromDatabaseItem.widthWE).equal(testItem.widthWE);
+    expect(fromDatabaseItem.height).equal(testItem.height);
+    expect(fromDatabaseItem.canPlaceOn).equal(testItem.canPlaceOn);
+    expect(fromDatabaseItem.material.albedo).equal(testItem.material.albedo);
+    expect(fromDatabaseItem.material.density).equal(testItem.material.density);
+    expect(fromDatabaseItem.price).equal(testItem.price);
   });
 });
 
@@ -55,8 +65,7 @@ describe('item-add-exception-test', () => {
 });
 
 describe('item-read-test', () => {
-  it('should return true', () => {
-    //itemRepo.getTail('tree');
+  it('should return true', async () => {
     expect(true).equal(true);
   });
 });
