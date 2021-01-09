@@ -4,6 +4,16 @@ import { IObject, IMaterial } from 'bauhinia-api/object';
 
 import { ItemRepository } from '../../src/item-repository';
 
+let itemRepo: ItemRepository;
+
+beforeEach(() => {
+  itemRepo = new ItemRepository();
+});
+
+afterEach(() => {
+  itemRepo.terminate();
+});
+
 class Item implements IObject {
   public id: string;
   public widthWE: number;
@@ -21,11 +31,10 @@ class Material implements IMaterial {
 
 describe('item-add-test', () => {
   it('should return true', () => {
-    var itemRepo: ItemRepository = new ItemRepository();
-    var material: Material = new Material();
+    const material: Material = new Material();
     material.albedo = 1;
     material.density = 1;
-    var item: Item = new Item();
+    const item: Item = new Item();
     item.id = 'tree';
     item.widthNS = 1;
     item.widthWE = 1;
@@ -47,8 +56,7 @@ describe('item-add-exception-test', () => {
 
 describe('item-read-test', () => {
   it('should return true', () => {
-    //var itemRepo: ItemRepository = new ItemRepository();
-    //itemRepo.getTail('tree');
+    itemRepo.getTail('tree');
     expect(true).equal(true);
   });
 });

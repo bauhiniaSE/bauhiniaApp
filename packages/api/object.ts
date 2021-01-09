@@ -4,7 +4,7 @@ export interface IObject {
   id: string;
   widthWE: number;
   widthNS: number;
-  height: number;
+  height?: number;
 
   canPlaceOn: boolean;
 

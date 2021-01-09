@@ -1,8 +1,6 @@
 import firebase from 'firebase';
 
-import { IObject } from 'bauhinia-api/object';
-
-import { IMaterial } from 'bauhinia-api/object';
+import { IMaterial, IObject } from 'bauhinia-api/object';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyAL6nH17dJATWEMvOHNiqtO9KAqRwrZ658',
@@ -16,17 +14,19 @@ const firebaseConfig = {
 };
 
 export class ItemRepository {
-  private readonly database: any;
+  private readonly firebaseApp;
+  private readonly database;
 
   constructor() {
-    firebase.initializeApp(firebaseConfig); // To nie może tutaj być, bo można wtedy zrobić tylko jedną instację na cały program
-    this.database = firebase.database();
+    this.firebaseApp = firebase.initializeApp(firebaseConfig);
+    this.database = this.firebaseApp.database();
   }
 
   public addTail(object: IObject) {
-    const key: string = this.database.ref('/objects').push().key;
-    this.database.ref('/object/' + key).set(
-      {
+    const key = this.database.ref('/objects').push().key as string;
+    this.database
+      .ref(`/object/${key}`)
+      .set({
         id: object.id,
         widthWE: object.widthWE,
         widthNS: object.widthNS,
@@ -35,24 +35,21 @@ export class ItemRepository {
         albedo: object.material.albedo,
         density: object.material.density,
         price: object.price,
-      },
-      (error: any) => {
-        if (error) {
-          // The write failed...
-          console.log('Failed');
-        } else {
-          // Data saved successfully!
-          console.log('Success');
-        }
-      }
-    );
+      })
+      .then(() => {
+        console.log('Synchronization succeeded');
+      })
+      .catch((error) => {
+        console.log('Synchronization failed');
+        console.log(error);
+      });
   }
 
   public removeTail(id: string) {}
 
   public getTail(id: string) {
-    this.database.ref('/objects/').once('value', (snapshot: any) => {
-      snapshot.forEach((childSnapshot: any) => {
+    this.database.ref('/objects/').once('value', (snapshot) => {
+      snapshot.forEach((childSnapshot) => {
         var dbItem = childSnapshot;
         console.log(dbItem);
       });
@@ -62,6 +59,10 @@ export class ItemRepository {
   public updateTail(tail: IObject) {}
 
   public getAllTails() {}
+
+  public terminate() {
+    this.firebaseApp.delete();
+  }
 }
 
 export class Item implements IObject {
