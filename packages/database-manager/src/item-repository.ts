@@ -47,14 +47,7 @@ export class ItemRepository {
 
   public removeTail(id: string) {}
 
-  public getTail(id: string) {
-    this.database.ref('/objects/').once('value', (snapshot) => {
-      snapshot.forEach((childSnapshot) => {
-        var dbItem = childSnapshot;
-        console.log(dbItem);
-      });
-    });
-  }
+  public getTail(id: string) {}
 
   public updateTail(tail: IObject) {}
 
