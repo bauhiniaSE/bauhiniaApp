@@ -18,7 +18,7 @@ export class ItemRepository {
   private readonly database;
 
   constructor() {
-    this.firebaseApp = firebase.initializeApp(firebaseConfig);
+    this.firebaseApp = firebase.initializeApp(firebaseConfig, 'item');
     this.database = this.firebaseApp.database();
   }
 

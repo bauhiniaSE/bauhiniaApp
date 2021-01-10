@@ -1,6 +1,6 @@
 import { IObject } from './object';
 
-export interface Position {
+export interface IPosition {
   position: {
     x: number;
     y: number;
@@ -8,7 +8,7 @@ export interface Position {
   };
 }
 
-export type IObjectOnMap = IObject & Position;
+export type IObjectOnMap = IObject & IPosition;
 
 export interface IMap {
   id: string;
