@@ -2,6 +2,8 @@ import firebase from 'firebase';
 
 import { IMaterial, IObject } from 'bauhinia-api/object';
 
+import { ITileRepository } from '../tile-repository';
+
 const firebaseConfig = {
   apiKey: 'AIzaSyAL6nH17dJATWEMvOHNiqtO9KAqRwrZ658',
   authDomain: 'bauhiniaapp.firebaseapp.com',
@@ -13,7 +15,7 @@ const firebaseConfig = {
   measurementId: 'G-H3CP2N7F79',
 };
 
-export class ItemRepository {
+export class TileRepository implements ITileRepository {
   private readonly firebaseApp;
   private readonly database;
 
@@ -22,7 +24,7 @@ export class ItemRepository {
     this.database = this.firebaseApp.database();
   }
 
-  public async addTail(object: IObject) {
+  public async addTile(object: IObject) {
     const key = this.database.ref('objects').push().key as string;
     const addSuccessful = await this.database
       .ref(`objects/${key}`)
@@ -48,7 +50,7 @@ export class ItemRepository {
     return addSuccessful;
   }
 
-  public async removeTail(id: string) {
+  public async removeTile(id: string) {
     let key: string;
     let removeSuccessful = false;
     await this.database.ref('objects').once('value', (snapshot) => {
@@ -65,7 +67,7 @@ export class ItemRepository {
     return removeSuccessful;
   }
 
-  public async getTail(id: string) {
+  public async getTile(id: string) {
     const returnItem: Item = new Item();
     await this.database.ref('objects').once('value', (snapshot) => {
       snapshot.forEach((childSnapshot) => {
@@ -91,7 +93,7 @@ export class ItemRepository {
     }
   }
   // you should not update id. To update id remove and add item.
-  public async updateTail(item: IObject) {
+  public async updateTile(item: IObject) {
     let key: string = '';
     let itemFound = false;
     await this.database.ref('objects').once('value', (snapshot) => {
@@ -121,7 +123,7 @@ export class ItemRepository {
     }
   }
   // last added item is first in the array
-  public async getAllTails() {
+  public async getAllTiles() {
     const listOfItems: Item[] = [];
     await this.database.ref('objects').once('value', (snapshot) => {
       snapshot.forEach((childSnapshot) => {

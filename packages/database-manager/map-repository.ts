@@ -1,9 +1,9 @@
-export interface IMapRepository<T> {
-  getAll(): T[];
-  getUsersAll(id: string): T[];
-  getUserGame(userId: string, mapid: string): T;
-  get(id: string): T;
-  remove(id: string): boolean;
-  add(id: string, obj: T): boolean;
-  set(id: string, obj: T): boolean;
+import { IMap } from 'bauhinia-api/map';
+
+export interface IMapRepository {
+  getAllMaps(): Promise<IMap[]>;
+  addMap(map: IMap): Promise<boolean>;
+  removeMap(id: string): Promise<boolean>;
+  getMap(id: string): Promise<IMap>;
+  updateMap(map: IMap): Promise<boolean>;
 }
