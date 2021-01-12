@@ -7,6 +7,7 @@
     "test:unit": "mocha \"test/unit/**/*.js\""
   },
   "dependencies": {
+    "bauhinia-api": "1.0.0",
     "bauhinia-authentication": "1.0.0",
     "bauhinia-database-manager": "1.0.0"
   }

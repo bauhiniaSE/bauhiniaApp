@@ -1,12 +1,12 @@
-interface IMapManager {
-  listAllUserGames(userId: string): MyMap[];
+import { IMap } from 'bauhinia-api/map';
+
+export interface IMapManager {
+  listAllUserGames(userId: string): IMap[];
   createNewGame(mapId: string): boolean;
-  listAllMapsToPlay(): MyMap[];
-  saveGame(userId: string, game: MyMap): void;
+  listAllMapsToPlay(): IMap[];
+  saveGame(userId: string, game: IMap): void;
   getObjectHeight(objectId: string): number;
-
-
-//================================================
+  //================================================
   getObjectWidth(objectId: string): number;
   getObjectLength(objectId: string): number;
   getObjectPrice(objectId: string): number;

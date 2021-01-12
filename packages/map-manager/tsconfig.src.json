@@ -6,6 +6,6 @@
   "include": [
     "src",
     "map-manager.ts"
-, "IMapManager.ts"  ],
+, "src/IMapManager.ts"  ],
   "references": []
 }
