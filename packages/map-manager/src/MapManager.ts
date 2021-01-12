@@ -1,22 +1,32 @@
+import { IMap } from 'bauhinia-api/map';
+import { IObject } from 'bauhinia-api/object';
+import { IMapRepository } from 'bauhinia-database-manager/map-repository';
+import { IObjectsRepository } from 'bauhinia-database-manager/objects-repository';
+import { IMapManager } from './IMapManager';
+
 class MapManager implements IMapManager {
 
   private readonly objectRepository: IObjectRepository;
   private readonly mapRepository: IMapRepository;
 
-  public listAllUserGames(userId: string): MyMap[] {
+export class MapManager implements IMapManager {
+  private readonly objectRepository: IObjectsRepository<IObject>;
+  private readonly mapRepository: IMapRepository<IMap>;
+
+  public listAllUserGames(userId: string): IMap[] {
     throw new Error('Method not implemented.');
   }
   public createNewGame(mapId: string): boolean {
     throw new Error('Method not implemented.');
   }
-  public listAllMapsToPlay(): MyMap[] {
+  public listAllMapsToPlay(): IMap[] {
     throw new Error('Method not implemented.');
   }
-  public saveGame(userId: string, game: MyMap): void {
+  public saveGame(userId: string, game: IMap): void {
     throw new Error('Method not implemented.');
   }
 
-//==============================================================
+  //==============================================================
   public getObjectHeight(objectId: string): number {
     throw new Error('Method not implemented.');
   }
