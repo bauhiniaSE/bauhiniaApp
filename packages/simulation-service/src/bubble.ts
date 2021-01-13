@@ -8,6 +8,7 @@ export class Bubble {
 
   public temperature: number = Weather.ambientTemp;
   public newTemperature: number;
+  public tempTemperature: number;
 
   public x: number;
   public y: number;
@@ -36,7 +37,9 @@ export class Bubble {
 
   public transferHeatTo(neighbour: Bubble): void {
     const nominalTemperatureChange =
-      ((this.temperature - neighbour.temperature) * Weather.airDiffusivity) / Math.pow(Parameters.bubbleGrain, 2) / 3;
+      ((this.temperature - neighbour.temperature) * Weather.airDiffusivity) /
+      Math.pow(Parameters.bubbleGrain, 2) /
+      Parameters.transferGrainFrequency;
     const temperatureChange = nominalTemperatureChange / 4;
 
     this.newTemperature -= temperatureChange;

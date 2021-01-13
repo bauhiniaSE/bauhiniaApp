@@ -21,11 +21,8 @@ export class Simulator implements ISimulationService {
     this.facets.illuminateAndCrop(Weather.sunlightAngle, sunDirection);
     this.facets.facetHeatTransfer();
     this.bubbles.horizontalHeatTransfer();
-    //throw new Error('Method not finished.');
   }
-  public simulateFromCache(map: IMap, sunDirection: Direction): void {
-    throw new Error('Method not implemented.');
-  }
+
   public getTemperature(x: number, y: number, altitude?: number): number {
     return this.bubbles.findTemperatureAt(x, y);
   }

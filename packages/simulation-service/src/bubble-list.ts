@@ -6,7 +6,7 @@ export class BubbleList {
   public bubbles: Bubble[] = [];
 
   public horizontalHeatTransfer(): void {
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < Parameters.transferGrainFrequency; i++) {
       this.bubbles.forEach((bubble) => {
         bubble.prepareToTransfer();
       });
