@@ -41,6 +41,8 @@ describe('heat transfer - test', () => {
     expect(s.bubbles.bubbles[1].temperature).greaterThan(Weather.ambientTemp);
 
     expect(s.bubbles.bubbles[7].temperature).closeTo(s.bubbles.bubbles[9].temperature, 0.0005);
+
+    expect(s.bubbles.bubbles[0].temperature).equal(s.getTemperature(0, 0));
   });
 
   it('horizontal bubble heat trasfer - temp 40C', () => {
@@ -63,5 +65,7 @@ describe('heat transfer - test', () => {
     expect(s.bubbles.bubbles[1].temperature).greaterThan(Weather.ambientTemp);
 
     expect(s.bubbles.bubbles[7].temperature).closeTo(s.bubbles.bubbles[9].temperature, 0.0005);
+
+    expect(s.bubbles.bubbles[8].temperature).equal(s.getTemperature(125, 60));
   });
 });

@@ -19,7 +19,6 @@ describe('process map - test', () => {
     let middleFound: boolean = false;
     let uppestFound: boolean = false;
     fl.facets.forEach((facet) => {
-      //console.log(facet.y, facet.width);
       if (facet.x === 20 && facet.height === 10 && facet.direction === Direction.E) {
         if (facet.y === 0 && facet.width === 50) lowestFound = true;
         else if (facet.y === 50 && facet.width === 50) middleFound = true;
@@ -46,6 +45,13 @@ describe('process map - test', () => {
 
     expect(s.bubbles.bubbles[5].southBubble).to.be.undefined;
     expect(s.bubbles.bubbles[12].westBubble).to.be.undefined;
+
+    expect(s.bubbles.bubbles[20].x).equal(100);
+    expect(s.bubbles.bubbles[20].y).equal(150);
+    expect(s.bubbles.bubbles[12].x).equal(0);
+    expect(s.bubbles.bubbles[12].y).equal(100);
+    expect(s.bubbles.bubbles[29].x).equal(250);
+    expect(s.bubbles.bubbles[29].y).equal(200);
   });
 
   it('simple processing', () => {

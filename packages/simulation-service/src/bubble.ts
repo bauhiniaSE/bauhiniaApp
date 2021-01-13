@@ -9,6 +9,9 @@ export class Bubble {
   public temperature: number = Weather.ambientTemp;
   public newTemperature: number;
 
+  public x: number;
+  public y: number;
+
   public getVolume(): number {
     return Parameters.bubbleGrain * Parameters.bubbleGrain * Parameters.altitudeLimit;
   }

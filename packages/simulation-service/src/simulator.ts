@@ -20,13 +20,14 @@ export class Simulator implements ISimulationService {
     this.processMap(map);
     this.facets.illuminateAndCrop(Weather.sunlightAngle, sunDirection);
     this.facets.facetHeatTransfer();
+    this.bubbles.horizontalHeatTransfer();
     //throw new Error('Method not finished.');
   }
   public simulateFromCache(map: IMap, sunDirection: Direction): void {
     throw new Error('Method not implemented.');
   }
   public getTemperature(x: number, y: number, altitude?: number): number {
-    throw new Error('Method not implemented.');
+    return this.bubbles.findTemperatureAt(x, y);
   }
 
   public processMap(map: IMap): void {
@@ -246,6 +247,8 @@ export class Simulator implements ISimulationService {
     const bubbleCount: number = bubbleCountInARow * Math.ceil(map.height / Parameters.bubbleGrain);
     for (let index = 0; index < bubbleCount; index++) {
       this.bubbles.bubbles.push(new Bubble());
+      this.bubbles.bubbles[index].x = (index % bubbleCountInARow) * Parameters.bubbleGrain;
+      this.bubbles.bubbles[index].y = Math.floor(index / bubbleCountInARow) * Parameters.bubbleGrain;
     }
     for (let index = bubbleCountInARow; index < bubbleCount; index++) {
       this.bubbles.bubbles[index].southBubble = this.bubbles.bubbles[index - bubbleCountInARow];

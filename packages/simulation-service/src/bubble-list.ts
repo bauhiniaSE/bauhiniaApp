@@ -1,4 +1,6 @@
 import { Bubble } from './bubble';
+import { Parameters } from './technical-parameters';
+import { Weather } from './weather-constants';
 
 export class BubbleList {
   public bubbles: Bubble[] = [];
@@ -17,5 +19,19 @@ export class BubbleList {
         bubble.finaliseTheTransfer();
       });
     }
+  }
+  public findTemperatureAt(x: number, y: number) {
+    let result: number = Weather.ambientTemp;
+    this.bubbles.forEach((bubble) => {
+      if (
+        bubble.x <= x &&
+        bubble.x + Parameters.bubbleGrain > x &&
+        bubble.y <= y &&
+        bubble.y + Parameters.bubbleGrain > y
+      ) {
+        result = bubble.temperature;
+      }
+    });
+    return result;
   }
 }
