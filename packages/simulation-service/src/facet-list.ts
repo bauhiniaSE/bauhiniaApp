@@ -11,7 +11,7 @@ export class FacetList {
   public facets: Facet[] = [];
   private timeLimit: number;
 
-  public cropFacetsByBubbles(bubbleGrain: number) {
+  public cropFacetsByBubbles() {
     const horizontals: Facet[] = [];
     const verticals: Facet[] = [];
     const roofs: Facet[] = [];
@@ -41,8 +41,11 @@ export class FacetList {
       const wall: Facet = horizontals.shift() || new Facet(-1, 0, -1, 0, Direction.TOP);
       if (wall.direction !== Direction.TOP) {
         wall.howToCrop = HowToCrop.BY_X;
-        if (Math.floor(wall.x / bubbleGrain) !== Math.ceil((wall.x + wall.width) / bubbleGrain) - 1) {
-          wall.crop((Math.floor(wall.x / bubbleGrain) + 1) * bubbleGrain);
+        if (
+          Math.floor(wall.x / Parameters.bubbleGrain) !==
+          Math.ceil((wall.x + wall.width) / Parameters.bubbleGrain) - 1
+        ) {
+          wall.crop((Math.floor(wall.x / Parameters.bubbleGrain) + 1) * Parameters.bubbleGrain);
           result.push(wall.lowerHalf);
           horizontals.push(wall.upperHalf);
         } else {
@@ -57,8 +60,11 @@ export class FacetList {
       const wall: Facet = verticals.shift() || new Facet(-1, 0, -1, 0, Direction.TOP);
       if (wall.direction !== Direction.TOP) {
         wall.howToCrop = HowToCrop.BY_Y;
-        if (Math.floor(wall.y / bubbleGrain) !== Math.ceil((wall.y + wall.width) / bubbleGrain) - 1) {
-          wall.crop((Math.floor(wall.y / bubbleGrain) + 1) * bubbleGrain);
+        if (
+          Math.floor(wall.y / Parameters.bubbleGrain) !==
+          Math.ceil((wall.y + wall.width) / Parameters.bubbleGrain) - 1
+        ) {
+          wall.crop((Math.floor(wall.y / Parameters.bubbleGrain) + 1) * Parameters.bubbleGrain);
           result.push(wall.lowerHalf);
           verticals.push(wall.upperHalf);
         } else {
@@ -74,8 +80,11 @@ export class FacetList {
       const roof: Facet = roofs.shift() || new Facet(-1, 0, -1, 0, Direction.N);
       if (roof.direction === Direction.TOP) {
         roof.howToCrop = HowToCrop.ROOFY_BY_X;
-        if (Math.floor(roof.x / bubbleGrain) !== Math.ceil((roof.x + roof.width) / bubbleGrain) - 1) {
-          roof.crop((Math.floor(roof.x / bubbleGrain) + 1) * bubbleGrain);
+        if (
+          Math.floor(roof.x / Parameters.bubbleGrain) !==
+          Math.ceil((roof.x + roof.width) / Parameters.bubbleGrain) - 1
+        ) {
+          roof.crop((Math.floor(roof.x / Parameters.bubbleGrain) + 1) * Parameters.bubbleGrain);
           halfResult.push(roof.lowerHalf);
           roofs.push(roof.upperHalf);
         } else {
@@ -90,8 +99,11 @@ export class FacetList {
       const roof: Facet = halfResult.shift() || new Facet(-1, 0, -1, 0, Direction.N);
       if (roof.direction === Direction.TOP) {
         roof.howToCrop = HowToCrop.ROOFY_BY_Y;
-        if (Math.floor(roof.y / bubbleGrain) !== Math.ceil((roof.y + roof.height) / bubbleGrain) - 1) {
-          roof.crop((Math.floor(roof.y / bubbleGrain) + 1) * bubbleGrain);
+        if (
+          Math.floor(roof.y / Parameters.bubbleGrain) !==
+          Math.ceil((roof.y + roof.height) / Parameters.bubbleGrain) - 1
+        ) {
+          roof.crop((Math.floor(roof.y / Parameters.bubbleGrain) + 1) * Parameters.bubbleGrain);
           result.push(roof.lowerHalf);
           halfResult.push(roof.upperHalf);
         } else {
@@ -107,11 +119,7 @@ export class FacetList {
   private consolidateFacets() {
     let counter: number = 0;
     for (counter = 0; counter < this.facets.length; counter++) {
-      if (
-        this.facets[counter].duplicated ||
-        this.facets[counter].width <= Parameters.careLimit ||
-        this.facets[counter].height <= Parameters.careLimit
-      ) {
+      if (this.facets[counter].width <= Parameters.careLimit || this.facets[counter].height <= Parameters.careLimit) {
         this.facets.splice(counter, 1);
         counter--;
       } else {
@@ -150,33 +158,6 @@ export class FacetList {
 
   public addFacet(facet: Facet) {
     this.facets.push(facet);
-  }
-
-  //robocza funkcja, zniknie w gotowej wersji, nie krzycz Bartek ;P
-  public printAllFacets(parray?: Facet[]) {
-    const array: Facet[] = parray || this.facets;
-    array.forEach((facet) => {
-      console.log(
-        // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
-        'x: ' +
-          facet.x.toLocaleString() +
-          ', y: ' +
-          facet.y.toLocaleString() +
-          '; h: ' +
-          facet.height.toLocaleString() +
-          ', w: ' +
-          facet.width.toLocaleString() +
-          '; sh: ' +
-          facet.shadowed.toString() +
-          '; b: ' +
-          facet.bottom.toLocaleString() +
-          '; du: ' +
-          facet.direction.toLocaleString() +
-          '; al: ' +
-          facet.albedo.toLocaleString()
-      );
-    });
-    console.log(' ');
   }
 
   public illuminateAndCrop(sunAngle: number, sunDirection: Direction) {

@@ -12,7 +12,7 @@ describe('process map - test', () => {
   it('crop facets by bubble grain', () => {
     const fl: FacetList = new FacetList();
     fl.addFacet(new Facet(20, 0, 10, 120, Direction.E));
-    fl.cropFacetsByBubbles(50);
+    fl.cropFacetsByBubbles();
     expect(fl.facets.length).equal(3);
 
     let lowestFound: boolean = false;

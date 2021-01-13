@@ -24,7 +24,7 @@ export class Simulator implements ISimulationService {
   }
 
   public getTemperature(x: number, y: number, altitude?: number): number {
-    return this.bubbles.findTemperatureAt(x, y);
+    return this.bubbles.findTemperatureAtXY(x, y);
   }
 
   public processMap(map: IMap): void {
@@ -50,7 +50,6 @@ export class Simulator implements ISimulationService {
           surface.widthWE,
           Direction.TOP,
           0,
-          '',
           surface.material.albedo,
           false,
           surface.material.density
@@ -67,7 +66,6 @@ export class Simulator implements ISimulationService {
           surface.widthWE,
           Direction.TOP,
           0,
-          '',
           surface.material.albedo,
           false,
           surface.material.density
@@ -85,7 +83,6 @@ export class Simulator implements ISimulationService {
             building.widthNS,
             Direction.W,
             0,
-            '',
             building.material.albedo,
             false,
             building.material.density
@@ -99,7 +96,6 @@ export class Simulator implements ISimulationService {
             building.widthWE,
             Direction.S,
             0,
-            '',
             building.material.albedo,
             false,
             building.material.density
@@ -113,7 +109,6 @@ export class Simulator implements ISimulationService {
             building.widthNS,
             Direction.E,
             0,
-            '',
             building.material.albedo,
             false,
             building.material.density
@@ -127,7 +122,6 @@ export class Simulator implements ISimulationService {
             building.widthWE,
             Direction.N,
             0,
-            '',
             building.material.albedo,
             false,
             building.material.density
@@ -141,7 +135,6 @@ export class Simulator implements ISimulationService {
             building.widthWE,
             Direction.TOP,
             building.height,
-            '',
             building.material.albedo,
             false,
             building.material.density
@@ -153,8 +146,8 @@ export class Simulator implements ISimulationService {
         let halfResult: Facet[] = [];
 
         this.facets.facets = this.facets.facets.concat(overlappers.facets);
-        this.facets.cropFacetsByBubbles(Parameters.bubbleGrain);
-        groundFList.cropFacetsByBubbles(Parameters.bubbleGrain);
+        this.facets.cropFacetsByBubbles();
+        groundFList.cropFacetsByBubbles();
 
         while (groundFList.facets.length > 0 && counter < timeLimit) {
           counter++;

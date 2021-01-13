@@ -34,17 +34,6 @@ describe('heat transfer - test', () => {
     s.bubbles.bubbles[8].temperature = 30;
     s.bubbles.horizontalHeatTransfer();
 
-    for (let i = 5; i >= 0; i--) {
-      let mess: string = '';
-      for (let j = 0; j < 6; j++) {
-        //const k: number = 6 * i + j;
-        let k: string = s.bubbles.bubbles[6 * i + j].temperature.toString();
-        if (k.length === 2) k += '.00';
-        mess += k;
-        mess += ' ';
-      }
-      console.log(mess);
-    }
     expect(s.bubbles.bubbles[8].temperature).greaterThan(s.bubbles.bubbles[7].temperature);
     expect(s.bubbles.bubbles[7].temperature).greaterThan(s.bubbles.bubbles[6].temperature);
     //expect(s.bubbles.bubbles[6].temperature).greaterThan(Weather.ambientTemp);
@@ -70,17 +59,6 @@ describe('heat transfer - test', () => {
     s.bubbles.bubbles[8].temperature = 40;
     s.bubbles.horizontalHeatTransfer();
 
-    for (let i = 5; i >= 0; i--) {
-      let mess: string = '';
-      for (let j = 0; j < 6; j++) {
-        //const k: number = 6 * i + j;
-        let k: string = s.bubbles.bubbles[6 * i + j].temperature.toString();
-        if (k.length === 2) k += '.00';
-        mess += k;
-        mess += ' ';
-      }
-      console.log(mess);
-    }
     expect(s.bubbles.bubbles[8].temperature).greaterThan(s.bubbles.bubbles[7].temperature);
     expect(s.bubbles.bubbles[7].temperature).greaterThan(s.bubbles.bubbles[6].temperature);
     expect(s.bubbles.bubbles[6].temperature).greaterThan(Weather.ambientTemp);

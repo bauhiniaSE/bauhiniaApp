@@ -9,16 +9,10 @@ export class Facet {
   public borderingBubble: Bubble;
   public temperature: number = 0;
   public shadowed: boolean = false;
-  public duplicated: boolean = false;
 
   public lowerHalf: Facet;
   public upperHalf: Facet;
   public howToCrop: HowToCrop;
-
-  /*public lowerBoundary: number;
-  public upperBoundary: number;
-  public anchor: number;
-  public crop: any;*/
 
   constructor(
     public x: number,
@@ -27,7 +21,6 @@ export class Facet {
     public width: number,
     public readonly direction: Direction,
     public bottom: number = 0,
-    public name: string = 'not named',
     public albedo: number = 0.2,
     public evapot: boolean = false,
     public density: number = 3150,
@@ -50,7 +43,6 @@ export class Facet {
       this.width,
       this.direction,
       this.bottom,
-      this.name,
       this.albedo,
       this.evapot,
       this.density,
@@ -80,124 +72,80 @@ export class Facet {
   public crop(cutValue: number): void {
     switch (this.howToCrop) {
       case HowToCrop.BY_X:
-        this.cropWallByX(this, cutValue);
+        this.cropWallByX(cutValue);
         break;
       case HowToCrop.BY_Y:
-        this.cropWallByY(this, cutValue);
+        this.cropWallByY(cutValue);
         break;
       case HowToCrop.BY_ALTITUDE:
-        this.cropByAltitude(this, cutValue);
+        this.cropByAltitude(cutValue);
         break;
       case HowToCrop.ROOFY_BY_X:
-        this.cropRoofByX(this, cutValue);
+        this.cropRoofByX(cutValue);
         break;
       case HowToCrop.ROOFY_BY_Y:
-        this.cropRoofByY(this, cutValue);
+        this.cropRoofByY(cutValue);
         break;
     }
   }
 
-  private cropWallByX(wall: Facet, cutX: number): void {
-    wall.lowerHalf = wall.clone();
-    wall.lowerHalf.width = cutX - wall.x;
+  private cropWallByX(cutX: number): void {
+    this.lowerHalf = this.clone();
+    this.lowerHalf.width = cutX - this.x;
 
-    wall.upperHalf = wall.clone();
-    wall.upperHalf.x = cutX;
-    wall.upperHalf.width = wall.x + wall.width - cutX;
-    if (wall.lowerHalf.width > Parameters.careLimit) wall.upperHalf.x += Parameters.careLimit / 2;
-    if (wall.upperHalf.width > Parameters.careLimit) wall.lowerHalf.width -= Parameters.careLimit / 2;
-    /*toSunWalls.push(wall.lowerHalf);
-    toSunWalls.push(wall.upperHalf);*/
+    this.upperHalf = this.clone();
+    this.upperHalf.x = cutX;
+    this.upperHalf.width = this.x + this.width - cutX;
+    if (this.lowerHalf.width > Parameters.careLimit) this.upperHalf.x += Parameters.careLimit / 2;
+    if (this.upperHalf.width > Parameters.careLimit) this.lowerHalf.width -= Parameters.careLimit / 2;
   }
 
-  private cropWallByY(wall: Facet, cutY: number): void {
-    wall.lowerHalf = wall.clone();
-    wall.lowerHalf.width = cutY - wall.y;
+  private cropWallByY(cutY: number): void {
+    this.lowerHalf = this.clone();
+    this.lowerHalf.width = cutY - this.y;
 
-    wall.upperHalf = wall.clone();
-    wall.upperHalf.y = cutY;
-    wall.upperHalf.width = wall.y + wall.width - cutY;
-    if (wall.lowerHalf.width > Parameters.careLimit) wall.upperHalf.y += Parameters.careLimit / 2;
-    if (wall.upperHalf.width > Parameters.careLimit) wall.lowerHalf.width -= Parameters.careLimit / 2;
-    /*toSunWalls.push(wall.lowerHalf);
-    toSunWalls.push(wall.upperHalf);*/
+    this.upperHalf = this.clone();
+    this.upperHalf.y = cutY;
+    this.upperHalf.width = this.y + this.width - cutY;
+    if (this.lowerHalf.width > Parameters.careLimit) this.upperHalf.y += Parameters.careLimit / 2;
+    if (this.upperHalf.width > Parameters.careLimit) this.lowerHalf.width -= Parameters.careLimit / 2;
   }
 
-  private cropRoofByX(roof: Facet, cutX: number): void {
-    roof.lowerHalf = roof.clone();
-    roof.lowerHalf.width = cutX - roof.x;
+  private cropRoofByX(cutX: number): void {
+    this.lowerHalf = this.clone();
+    this.lowerHalf.width = cutX - this.x;
 
-    roof.upperHalf = roof.clone();
-    roof.upperHalf.x = cutX;
-    roof.upperHalf.width = roof.x + roof.width - cutX;
+    this.upperHalf = this.clone();
+    this.upperHalf.x = cutX;
+    this.upperHalf.width = this.x + this.width - cutX;
 
-    if (roof.lowerHalf.width < Parameters.careLimit) roof.upperHalf.x += Parameters.careLimit;
-    if (roof.upperHalf.width < Parameters.careLimit) roof.lowerHalf.width -= Parameters.careLimit;
-
-    /*if (whereToShade === undefined) {
-      if (roof.lowerHalf.width > Facet.careLimit) roof.upperHalf.x += Facet.careLimit / 2;
-      if (roof.upperHalf.width > Facet.careLimit) roof.lowerHalf.width -= Facet.careLimit / 2;
-      /*toSunWalls.push(roof.lowerHalf);
-      toSunWalls.push(roof.upperHalf);
-    }
-
-    if (whereToShade === FourByFour.LOWER) {
-      roof.lowerHalf.shadowed = true;
-      /*vertCropped.push(roof.upperHalf);
-      result.push(roof.lowerHalf);
-    }
-
-    if (whereToShade === FourByFour.UPPER) {
-      roof.upperHalf.shadowed = true;
-      if (roof.upperHalf.width < Facet.careLimit) roof.lowerHalf.width -= Facet.careLimit / 2;
-      if (roof.lowerHalf.width < Facet.careLimit) roof.upperHalf.x += Facet.careLimit / 2;
-      /*vertCropped.push(roof.lowerHalf);
-      result.push(roof.upperHalf);
-    }*/
+    if (this.lowerHalf.width < Parameters.careLimit) this.upperHalf.x += Parameters.careLimit;
+    if (this.upperHalf.width < Parameters.careLimit) this.lowerHalf.width -= Parameters.careLimit;
   }
 
-  private cropRoofByY(roof: Facet, cutY: number): void {
-    roof.lowerHalf = roof.clone();
-    roof.lowerHalf.height = cutY - roof.y;
+  private cropRoofByY(cutY: number): void {
+    this.lowerHalf = this.clone();
+    this.lowerHalf.height = cutY - this.y;
 
-    roof.upperHalf = roof.clone();
-    roof.upperHalf.y = cutY;
-    roof.upperHalf.height = roof.y + roof.height - cutY;
+    this.upperHalf = this.clone();
+    this.upperHalf.y = cutY;
+    this.upperHalf.height = this.y + this.height - cutY;
 
-    if (roof.lowerHalf.height < Parameters.careLimit) roof.upperHalf.y += Parameters.careLimit / 2;
-    if (roof.upperHalf.height < Parameters.careLimit) roof.lowerHalf.height -= Parameters.careLimit / 2;
-
-    /*if (whereToShade === undefined) {      
-      toSunWalls.push(roof.lowerHalf);
-      toSunWalls.push(roof.upperHalf);
-    }
-
-    if (whereToShade === FourByFour.LOWER) {
-      roof.lowerHalf.shadowed = true;
-      result.push(roof.lowerHalf);
-      vertCropped.push(roof.upperHalf);
-    }
-
-    if (whereToShade === FourByFour.UPPER) {
-      roof.upperHalf.shadowed = true;
-      vertCropped.push(roof.lowerHalf);
-      result.push(roof.upperHalf);
-    }*/
+    if (this.lowerHalf.height < Parameters.careLimit) this.upperHalf.y += Parameters.careLimit / 2;
+    if (this.upperHalf.height < Parameters.careLimit) this.lowerHalf.height -= Parameters.careLimit / 2;
   }
 
-  private cropByAltitude(wall: Facet, cutAltitude: number): void {
-    wall.lowerHalf = wall.clone();
-    wall.lowerHalf.height = cutAltitude - wall.bottom;
-    wall.lowerHalf.shadowed = true;
+  private cropByAltitude(cutAltitude: number): void {
+    this.lowerHalf = this.clone();
+    this.lowerHalf.height = cutAltitude - this.bottom;
+    this.lowerHalf.shadowed = true;
 
-    wall.upperHalf = wall.clone();
-    wall.upperHalf.height = wall.height + wall.bottom - cutAltitude;
-    wall.upperHalf.bottom = cutAltitude;
+    this.upperHalf = this.clone();
+    this.upperHalf.height = this.height + this.bottom - cutAltitude;
+    this.upperHalf.bottom = cutAltitude;
 
-    if (wall.lowerHalf.height > Parameters.careLimit) wall.upperHalf.bottom += Parameters.careLimit / 2;
-    if (wall.upperHalf.height > Parameters.careLimit) wall.lowerHalf.height -= Parameters.careLimit / 2;
-    /*result.push(wall.lowerHalf);
-    vertCropped.push(wall.upperHalf);*/
+    if (this.lowerHalf.height > Parameters.careLimit) this.upperHalf.bottom += Parameters.careLimit / 2;
+    if (this.upperHalf.height > Parameters.careLimit) this.lowerHalf.height -= Parameters.careLimit / 2;
   }
 }
 

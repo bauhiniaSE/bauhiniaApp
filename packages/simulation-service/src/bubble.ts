@@ -2,13 +2,11 @@ import { Parameters } from './technical-parameters';
 import { Weather } from './weather-constants';
 
 export class Bubble {
-  public topBubble: Bubble;
   public southBubble: Bubble;
   public westBubble: Bubble;
 
   public temperature: number = Weather.ambientTemp;
-  public newTemperature: number;
-  public tempTemperature: number;
+  private newTemperature: number;
 
   public x: number;
   public y: number;
@@ -35,7 +33,7 @@ export class Bubble {
     this.temperature = this.newTemperature;
   }
 
-  public transferHeatTo(neighbour: Bubble): void {
+  private transferHeatTo(neighbour: Bubble): void {
     const nominalTemperatureChange =
       ((this.temperature - neighbour.temperature) * Weather.airDiffusivity) /
       Math.pow(Parameters.bubbleGrain, 2) /

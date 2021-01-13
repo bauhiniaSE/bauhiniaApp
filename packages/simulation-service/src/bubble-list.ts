@@ -3,7 +3,7 @@ import { Parameters } from './technical-parameters';
 import { Weather } from './weather-constants';
 
 export class BubbleList {
-  public bubbles: Bubble[] = [];
+  public readonly bubbles: Bubble[] = [];
 
   public horizontalHeatTransfer(): void {
     for (let i = 0; i < Parameters.transferGrainFrequency; i++) {
@@ -20,7 +20,8 @@ export class BubbleList {
       });
     }
   }
-  public findTemperatureAt(x: number, y: number) {
+
+  public findTemperatureAtXY(x: number, y: number) {
     let result: number = Weather.ambientTemp;
     this.bubbles.forEach((bubble) => {
       if (
@@ -33,5 +34,9 @@ export class BubbleList {
       }
     });
     return result;
+  }
+
+  public findTemperatureAt(i: number) {
+    return this.bubbles[i].temperature;
   }
 }
