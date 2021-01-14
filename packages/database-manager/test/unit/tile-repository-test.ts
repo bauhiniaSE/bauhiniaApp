@@ -111,8 +111,4 @@ describe('tile-test', () => {
     await itemRepo.removeTile('test2');
     expect(listOfItems.length).equal(2);
   }).timeout(5000);
-
-  it('tile-getAll-Error-test', async () => {
-    await expect(itemRepo.getAllTiles()).to.be.rejectedWith(Error);
-  }).timeout(5000);
 });
