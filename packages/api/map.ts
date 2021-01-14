@@ -12,7 +12,8 @@ export type IObjectOnMap = IObject & IPosition;
 
 export interface IMap {
   id: string;
-
+  login: string;
+  isBlueprint: boolean;
   height: number;
   width: number;
 

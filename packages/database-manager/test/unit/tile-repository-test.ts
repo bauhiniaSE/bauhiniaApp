@@ -24,7 +24,7 @@ class Material implements IMaterial {
 
 describe('item-test', () => {
   beforeEach(() => {
-    itemRepo = new TileRepository();
+    itemRepo = new TileRepository('test_tile');
     testItem = new Item();
     const material: Material = new Material();
     material.albedo = 4;

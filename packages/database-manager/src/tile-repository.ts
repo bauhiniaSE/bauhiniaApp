@@ -19,8 +19,8 @@ export class TileRepository implements ITileRepository {
   private readonly firebaseApp;
   private readonly database;
 
-  constructor() {
-    this.firebaseApp = firebase.initializeApp(firebaseConfig, 'item');
+  constructor(name: string) {
+    this.firebaseApp = firebase.initializeApp(firebaseConfig, name);
     this.database = this.firebaseApp.database();
   }
 
