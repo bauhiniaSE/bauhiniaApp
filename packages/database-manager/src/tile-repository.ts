@@ -122,7 +122,7 @@ export class TileRepository implements ITileRepository {
       return false;
     }
   }
-  // last added item is first in the array
+
   public async getAllTiles() {
     const listOfItems: Item[] = [];
     await this.database.ref('objects').once('value', (snapshot) => {

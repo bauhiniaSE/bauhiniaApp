@@ -7,7 +7,7 @@ import { MapRepository } from '../../src/map-repository';
 let testMapRepo: MapRepository;
 let testMap: TestMap;
 
-describe('map-add-test', () => {
+describe('map-test', () => {
   beforeEach(() => {
     testMapRepo = new MapRepository('test_map');
     testMap = new TestMap();
@@ -54,22 +54,22 @@ describe('map-add-test', () => {
     expect(fromDatabaseMap.width).equal(testMap.width);
     expect(fromDatabaseMap.tiles.length).equal(testMap.tiles.length);
     expect(fromDatabaseMap.tiles[0].id).equal(testMap.tiles[0].id);
-  });
+  }).timeout(5000);
 
   it('map-get-error-test', async () => {
     await expect(testMapRepo.getMap('a', 'login')).to.be.rejectedWith(Error);
-  });
+  }).timeout(5000);
 
   it('map-remove-test', async () => {
     await testMapRepo.addMap(testMap);
     const isRemoved = await testMapRepo.removeMap('test', 'login');
     expect(isRemoved).equal(true);
-  });
+  }).timeout(5000);
 
   it('map-remove-false-test', async () => {
     const isRemoved = await testMapRepo.removeMap('a', 'login');
     expect(isRemoved).equal(false);
-  });
+  }).timeout(5000);
 
   it('map-update-test', async () => {
     await testMapRepo.addMap(testMap);
@@ -81,12 +81,12 @@ describe('map-add-test', () => {
     await testMapRepo.removeMap('test', 'login');
     expect(isUpdated).equal(true);
     expect(afterUpdateMap.height).equal(4);
-  });
+  }).timeout(5000);
 
   it('map-update-false-test', async () => {
     const isUpdated = await testMapRepo.updateMap(testMap);
     expect(isUpdated).equal(false);
-  });
+  }).timeout(5000);
 
   it('map-getAllUserMaps-test', async () => {
     await testMapRepo.addMap(testMap);
@@ -150,11 +150,11 @@ describe('map-add-test', () => {
     await testMapRepo.removeMap('test2', 'login');
     await testMapRepo.removeMap('test3', 'admin');
     expect(list.length).equal(2);
-  });
+  }).timeout(5000);
 
   it('map-getAll-error-test', async () => {
     await expect(testMapRepo.getAllUserMaps('a')).to.be.rejectedWith(Error);
-  });
+  }).timeout(5000);
 
   it('map-getAllBlueprints-test', async () => {
     await testMapRepo.addMap(testMap);
@@ -218,11 +218,11 @@ describe('map-add-test', () => {
     await testMapRepo.removeMap('test2', 'admin');
     await testMapRepo.removeMap('test3', 'admin');
     expect(list.length).equal(2);
-  });
+  }).timeout(5000);
 
   it('map-getAllBlueprints-error-test', async () => {
     await expect(testMapRepo.getAllBlueprints()).to.be.rejectedWith(Error);
-  });
+  }).timeout(5000);
 
   it('map-getAllUserMapsIds-test', async () => {
     await testMapRepo.addMap(testMap);
@@ -286,11 +286,11 @@ describe('map-add-test', () => {
     await testMapRepo.removeMap('test2', 'login');
     await testMapRepo.removeMap('test3', 'admin');
     expect(list.length).equal(2);
-  });
+  }).timeout(5000);
 
   it('map-getAllUserMapsIds-error-test', async () => {
     await expect(testMapRepo.getAllUserMapsIds('a')).to.be.rejectedWith(Error);
-  });
+  }).timeout(5000);
 });
 
 class TestMap implements IMap {

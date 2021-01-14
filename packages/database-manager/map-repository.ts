@@ -8,4 +8,5 @@ export interface IMapRepository {
   updateMap(map: IMap): Promise<boolean>;
   getAllUserMaps(login: string): Promise<IMap[]>;
   getAllUserMapsIds(login: string): Promise<string[]>;
+  terminate(): void;
 }

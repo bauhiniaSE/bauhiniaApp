@@ -86,7 +86,7 @@ export class MapRepository implements IMapRepository {
     });
 
     if (JSON.stringify(returnMap) === JSON.stringify({})) {
-      throw new Error('Object does not exist');
+      throw new Error('Map does not exist');
     } else {
       return returnMap;
     }
@@ -142,7 +142,7 @@ export class MapRepository implements IMapRepository {
     });
 
     if (listOfMaps.length === 0) {
-      throw Error('No objects found');
+      throw Error('No blueprints found');
     } else {
       return listOfMaps;
     }
@@ -168,7 +168,7 @@ export class MapRepository implements IMapRepository {
     });
 
     if (listOfMaps.length === 0) {
-      throw Error('No objects found');
+      throw Error('No user maps found');
     } else {
       return listOfMaps;
     }
@@ -186,7 +186,7 @@ export class MapRepository implements IMapRepository {
     });
 
     if (listOfIds.length === 0) {
-      throw Error('No objects found');
+      throw Error('No user maps ids found');
     } else {
       return listOfIds;
     }

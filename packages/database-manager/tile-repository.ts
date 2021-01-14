@@ -6,4 +6,5 @@ export interface ITileRepository {
   getTile(id: string): Promise<IObject>;
   removeTile(id: string): Promise<boolean>;
   addTile(object: IObject): Promise<boolean>;
+  terminate(): void;
 }
