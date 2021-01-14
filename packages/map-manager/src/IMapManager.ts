@@ -4,6 +4,9 @@ interface IMapManager {
   listAllMapsToPlay(): MyMap[];
   saveGame(userId: string, game: MyMap): void;
   getObjectHeight(objectId: string): number;
+
+
+//================================================
   getObjectWidth(objectId: string): number;
   getObjectLength(objectId: string): number;
   getObjectPrice(objectId: string): number;
