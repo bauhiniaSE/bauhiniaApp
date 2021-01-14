@@ -48,7 +48,6 @@ export class MapManager implements IMapManager {
     throw new Error('Unsuccesful return!!!');
   }
 
-
   public getTileHeight(objectId: string): number {
     this.tileRepository.getTile(objectId).then((tile) => {
       return tile.height
