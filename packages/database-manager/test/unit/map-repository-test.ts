@@ -220,10 +220,6 @@ describe('map-test', () => {
     expect(list.length).equal(2);
   }).timeout(5000);
 
-  it('map-getAllBlueprints-error-test', async () => {
-    await expect(testMapRepo.getAllBlueprints()).to.be.rejectedWith(Error);
-  }).timeout(5000);
-
   it('map-getAllUserMapsIds-test', async () => {
     await testMapRepo.addMap(testMap);
     const testMap2 = new TestMap();
