@@ -152,7 +152,7 @@ describe('map-test', () => {
     expect(list.length).equal(2);
   }).timeout(5000);
 
-  it('map-getAll-error-test', async () => {
+  it('map-getAllUserMaps-error-test', async () => {
     await expect(testMapRepo.getAllUserMaps('a')).to.be.rejectedWith(Error);
   }).timeout(5000);
 
@@ -288,7 +288,6 @@ describe('map-test', () => {
     await expect(testMapRepo.getAllUserMapsIds('a')).to.be.rejectedWith(Error);
   }).timeout(5000);
 });
-
 class TestMap implements IMap {
   public login: string;
   public isBlueprint: boolean;
