@@ -1,2 +1,2 @@
-export { IMapManager } from './src/IMapManager';
-export { MapManager } from './src/MapManager';
+export { IMapManager } from './src/imap-manager';
+export { MapManager } from './src/map-manager';

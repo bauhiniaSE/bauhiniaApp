@@ -6,12 +6,18 @@ import { IMapRepository } from 'bauhinia-database-manager/map-repository';
 import { ITileRepository } from 'bauhinia-database-manager/tile-repository';
 import { IUserRepository } from 'bauhinia-database-manager/user-repository';
 
-import { IMapManager } from './IMapManager';
+import { IMapManager } from './imap-manager';
 
 export class MapManager implements IMapManager {
   private readonly tileRepository: ITileRepository;
   private readonly mapRepository: IMapRepository;
   private readonly userRepository: IUserRepository;
+
+  constructor(tileRepository: ITileRepository, mapRepository: IMapRepository, userRepository: IUserRepository)  {
+    this.tileRepository = tileRepository;
+    this.mapRepository = mapRepository;
+    this.userRepository = userRepository;
+  }
 
   public listAllUserGames(login: string): IMap[]{
     this.mapRepository.getAllUserMaps(login).then((maps) => {
