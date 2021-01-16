@@ -1,7 +1,9 @@
-export interface IUserRepository<T> {
-  get(id: string): T;
-  remove(id: string): boolean;
-  add(id: string, obj: T): boolean;
-  set(id: string, obj: T): boolean;
-  getUserGames(id: string): string[];
+import { IUser } from 'bauhinia-api/user';
+
+export interface IUserRepository {
+  getUser(login: string): Promise<IUser>;
+  removeUser(login: string): Promise<boolean>;
+  addUser(user: IUser): Promise<boolean>;
+  updateUser(user: IUser): Promise<boolean>;
+  terminate(): void;
 }

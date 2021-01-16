@@ -6,7 +6,7 @@
   "include": [
     "src",
     "map-repository.ts",
-    "objects-repository.ts",
+    "tile-repository.ts",
     "user-repository.ts"
   ],
   "references": []

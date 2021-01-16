@@ -8,12 +8,12 @@ export interface IObject {
 
   canPlaceOn: boolean;
 
-  material: Material;
+  material: IMaterial;
 
   price: number;
 }
 
-export interface Material {
+export interface IMaterial {
   albedo: number;
   density: number;
 }
