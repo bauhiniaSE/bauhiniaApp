@@ -1,15 +1,46 @@
+import { Parameters } from './technical-parameters';
+import { Weather } from './weather-constants';
+
 export class Bubble {
-  /*private readonly width: number;
-  private readonly height: number;
-  private readonly length: number;
+  public southBubble: Bubble;
+  public westBubble: Bubble;
 
-  public topBubble: Bubble;
-  public northBubble: Bubble;
-  public eastBubble: Bubble;
+  public temperature: number = Weather.ambientTemp;
+  private newTemperature: number;
 
-  constructor(width: number, height: number, length: number) {
-    this.height = height;
-    this.width = width;
-    this.length = length;
-  }*/
+  public x: number;
+  public y: number;
+
+  public getVolume(): number {
+    return Parameters.bubbleGrain * Parameters.bubbleGrain * Parameters.altitudeLimit;
+  }
+
+  public transferHeat(): void {
+    if (this.southBubble !== undefined) {
+      this.transferHeatTo(this.southBubble);
+    }
+    if (this.westBubble !== undefined) {
+      this.transferHeatTo(this.westBubble);
+    }
+  }
+
+  public prepareToTransfer(): void {
+    this.newTemperature = this.temperature;
+  }
+
+  public finaliseTheTransfer(): void {
+    this.newTemperature = Math.round(this.newTemperature * 100) / 100;
+    this.temperature = this.newTemperature;
+  }
+
+  private transferHeatTo(neighbour: Bubble): void {
+    const nominalTemperatureChange =
+      ((this.temperature - neighbour.temperature) * Weather.airDiffusivity) /
+      Math.pow(Parameters.bubbleGrain, 2) /
+      Parameters.transferGrainFrequency;
+    const temperatureChange = nominalTemperatureChange / 4;
+
+    this.newTemperature -= temperatureChange;
+    neighbour.newTemperature += temperatureChange;
+  }
 }
