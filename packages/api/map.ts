@@ -1,6 +1,6 @@
 import { IObject } from './object';
 
-export interface Position {
+export interface IPosition {
   position: {
     x: number;
     y: number;
@@ -8,11 +8,12 @@ export interface Position {
   };
 }
 
-export type IObjectOnMap = IObject & Position;
+export type IObjectOnMap = IObject & IPosition;
 
 export interface IMap {
   id: string;
-
+  login: string;
+  isBlueprint: boolean;
   height: number;
   width: number;
 
@@ -35,6 +36,7 @@ export interface IMap {
 //         albedo: 1,
 //         density: 2,
 //       },
+//       price: 0,
 //       position: {
 //         x: 1,
 //         y: 2,
