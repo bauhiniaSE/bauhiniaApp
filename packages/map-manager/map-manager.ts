@@ -1,1 +1,2 @@
-export { TestInterface } from './src/simple-type';
+export { IMapManager } from './src/imap-manager';
+export { MapManager } from './src/map-manager';
