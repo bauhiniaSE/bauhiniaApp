@@ -1,249 +1,212 @@
 <html>
 
 <head>
-    <style>
-        @import url(https://fonts.googleapis.com/css?family=Roboto:300);
+  <style>
+    @import url(https://fonts.googleapis.com/css?family=Roboto:300);
 
-        /* Style The Dropdown Button */
-        .flex {
-            display: flex;
-            justify-content: center;
-        }
+    /* Style The Dropdown Button */
+    .flex {
+      display: flex;
+      justify-content: center;
+    }
 
-        .flex-item+.flex-item {
-            margin-left: 10px;
-        }
+    .flex-item+.flex-item {
+      margin-left: 10px;
+    }
 
+    .dropbtn {
+      font-family: "Roboto", sans-serif;
+      background: #fdfffb;
+      box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+      margin-top: 100px;
+      margin-left: 10px;
+      margin-right: 10px;
+      color: #24616b;
+      padding: 25px;
+      font-size: 25px;
+      border: none;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      width: 200px;
 
+    }
 
-        .dropbtn {
-            font-family: "Roboto", sans-serif;
-            background: #fdfffb;
-            box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
-            margin-top: 100px;
-            margin-left: 10px;
-            margin-right: 10px;
-            color: #24616b;
-            padding: 25px;
-            font-size: 25px;
-            border: none;
-            cursor: pointer;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            width: 200px;
+    /* The container <div> - needed to position the dropdown content */
+    .dropdown {
+      position: center;
+      display: inline-block;
+    }
 
-        }
+    /* Dropdown Content (Hidden by Default) */
+    .dropdown-content {
+      font-family: "Roboto", sans-serif;
+      margin-left: 10px;
+      margin-right: 10px;
+      display: none;
+      position: absolute;
+      background-color: #e5edf7;
+      width: 200px;
+      text-align: center;
+      box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+      z-index: 1;
+    }
 
-        /* The container <div> - needed to position the dropdown content */
-        .dropdown {
-            position: center;
-            display: inline-block;
-        }
+    /* Links inside the dropdown */
+    .dropdown-content a {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
 
-        /* Dropdown Content (Hidden by Default) */
-        .dropdown-content {
-            font-family: "Roboto", sans-serif;
-            margin-left: 10px;
-            margin-right: 10px;
-            display: none;
-            position: absolute;
-            background-color: #e5edf7;
-            width: 200px;
-            text-align: center;
-            box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
-            z-index: 1;
-        }
+    /* Change color of dropdown links on hover */
+    .dropdown-content a:hover {
+      background-color: #24616b;
+      color: white;
+    }
 
-        /* Links inside the dropdown */
-        .dropdown-content a {
-            color: black;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-        }
+    /* Show the dropdown menu on hover */
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
 
-        /* Change color of dropdown links on hover */
-        .dropdown-content a:hover {
-            background-color: #24616b;
-            color: white;
-        }
-
-        /* Show the dropdown menu on hover */
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-
-        /* Change the background color of the dropdown button when the dropdown content is shown */
-        .dropdown:hover .dropbtn {
-            background-color: #a4ccb9;
-            color: #133f46;
-        }
+    /* Change the background color of the dropdown button when the dropdown content is shown */
+    .dropdown:hover .dropbtn {
+      background-color: #a4ccb9;
+      color: #133f46;
+    }
 
 
-        body {
-            background-image: -webkit-linear-gradient(0deg, #045714, #24616b);
-            font-family: "Roboto", sans-serif;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
+    body {
+      background-image: -webkit-linear-gradient(0deg, #045714, #24616b);
+      font-family: "Roboto", sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
 
-        /* The Modal (background) */
-        .modal {
-            display: none;
-            /* Hidden by default */
-            position: fixed;
-            /* Stay in place */
-            z-index: 1;
-            /* Sit on top */
-            padding-top: 100px;
-            /* Location of the box */
-            left: 0;
-            top: 0;
-            width: 100%;
-            /* Full width */
-            height: 100%;
-            /* Full height */
-            overflow: auto;
-            /* Enable scroll if needed */
-            background-color: rgb(0, 0, 0);
-            /* Fallback color */
-            background-color: rgba(0, 0, 0, 0.6);
-            /* Black w/ opacity */
-        }
+    /* The Modal (background) */
+    .modal {
+      display: none;
+      /* Hidden by default */
+      position: fixed;
+      /* Stay in place */
+      z-index: 1;
+      /* Sit on top */
+      padding-top: 100px;
+      /* Location of the box */
+      left: 0;
+      top: 0;
+      width: 100%;
+      /* Full width */
+      height: 100%;
+      /* Full height */
+      overflow: auto;
+      /* Enable scroll if needed */
+      background-color: rgb(0, 0, 0);
+      /* Fallback color */
+      background-color: rgba(0, 0, 0, 0.6);
+      /* Black w/ opacity */
+    }
 
-        /* Modal Content */
-        .modal-content {
+    /* Modal Content */
+    .modal-content {
 
-            font-size: 25px;
-            background: #f5ffe9;
-            box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
-            margin: auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-        }
+      font-size: 25px;
+      background: #f5ffe9;
+      box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+      margin: auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+    }
 
-        /* The Close Button */
-        .close {
-            color: #aaaaaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
+    /* The Close Button */
+    .close {
+      color: #aaaaaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
 
-        .close:hover,
-        .close:focus {
-            color: #000;
-            text-decoration: none;
-            cursor: pointer;
-        }
+    .close:hover,
+    .close:focus {
+      color: #000;
+      text-decoration: none;
+      cursor: pointer;
+    }
 
-        .popup button {
-            font-family: "Roboto", sans-serif;
-            text-transform: uppercase;
-            margin: 40px;
-            outline: 0;
-            background: #24616b;
-            width: 40%;
-            border: 0;
-            padding: 15px;
-            color: #ffffff;
-            font-size: 20px;
-            -webkit-transition: all 0.3 ease;
-            transition: all 0.3 ease;
-            cursor: pointer;
-            display: inline-block;
-        }
+    .popup button {
+      font-family: "Roboto", sans-serif;
+      text-transform: uppercase;
+      margin: 40px;
+      outline: 0;
+      background: #24616b;
+      width: 40%;
+      border: 0;
+      padding: 15px;
+      color: #ffffff;
+      font-size: 20px;
+      -webkit-transition: all 0.3 ease;
+      transition: all 0.3 ease;
+      cursor: pointer;
+      display: inline-block;
+    }
 
-        .popup button:hover,
-        .popup button:active,
-        .popup button:focus {
-            background: #a4ccb9;
-            color: #000000;
-        }
-    </style>
-    <title>Start Game</title>
+    .popup button:hover,
+    .popup button:active,
+    .popup button:focus {
+      background: #a4ccb9;
+      color: #000000;
+    }
+  </style>
+  <title>Start Game</title>
 </head>
 
 <body>
-    <div class="flex">
+  <div class="flex">
+    <form>
+      <div class="dropdown">
         <form>
-            <div class="dropdown">
-                <button class="dropbtn">Manage Blueprints</button>
-                <div class="dropdown-content">
-                    <a id="b1" href="/game/edit">Blueprint 1</a>
-                    <a id="b2" href="/game/edit">Blueprint 2</a>
-                    <a id="b3" href="/game/edit">Blueprint 3</a>
-                </div>
-            </div>
-
-            <div class="dropdown">
-                <button class="dropbtn">Manage Maps</button>
-                <div class="dropdown-content">
-                    <a id="m1" href="/game/edit">Map 1</a>
-                    <a id="m2" href="/game/edit">Map 2</a>
-                    <a id="m3" href="/game/edit">Map 3</a>
-                </div>
-            </div>
-
-            <div class="dropdown">
-                <form>
-                    <button class="dropbtn" formaction="/maps/objects">Manage Objects</button>
-                </form>
-            </div>
+          <button class="dropbtn" formaction="/template/new">New Template</button>
         </form>
-    </div>
-    <!--
-   
-    <div id="myModal" class="modal">
-       
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <p>Open map as...</p>
-            <div class="popup">
-                <form>
-                <button formaction="/maps/picture">Picture</button>
-                <button formaction="/game/edit">Project</button>
-                </form>
-            </div>
+      </div>
+
+      <div class="dropdown">
+        <button class="dropbtn">Manage Templates</button>
+        <div class="dropdown-content">
+          <a id="b1" href="/template/edit">Template 1</a>
+          <a id="b2" href="/template/edit">Template 2</a>
+          <a id="b3" href="/template/edit">Template 3</a>
         </div>
-    </div>
+      </div>
 
-    <script>
-        // Get the modal
-        var modal = document.getElementById("myModal");
+      <div class="dropdown">
+        <button class="dropbtn">Manage Maps</button>
+        <div class="dropdown-content">
+          <a id="m1" href="/game/edit">Map 1</a>
+          <a id="m2" href="/game/edit">Map 2</a>
+          <a id="m3" href="/game/edit">Map 3</a>
+        </div>
+      </div>
 
-        // Get the button that opens the modal
-        var btn = document.getElementById("m1");
-        var btn2 = document.getElementById("m2");
-        var btn3 = document.getElementById("m3");
-        // Get the <span> element that closes the modal
-        var span = document.getElementsByClassName("close")[0];
+      <div class="dropdown">
+        <form>
+          <button class="dropbtn" formaction="/maps/objects">Manage Objects</button>
+        </form>
+      </div>
+    </form>
+  </div>
 
-        // When the user clicks the button, open the modal 
-        btn.onclick = function () {
-            modal.style.display = "block";
-        }
-        btn2.onclick = function () {
-            modal.style.display = "block";
-        }
-        btn3.onclick = function () {
-            modal.style.display = "block";
-        }
-        // When the user clicks on <span> (x), close the modal
-        span.onclick = function () {
-            modal.style.display = "none";
-        }
+  <script src="/map-manager/map-manager.js"></script>
+  <script>
 
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function (event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        }
-    </script>
-    -->
+    Manager.listAllBlueprints().then(blueprint => {
+      console.log(blueprint);
+    })
+
+  </script>
 </body>
 
 </html>

@@ -2,6 +2,7 @@
 
 export interface IObject {
   id: string;
+  image: string;
   widthWE: number;
   widthNS: number;
   height?: number;

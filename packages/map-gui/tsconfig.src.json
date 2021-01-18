@@ -8,7 +8,6 @@
     "index.ts",
     "routes.ts",
     "controllers/**/*.ts",
-    "models/**/*.ts",
     "views/**/*.ts"
   ],
   "references": []

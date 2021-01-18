@@ -9,6 +9,7 @@ let testItem: Item;
 
 class Item implements IObject {
   public id: string;
+  public image: string;
   public widthWE: number;
   public widthNS: number;
   public height: number;
@@ -24,7 +25,7 @@ class Material implements IMaterial {
 
 describe('tile-test', () => {
   beforeEach(() => {
-    itemRepo = new TileRepository('test_tile');
+    itemRepo = new TileRepository();
     testItem = new Item();
     const material: Material = new Material();
     material.albedo = 4;
@@ -45,18 +46,21 @@ describe('tile-test', () => {
   });
 
   it('tile-add-get-test', async () => {
-    const isAdded = await itemRepo.addTile(testItem);
-    expect(isAdded).equal(true);
-    const fromDatabaseItem: IObject = await itemRepo.getTile('test');
-    await itemRepo.removeTile('test');
-    expect(fromDatabaseItem.id).equal(testItem.id);
-    expect(fromDatabaseItem.widthNS).equal(testItem.widthNS);
-    expect(fromDatabaseItem.widthWE).equal(testItem.widthWE);
-    expect(fromDatabaseItem.height).equal(testItem.height);
-    expect(fromDatabaseItem.canPlaceOn).equal(testItem.canPlaceOn);
-    expect(fromDatabaseItem.material.albedo).equal(testItem.material.albedo);
-    expect(fromDatabaseItem.material.density).equal(testItem.material.density);
-    expect(fromDatabaseItem.price).equal(testItem.price);
+    const isAdded = await itemRepo.updateTile(testItem);
+    expect(isAdded).equal(0);
+    const fromDatabaseItem = await itemRepo.getTile('test');
+    expect(fromDatabaseItem).not.equal(400);
+    if (fromDatabaseItem !== 400) {
+      await itemRepo.removeTile('test');
+      expect(fromDatabaseItem.id).equal(testItem.id);
+      expect(fromDatabaseItem.widthNS).equal(testItem.widthNS);
+      expect(fromDatabaseItem.widthWE).equal(testItem.widthWE);
+      expect(fromDatabaseItem.height).equal(testItem.height);
+      expect(fromDatabaseItem.canPlaceOn).equal(testItem.canPlaceOn);
+      expect(fromDatabaseItem.material.albedo).equal(testItem.material.albedo);
+      expect(fromDatabaseItem.material.density).equal(testItem.material.density);
+      expect(fromDatabaseItem.price).equal(testItem.price);
+    }
   }).timeout(5000);
 
   it('tile-get-error-test', async () => {
@@ -64,7 +68,7 @@ describe('tile-test', () => {
   }).timeout(5000);
 
   it('tile-remove-test', async () => {
-    await itemRepo.addTile(testItem);
+    await itemRepo.updateTile(testItem);
     const isRemoved = await itemRepo.removeTile('test');
     expect(isRemoved).equal(true);
     await expect(itemRepo.getTile('test')).to.be.rejectedWith(Error);
@@ -76,15 +80,21 @@ describe('tile-test', () => {
   }).timeout(5000);
 
   it('tile-update-test', async () => {
-    await itemRepo.addTile(testItem);
+    await itemRepo.updateTile(testItem);
     const beforeUpdateItem = await itemRepo.getTile('test');
-    expect(beforeUpdateItem.canPlaceOn).equal(true);
-    testItem.canPlaceOn = false;
-    const updated = await itemRepo.updateTile(testItem);
-    const updatedItem = await itemRepo.getTile('test');
-    await itemRepo.removeTile('test');
-    expect(updated).equal(true);
-    expect(updatedItem.canPlaceOn).equal(false);
+    expect(beforeUpdateItem).not.equal(400);
+    if (beforeUpdateItem !== 400) {
+      expect(beforeUpdateItem.canPlaceOn).equal(true);
+      testItem.canPlaceOn = false;
+      const updated = await itemRepo.updateTile(testItem);
+      const updatedItem = await itemRepo.getTile('test');
+      expect(updatedItem).not.equal(400);
+      if (updatedItem !== 400) {
+        await itemRepo.removeTile('test');
+        expect(updated).equal(0);
+        expect(updatedItem.canPlaceOn).equal(false);
+      }
+    }
   }).timeout(5000);
 
   it('tile-update-false-test', async () => {
@@ -93,7 +103,7 @@ describe('tile-test', () => {
   }).timeout(5000);
 
   it('tile-getAll-test', async () => {
-    await itemRepo.addTile(testItem);
+    await itemRepo.updateTile(testItem);
     const testItem2 = new Item();
     const material: Material = new Material();
     material.albedo = 4;
@@ -105,7 +115,7 @@ describe('tile-test', () => {
     testItem2.canPlaceOn = true;
     testItem2.material = material;
     testItem2.price = 10;
-    await itemRepo.addTile(testItem2);
+    await itemRepo.updateTile(testItem2);
     const listOfItems = await itemRepo.getAllTiles();
     await itemRepo.removeTile('test');
     await itemRepo.removeTile('test2');

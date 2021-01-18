@@ -4,6 +4,8 @@ import { IUser } from 'bauhinia-api/user';
 
 import { IUserRepository } from '../user-repository';
 
+import { uuidv4 } from './uuid';
+
 const firebaseConfig = {
   apiKey: 'AIzaSyAL6nH17dJATWEMvOHNiqtO9KAqRwrZ658',
   authDomain: 'bauhiniaapp.firebaseapp.com',
@@ -18,8 +20,8 @@ export class UserRepository implements IUserRepository {
   private readonly firebaseApp;
   private readonly database;
 
-  constructor(name: string) {
-    this.firebaseApp = firebase.initializeApp(firebaseConfig, name);
+  constructor() {
+    this.firebaseApp = firebase.initializeApp(firebaseConfig, uuidv4());
     this.database = this.firebaseApp.database();
   }
 
@@ -34,26 +36,27 @@ export class UserRepository implements IUserRepository {
       })
       .then(() => {
         console.log('Synchronization succeeded');
-        return true;
+        return 0;
       })
       .catch((error) => {
         console.log('Synchronization failed');
         console.log(error);
-        return false;
+        return 600;
       });
     return addSuccessful;
   }
 
   public async removeUser(login: string) {
     let key: string;
-    let removeSuccessful = false;
+    let removeSuccessful = 400;
     await this.database.ref('users').once('value', (snapshot) => {
       snapshot.forEach((childSnapshot) => {
         const childData = childSnapshot.val();
         if (childData.login === login) {
           key = childSnapshot.key as string;
           this.database.ref('users/' + key).remove();
-          removeSuccessful = true;
+          removeSuccessful = 0;
+          return;
         }
       });
     });
@@ -63,6 +66,7 @@ export class UserRepository implements IUserRepository {
 
   public async getUser(login: string) {
     const returnUser: User = new User();
+    let userFound = 400;
     await this.database.ref('users').once('value', (snapshot) => {
       snapshot.forEach((childSnapshot) => {
         const childData = childSnapshot.val();
@@ -70,12 +74,14 @@ export class UserRepository implements IUserRepository {
           returnUser.isAdmin = childData.isAdmin;
           returnUser.login = childData.login;
           returnUser.password = childData.password;
+          userFound = 0;
         }
+        return;
       });
     });
 
-    if (JSON.stringify(returnUser) === JSON.stringify({})) {
-      throw new Error('User does not exist');
+    if (userFound === 400) {
+      return 400;
     } else {
       return returnUser;
     }
@@ -83,26 +89,26 @@ export class UserRepository implements IUserRepository {
 
   public async updateUser(user: IUser) {
     let key: string = '';
-    let userFound = false;
+    let userFound = 400;
     await this.database.ref('users').once('value', (snapshot) => {
       snapshot.forEach((childSnapshot) => {
         const childData = childSnapshot.val();
         if (childData.login === user.login) {
           key = childSnapshot.key as string;
-          userFound = true;
+          userFound = 0;
         }
       });
     });
 
-    if (userFound) {
+    if (userFound === 0) {
       await this.database.ref(`users/${key}`).set({
         login: user.login,
         password: user.password,
         isAdmin: user.isAdmin,
       });
-      return true;
+      return 0;
     } else {
-      return false;
+      return 400;
     }
   }
 

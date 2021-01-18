@@ -1,8 +1,10 @@
 import firebase from 'firebase';
 
-import { IMaterial, IObject } from 'bauhinia-api/object';
+import { IObject } from 'bauhinia-api/object';
 
 import { ITileRepository } from '../tile-repository';
+
+import { uuidv4 } from './uuid';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyAL6nH17dJATWEMvOHNiqtO9KAqRwrZ658',
@@ -19,17 +21,31 @@ export class TileRepository implements ITileRepository {
   private readonly firebaseApp;
   private readonly database;
 
-  constructor(name: string) {
-    this.firebaseApp = firebase.initializeApp(firebaseConfig, name);
+  constructor() {
+    this.firebaseApp = firebase.initializeApp(firebaseConfig, uuidv4());
     this.database = this.firebaseApp.database();
   }
 
-  public async addTile(object: IObject) {
-    const key = this.database.ref('objects').push().key as string;
+  public async updateTile(object: IObject) {
+    let key: string = '';
+    let itemFound = 400;
+    await this.database.ref('objects').once('value', (snapshot) => {
+      snapshot.forEach((childSnapshot) => {
+        const childData = childSnapshot.val();
+        if (childData.id === object.id) {
+          key = childSnapshot.key as string;
+          itemFound = 0;
+        }
+      });
+    });
+    if (itemFound === 400) {
+      key = this.database.ref('objects').push().key as string;
+    }
     const addSuccessful = await this.database
       .ref(`objects/${key}`)
       .set({
         id: object.id,
+        image: object.image,
         widthWE: object.widthWE,
         widthNS: object.widthNS,
         height: object.height,
@@ -40,26 +56,26 @@ export class TileRepository implements ITileRepository {
       })
       .then(() => {
         console.log('Synchronization succeeded');
-        return true;
+        return 0;
       })
       .catch((error) => {
         console.log('Synchronization failed');
         console.log(error);
-        return false;
+        return 600;
       });
     return addSuccessful;
   }
 
   public async removeTile(id: string) {
     let key: string;
-    let removeSuccessful = false;
+    let removeSuccessful = 400;
     await this.database.ref('objects').once('value', (snapshot) => {
       snapshot.forEach((childSnapshot) => {
         const childData = childSnapshot.val();
         if (childData.id === id) {
           key = childSnapshot.key as string;
           this.database.ref('objects/' + key).remove();
-          removeSuccessful = true;
+          removeSuccessful = 0;
         }
       });
     });
@@ -69,57 +85,32 @@ export class TileRepository implements ITileRepository {
 
   public async getTile(id: string) {
     const returnItem: Item = new Item();
+    let found = 400;
     await this.database.ref('objects').once('value', (snapshot) => {
       snapshot.forEach((childSnapshot) => {
         const childData = childSnapshot.val();
         if (childData.id === id) {
           returnItem.id = childData.id;
+          returnItem.image = childData.image;
           returnItem.widthWE = childData.widthWE;
           returnItem.widthNS = childData.widthNS;
           returnItem.height = childData.height;
           returnItem.canPlaceOn = childData.canPlaceOn;
-          returnItem.material = new Material();
-          returnItem.material.albedo = childData.albedo;
-          returnItem.material.density = childData.density;
+          returnItem.material = {
+            albedo: childData.albedo,
+            density: childData.density,
+          };
           returnItem.price = childData.price;
+          found = 0;
         }
+        return;
       });
     });
 
-    if (JSON.stringify(returnItem) === JSON.stringify({})) {
-      throw new Error('Object does not exist');
+    if (found === 400) {
+      return 400;
     } else {
       return returnItem;
-    }
-  }
-  // you should not update id. To update id remove and add item.
-  public async updateTile(item: IObject) {
-    let key: string = '';
-    let itemFound = false;
-    await this.database.ref('objects').once('value', (snapshot) => {
-      snapshot.forEach((childSnapshot) => {
-        const childData = childSnapshot.val();
-        if (childData.id === item.id) {
-          key = childSnapshot.key as string;
-          itemFound = true;
-        }
-      });
-    });
-
-    if (itemFound) {
-      await this.database.ref(`objects/${key}`).set({
-        id: item.id,
-        widthWE: item.widthWE,
-        widthNS: item.widthNS,
-        height: item.height,
-        canPlaceOn: item.canPlaceOn,
-        albedo: item.material.albedo,
-        density: item.material.density,
-        price: item.price,
-      });
-      return true;
-    } else {
-      return false;
     }
   }
 
@@ -134,19 +125,16 @@ export class TileRepository implements ITileRepository {
         returnItem.widthNS = childData.widthNS;
         returnItem.height = childData.height;
         returnItem.canPlaceOn = childData.canPlaceOn;
-        returnItem.material = new Material();
-        returnItem.material.albedo = childData.albedo;
-        returnItem.material.density = childData.density;
+        returnItem.material = {
+          albedo: childData.albedo,
+          density: childData.density,
+        };
         returnItem.price = childData.price;
         listOfItems.push(returnItem);
       });
     });
 
-    if (listOfItems.length === 0) {
-      throw Error('No objects found');
-    } else {
-      return listOfItems;
-    }
+    return listOfItems;
   }
 
   public terminate() {
@@ -156,15 +144,14 @@ export class TileRepository implements ITileRepository {
 
 export class Item implements IObject {
   public id: string;
-  public widthWE: number;
-  public widthNS: number;
-  public height: number;
-  public canPlaceOn: boolean;
-  public material: Material;
-  public price: number;
-}
-
-class Material implements IMaterial {
-  public albedo: number;
-  public density: number;
+  public image: string = '';
+  public widthWE: number = 1;
+  public widthNS: number = 1;
+  public height?: number;
+  public canPlaceOn: boolean = false;
+  public material = {
+    albedo: 0,
+    density: 0,
+  };
+  public price: number = 0;
 }

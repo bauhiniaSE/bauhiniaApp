@@ -1,27 +1,28 @@
 import { Router } from 'express';
 
-import usersRouter from './controllers/UsersController';
+import { homeRouter } from './controllers/HomeController';
+import { loginRouter } from './controllers/LoginController';
+import { registerRouter } from './controllers/RegisterController';
 
-import homeRouter from './controllers/HomeController';
-import loginRouter from './controllers/LoginController';
-import registerRouter from './controllers/RegisterController';
-import startGameRouter from './controllers/StartGameController';
-import manageMapsRouter from './controllers/ManageMapsController';
-import editProjectRouter from './controllers/EditProjectController';
-import viewPictureRouter from './controllers/ViewPictureController';
-import manageObjectsRouter from './controllers/ManageObjectsController';
+import { objectsRouter } from './controllers/ObjectsController';
+import { templateRouter } from './controllers/TemplateController';
+import { mapsRouter } from './controllers/MapsController';
 
 const routes = Router();
-
-routes.use('/users', usersRouter);
 
 routes.use('/', homeRouter);
 routes.use('/login', loginRouter);
 routes.use('/register', registerRouter);
-routes.use('/game', startGameRouter);
-routes.use('/game/edit', editProjectRouter);
-routes.use('/maps', manageMapsRouter);
-routes.use('/maps/picture', viewPictureRouter);
-routes.use('/maps/objects', manageObjectsRouter);
+
+routes.use('/object', objectsRouter);
+routes.use('/object/edit', objectsRouter);
+routes.use('/object/new', objectsRouter);
+routes.use('/maps', mapsRouter);
+routes.use('/map/new', mapsRouter);
+routes.use('/map/edit', mapsRouter);
+
+routes.use('/template', templateRouter);
+routes.use('/template/new', templateRouter);
+routes.use('/template/edit', templateRouter);
 
 export default routes;

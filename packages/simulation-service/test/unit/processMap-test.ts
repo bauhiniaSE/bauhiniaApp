@@ -33,6 +33,8 @@ describe('process map - test', () => {
   it('bubble creation', () => {
     const s: Simulator = new Simulator();
     const m: IMap = {
+      login: '',
+      isBlueprint: true,
       id: '',
       height: 300,
       width: 300,
@@ -57,6 +59,8 @@ describe('process map - test', () => {
   it('simple processing', () => {
     const s: Simulator = new Simulator();
     const m: IMap = {
+      login: '',
+      isBlueprint: true,
       id: '',
       height: 300,
       width: 300,
@@ -125,6 +129,8 @@ describe('process map - test', () => {
   it('complex processing', () => {
     const s: Simulator = new Simulator();
     const m: IMap = {
+      login: '',
+      isBlueprint: true,
       id: '',
       height: 50,
       width: 50,
@@ -199,6 +205,8 @@ describe('process map - test', () => {
   it('complex processing across bubbles', () => {
     const s: Simulator = new Simulator();
     const m: IMap = {
+      login: '',
+      isBlueprint: true,
       id: '',
       height: 50,
       width: 100,

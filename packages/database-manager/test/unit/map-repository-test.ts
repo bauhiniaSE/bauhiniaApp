@@ -9,7 +9,7 @@ let testMap: TestMap;
 
 describe('map-test', () => {
   beforeEach(() => {
-    testMapRepo = new MapRepository('test_map');
+    testMapRepo = new MapRepository();
     testMap = new TestMap();
     testMap.id = 'test';
     testMap.height = 1;
@@ -18,6 +18,7 @@ describe('map-test', () => {
     testMap.isBlueprint = false;
     const temp: IObjectOnMap = {
       id: 'test',
+      image: '',
       widthWE: 1,
       widthNS: 2,
       height: 1,
@@ -45,15 +46,18 @@ describe('map-test', () => {
   });
 
   it('map-add-get-test', async () => {
-    const isAdded = await testMapRepo.addMap(testMap);
+    const isAdded = await testMapRepo.updateMap(testMap);
     const fromDatabaseMap = await testMapRepo.getMap('test', 'login');
+    expect(fromDatabaseMap).not.equal(400);
     await testMapRepo.removeMap('test', 'login');
-    expect(isAdded).equal(true);
-    expect(fromDatabaseMap.id).equal(testMap.id);
-    expect(fromDatabaseMap.height).equal(testMap.height);
-    expect(fromDatabaseMap.width).equal(testMap.width);
-    expect(fromDatabaseMap.tiles.length).equal(testMap.tiles.length);
-    expect(fromDatabaseMap.tiles[0].id).equal(testMap.tiles[0].id);
+    expect(isAdded).equal(0);
+    if (fromDatabaseMap !== 400) {
+      expect(fromDatabaseMap.id).equal(testMap.id);
+      expect(fromDatabaseMap.height).equal(testMap.height);
+      expect(fromDatabaseMap.width).equal(testMap.width);
+      expect(fromDatabaseMap.tiles.length).equal(testMap.tiles.length);
+      expect(fromDatabaseMap.tiles[0].id).equal(testMap.tiles[0].id);
+    }
   }).timeout(5000);
 
   it('map-get-error-test', async () => {
@@ -61,7 +65,7 @@ describe('map-test', () => {
   }).timeout(5000);
 
   it('map-remove-test', async () => {
-    await testMapRepo.addMap(testMap);
+    await testMapRepo.updateMap(testMap);
     const isRemoved = await testMapRepo.removeMap('test', 'login');
     expect(isRemoved).equal(true);
   }).timeout(5000);
@@ -72,15 +76,21 @@ describe('map-test', () => {
   }).timeout(5000);
 
   it('map-update-test', async () => {
-    await testMapRepo.addMap(testMap);
+    await testMapRepo.updateMap(testMap);
     const beforeUpdateMap = await testMapRepo.getMap('test', 'login');
-    expect(beforeUpdateMap.height).equal(testMap.height);
-    testMap.height = 4;
-    const isUpdated = await testMapRepo.updateMap(testMap);
-    const afterUpdateMap = await testMapRepo.getMap('test', 'login');
-    await testMapRepo.removeMap('test', 'login');
-    expect(isUpdated).equal(true);
-    expect(afterUpdateMap.height).equal(4);
+    expect(beforeUpdateMap).not.equal(400);
+    if (beforeUpdateMap !== 400) {
+      expect(beforeUpdateMap.height).equal(testMap.height);
+      testMap.height = 4;
+      const isUpdated = await testMapRepo.updateMap(testMap);
+      const afterUpdateMap = await testMapRepo.getMap('test', 'login');
+      await testMapRepo.removeMap('test', 'login');
+      expect(isUpdated).equal(true);
+      expect(afterUpdateMap).not.equal(400);
+      if (afterUpdateMap !== 400) {
+        expect(afterUpdateMap.height).equal(4);
+      }
+    }
   }).timeout(5000);
 
   it('map-update-false-test', async () => {
@@ -89,7 +99,7 @@ describe('map-test', () => {
   }).timeout(5000);
 
   it('map-getAllUserMaps-test', async () => {
-    await testMapRepo.addMap(testMap);
+    await testMapRepo.updateMap(testMap);
     const testMap2 = new TestMap();
     testMap2.id = 'test2';
     testMap2.height = 1;
@@ -98,6 +108,7 @@ describe('map-test', () => {
     testMap2.isBlueprint = false;
     const temp: IObjectOnMap = {
       id: 'test2',
+      image: '',
       widthWE: 1,
       widthNS: 2,
       height: 1,
@@ -125,6 +136,7 @@ describe('map-test', () => {
     testMap3.isBlueprint = false;
     const temp1: IObjectOnMap = {
       id: 'test3',
+      image: '',
       widthWE: 1,
       widthNS: 2,
       height: 1,
@@ -143,8 +155,8 @@ describe('map-test', () => {
     };
     testMap3.tiles = [];
     testMap3.tiles.push(temp1);
-    await testMapRepo.addMap(testMap2);
-    await testMapRepo.addMap(testMap3);
+    await testMapRepo.updateMap(testMap2);
+    await testMapRepo.updateMap(testMap3);
     const list = await testMapRepo.getAllUserMaps('login');
     await testMapRepo.removeMap('test', 'login');
     await testMapRepo.removeMap('test2', 'login');
@@ -157,7 +169,7 @@ describe('map-test', () => {
   }).timeout(5000);
 
   it('map-getAllBlueprints-test', async () => {
-    await testMapRepo.addMap(testMap);
+    await testMapRepo.updateMap(testMap);
     const testMap2 = new TestMap();
     testMap2.id = 'test2';
     testMap2.height = 1;
@@ -166,6 +178,7 @@ describe('map-test', () => {
     testMap2.isBlueprint = true;
     const temp: IObjectOnMap = {
       id: 'test2',
+      image: '',
       widthWE: 1,
       widthNS: 2,
       height: 1,
@@ -193,6 +206,7 @@ describe('map-test', () => {
     testMap3.isBlueprint = true;
     const temp1: IObjectOnMap = {
       id: 'test3',
+      image: '',
       widthWE: 1,
       widthNS: 2,
       height: 1,
@@ -211,8 +225,8 @@ describe('map-test', () => {
     };
     testMap3.tiles = [];
     testMap3.tiles.push(temp1);
-    await testMapRepo.addMap(testMap2);
-    await testMapRepo.addMap(testMap3);
+    await testMapRepo.updateMap(testMap2);
+    await testMapRepo.updateMap(testMap3);
     const list = await testMapRepo.getAllBlueprints();
     await testMapRepo.removeMap('test', 'login');
     await testMapRepo.removeMap('test2', 'admin');
@@ -221,7 +235,7 @@ describe('map-test', () => {
   }).timeout(5000);
 
   it('map-getAllUserMapsIds-test', async () => {
-    await testMapRepo.addMap(testMap);
+    await testMapRepo.updateMap(testMap);
     const testMap2 = new TestMap();
     testMap2.id = 'test2';
     testMap2.height = 1;
@@ -230,6 +244,7 @@ describe('map-test', () => {
     testMap2.isBlueprint = false;
     const temp: IObjectOnMap = {
       id: 'test2',
+      image: '',
       widthWE: 1,
       widthNS: 2,
       height: 1,
@@ -257,6 +272,7 @@ describe('map-test', () => {
     testMap3.isBlueprint = false;
     const temp1: IObjectOnMap = {
       id: 'test3',
+      image: '',
       widthWE: 1,
       widthNS: 2,
       height: 1,
@@ -275,8 +291,8 @@ describe('map-test', () => {
     };
     testMap3.tiles = [];
     testMap3.tiles.push(temp1);
-    await testMapRepo.addMap(testMap2);
-    await testMapRepo.addMap(testMap3);
+    await testMapRepo.updateMap(testMap2);
+    await testMapRepo.updateMap(testMap3);
     const list = await testMapRepo.getAllUserMapsIds('login');
     await testMapRepo.removeMap('test', 'login');
     await testMapRepo.removeMap('test2', 'login');
