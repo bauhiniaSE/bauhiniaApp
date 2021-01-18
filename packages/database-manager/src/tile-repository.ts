@@ -147,7 +147,7 @@ export class Item implements IObject {
   public image: string = '';
   public widthWE: number = 1;
   public widthNS: number = 1;
-  public height?: number;
+  public height: number = 1;
   public canPlaceOn: boolean = false;
   public material = {
     albedo: 0,

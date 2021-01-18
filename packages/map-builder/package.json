@@ -3,7 +3,8 @@
   "description": "Component used to define maps",
   "version": "1.0.0",
   "scripts": {
-    "build": "webpack --mode development"
+    "build": "webpack --mode development",
+    "docs": "typedoc --entryPoints ./src/map-builder.ts ./src/object-editor.ts --out docs"
   },
   "dependencies": {
     "bauhinia-api": "1.0.0",

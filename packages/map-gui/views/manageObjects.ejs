@@ -28,6 +28,7 @@
     }
 
     img {
+      height: 70px;
       width: 70px;
     }
 
@@ -84,25 +85,16 @@
     /* The Modal (background) */
     .modal {
       display: none;
-      /* Hidden by default */
       position: fixed;
-      /* Stay in place */
       z-index: 1;
-      /* Sit on top */
-      padding-top: 100px;
-      /* Location of the box */
       left: 0;
       top: 0;
       width: 100%;
-      /* Full width */
       height: 100%;
-      /* Full height */
       overflow: auto;
-      /* Enable scroll if needed */
-      background-color: rgb(0, 0, 0);
-      /* Fallback color */
       background-color: rgba(0, 0, 0, 0.6);
-      /* Black w/ opacity */
+      justify-content: center;
+      align-items: center;
     }
 
     /* Modal Content */
@@ -110,9 +102,6 @@
       font-size: 24px;
       background: #f5ffe9;
       box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
-      margin: auto;
-      margin-top: 5px;
-      padding-top: 5px;
       padding: 20px;
       border: 1px solid #888;
       width: 60%;
@@ -133,7 +122,8 @@
       cursor: pointer;
     }
 
-    input[type=text] {
+    input[type=text],
+    input[type=number] {
       font-family: "Roboto", sans-serif;
       outline: 0;
       background: #fdfffb;
@@ -168,6 +158,15 @@
       background: #a4ccb9;
       color: #000000;
     }
+
+    #editorHandle {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .selected {
+      border-color: red !important;
+    }
   </style>
 
 </head>
@@ -175,22 +174,16 @@
 <body>
   <div>
     <div class="flex">
-      <form>
+      <div>
         <button id="add_btn">Add object</button>
         <button id="edit_btn">Edit object</button>
-        <button>Remove object</button>
+        <button id="remove_btn">Remove object</button>
         <button formaction="/maps">Back</button>
         <button formaction="/">Exit</button>
-      </form>
+      </div>
     </div>
     <div class="flex">
-      <div class="grid-container">
-        <%for(var i=0; i < 500; i++){%>
-          <div class="grid-item" id="div2">
-            <img src="/images/pinkShop.png" onclick="this.style='border: solid red'" />
-          </div>
-          <%}%>
-      </div>
+      <div class="grid-container"></div>
     </div>
   </div>
 
@@ -199,30 +192,55 @@
     <!-- Modal content -->
     <div class="modal-content">
       <span class="close">&times;</span>
-      <div class="popup">
-        <form>
-          <input type="text" id="name" name="name" style="width: 50%;" placeholder="object name"><br />
-
-          <input type="text" id="albedo" name="albedo" style="width: 85px; text-align: center;" placeholder="albedo">
-          <a>%</a><br /><br />
-          <label for="img">Upload an object representation picture</label>
-          <input type="file" id="img" name="img" accept="image/*" onchange="loadFile(event);" style="width: 50%;">
-          <br /><br /><img id="output" width="200" />
-          <input type="submit" id="submit_btn" value="Add" style="float: right;">
-        </form>
-      </div>
+      <div class="popup"></div>
     </div>
   </div>
 
-  <script type="module" src="/map-builder/map-builder.js"></script>
+  <script src="/map-builder/map-builder.js"></script>
+  <script src="/map-manager/map-manager.js"></script>
   <script>
+    const container = document.getElementsByClassName('grid-container')[0];
     const modal = document.getElementById("myModal");
     const add_btn = document.getElementById("add_btn");
+    const edit_btn = document.getElementById("edit_btn");
+    const remove_btn = document.getElementById("remove_btn");
     const span = document.getElementsByClassName("close")[0];
+
+    const objectEditor = new ObjectEditor(document.getElementsByClassName('popup')[0]);
+
+    let colouredBox = null;
+
+    Manager.getAllTiles().then(tiles => {
+      tiles.forEach(tile => {
+        const box = document.createElement('div');
+        const img = document.createElement('img');
+
+        img.src = tile.image;
+        img.id = tile.id;
+        box.onclick = () => {
+          if (colouredBox !== null) {
+            colouredBox.className = '';
+          }
+          objectEditor.selectedTile = tile.id;
+          box.className = 'selected';
+        }
+
+        box.appendChild(img);
+        container.appendChild(box);
+      });
+    });
 
     // When the user clicks the button, open the modal 
     add_btn.onclick = () => {
-      modal.style.display = "block";
+      modal.style.display = "flex";
+      objectEditor.newTile();
+    }
+    edit_btn.onclick = () => {
+      modal.style.display = "flex";
+      objectEditor.editTile();
+    }
+    remove_btn.onclick = () => {
+      objectEditor.removeTile();
     }
     // When the user clicks on <span> (x), close the modal
     span.onclick = () => {
@@ -235,12 +253,6 @@
         modal.style.display = "none";
       }
     }
-  </script>
-  <script>
-    const loadFile = function (event) {
-      const image = document.getElementById('output');
-      image.src = URL.createObjectURL(event.target.files[0]);
-    };
   </script>
 </body>
 

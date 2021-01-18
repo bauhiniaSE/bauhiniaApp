@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 
 describe('test', () => {
-  it('should pass test example', () => {
+  it('should bake a bread', () => {
     expect(true).equal(true);
   });
 });
