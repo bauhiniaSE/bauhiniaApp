@@ -61,18 +61,18 @@ describe('map-test', () => {
   }).timeout(5000);
 
   it('map-get-error-test', async () => {
-    await expect(testMapRepo.getMap('a', 'login')).to.be.rejectedWith(Error);
+    expect(await testMapRepo.getMap('a', 'login')).equal(400);
   }).timeout(5000);
 
   it('map-remove-test', async () => {
     await testMapRepo.updateMap(testMap);
     const isRemoved = await testMapRepo.removeMap('test', 'login');
-    expect(isRemoved).equal(true);
+    expect(isRemoved).equal(0);
   }).timeout(5000);
 
   it('map-remove-false-test', async () => {
     const isRemoved = await testMapRepo.removeMap('a', 'login');
-    expect(isRemoved).equal(false);
+    expect(isRemoved).equal(200);
   }).timeout(5000);
 
   it('map-update-test', async () => {
@@ -85,17 +85,12 @@ describe('map-test', () => {
       const isUpdated = await testMapRepo.updateMap(testMap);
       const afterUpdateMap = await testMapRepo.getMap('test', 'login');
       await testMapRepo.removeMap('test', 'login');
-      expect(isUpdated).equal(true);
+      expect(isUpdated).equal(0);
       expect(afterUpdateMap).not.equal(400);
       if (afterUpdateMap !== 400) {
         expect(afterUpdateMap.height).equal(4);
       }
     }
-  }).timeout(5000);
-
-  it('map-update-false-test', async () => {
-    const isUpdated = await testMapRepo.updateMap(testMap);
-    expect(isUpdated).equal(false);
   }).timeout(5000);
 
   it('map-getAllUserMaps-test', async () => {
@@ -165,7 +160,7 @@ describe('map-test', () => {
   }).timeout(5000);
 
   it('map-getAllUserMaps-error-test', async () => {
-    await expect(testMapRepo.getAllUserMaps('a')).to.be.rejectedWith(Error);
+    expect(await testMapRepo.getAllUserMaps('a')).deep.equal([]);
   }).timeout(5000);
 
   it('map-getAllBlueprints-test', async () => {
@@ -301,7 +296,7 @@ describe('map-test', () => {
   }).timeout(5000);
 
   it('map-getAllUserMapsIds-error-test', async () => {
-    await expect(testMapRepo.getAllUserMapsIds('a')).to.be.rejectedWith(Error);
+    expect(await testMapRepo.getAllUserMapsIds('a')).deep.equal([]);
   }).timeout(5000);
 });
 class TestMap implements IMap {

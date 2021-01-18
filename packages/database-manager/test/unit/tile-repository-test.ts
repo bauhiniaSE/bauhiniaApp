@@ -1,22 +1,11 @@
 import { expect } from 'chai';
 
-import { IObject, IMaterial } from 'bauhinia-api/object';
+import { IMaterial } from 'bauhinia-api/object';
 
-import { TileRepository } from '../../src/tile-repository';
+import { TileRepository, Item } from '../../src/tile-repository';
 
 let itemRepo: TileRepository;
 let testItem: Item;
-
-class Item implements IObject {
-  public id: string;
-  public image: string;
-  public widthWE: number;
-  public widthNS: number;
-  public height: number;
-  public canPlaceOn: boolean;
-  public material: Material;
-  public price: number;
-}
 
 class Material implements IMaterial {
   public albedo: number;
@@ -64,19 +53,19 @@ describe('tile-test', () => {
   }).timeout(5000);
 
   it('tile-get-error-test', async () => {
-    await expect(itemRepo.getTile('a')).to.be.rejectedWith(Error);
+    expect(await itemRepo.getTile('a')).equal(400);
   }).timeout(5000);
 
   it('tile-remove-test', async () => {
     await itemRepo.updateTile(testItem);
     const isRemoved = await itemRepo.removeTile('test');
-    expect(isRemoved).equal(true);
-    await expect(itemRepo.getTile('test')).to.be.rejectedWith(Error);
+    expect(isRemoved).equal(0);
+    expect(await itemRepo.getTile('test')).equal(400);
   }).timeout(5000);
 
   it('tile-remove-false-test', async () => {
     const isRemoved = await itemRepo.removeTile('a');
-    expect(isRemoved).equal(false);
+    expect(isRemoved).equal(400);
   }).timeout(5000);
 
   it('tile-update-test', async () => {
@@ -95,11 +84,6 @@ describe('tile-test', () => {
         expect(updatedItem.canPlaceOn).equal(false);
       }
     }
-  }).timeout(5000);
-
-  it('tile-update-false-test', async () => {
-    const updated = await itemRepo.updateTile(testItem);
-    expect(updated).equal(false);
   }).timeout(5000);
 
   it('tile-getAll-test', async () => {

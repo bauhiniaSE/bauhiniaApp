@@ -2,10 +2,6 @@
   "name": "bauhinia-save-system",
   "description": "Component used to save users games",
   "version": "1.0.0",
-  "scripts": {
-    "test": "nyc npm run test:unit",
-    "test:unit": "mocha \"test/unit/**/*.js\""
-  },
   "devDependencies": {
     "bauhinia-authentication": "1.0.0",
     "bauhinia-database-manager": "1.0.0",

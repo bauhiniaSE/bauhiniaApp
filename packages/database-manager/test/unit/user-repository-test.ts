@@ -35,19 +35,19 @@ describe('user-test', () => {
   }).timeout(5000);
 
   it('user-get-error-test', async () => {
-    await expect(userRepo.getUser('a')).to.be.rejectedWith(Error);
+    expect(await userRepo.getUser('a')).equal(400);
   }).timeout(5000);
 
   it('user-remove-test', async () => {
     await userRepo.addUser(testUser);
     const isRemoved = await userRepo.removeUser('login');
-    expect(isRemoved).equal(true);
-    await expect(userRepo.getUser('a')).to.be.rejectedWith(Error);
+    expect(isRemoved).equal(0);
+    expect(await userRepo.getUser('a')).equal(400);
   }).timeout(5000);
 
   it('user-remove-false-test', async () => {
     const isRemoved = await userRepo.removeUser('a');
-    expect(isRemoved).equal(false);
+    expect(isRemoved).equal(400);
   }).timeout(5000);
 
   it('user-update-test', async () => {
@@ -70,7 +70,7 @@ describe('user-test', () => {
 
   it('user-update-false-test', async () => {
     const updated = await userRepo.updateUser(testUser);
-    expect(updated).equal(false);
+    expect(updated).equal(400);
   }).timeout(5000);
 });
 
