@@ -67,6 +67,7 @@ describe('process map - test', () => {
       tiles: [
         {
           id: 'gebouw',
+          image: '',
           widthWE: 120,
           widthNS: 100,
           height: 10,
@@ -137,6 +138,7 @@ describe('process map - test', () => {
       tiles: [
         {
           id: 'gebouw',
+          image: '',
           widthWE: 20,
           widthNS: 20,
           height: 100,
@@ -155,6 +157,7 @@ describe('process map - test', () => {
         },
         {
           id: 'groend',
+          image: '',
           widthWE: 50,
           widthNS: 50,
 
@@ -172,6 +175,7 @@ describe('process map - test', () => {
         },
         {
           id: 'straat',
+          image: '',
           widthWE: 30,
           widthNS: 10,
 
@@ -213,6 +217,7 @@ describe('process map - test', () => {
       tiles: [
         {
           id: 'gebouw',
+          image: '',
           widthWE: 20,
           widthNS: 20,
           height: 100,
@@ -231,6 +236,7 @@ describe('process map - test', () => {
         },
         {
           id: 'groend',
+          image: '',
           widthWE: 100,
           widthNS: 50,
 
@@ -248,6 +254,7 @@ describe('process map - test', () => {
         },
         {
           id: 'straat',
+          image: '',
           widthWE: 30,
           widthNS: 10,
 
