@@ -33,10 +33,6 @@
       "path": "packages/simulation-service"
     },
     {
-      "name": "util",
-      "path": "packages/util"
-    },
-    {
       "name": "parent",
       "path": "."
     }
