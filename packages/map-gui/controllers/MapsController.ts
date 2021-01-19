@@ -1,17 +1,18 @@
 import { Router } from 'express';
 
 const mapsRouter = Router();
-
+const newMapsRouter = Router();
+const editMapsRouter = Router();
 mapsRouter.get('/', (req, res) => {
   res.render('manageMaps');
 });
 
-mapsRouter.get('/map/edit', (req, res) => {
+mapsRouter.get('/', (req, res) => {
   res.render('editMap');
 });
 
-mapsRouter.get('/map/new', (req, res) => {
+mapsRouter.get('/', (req, res) => {
   res.render('newMap');
 });
 
-export { mapsRouter };
+export { mapsRouter, newMapsRouter, editMapsRouter };
