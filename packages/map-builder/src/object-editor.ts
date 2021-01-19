@@ -108,7 +108,15 @@ export class ObjectEditor {
       onchange: async (e) => {
         const t = e.target as HTMLInputElement;
         if (t.files) {
-          values.image = await toBase64(t.files[0]);
+          const img = document.createElement('img');
+          img.src = await toBase64(t.files[0]);
+          const canvas = document.createElement('canvas');
+          canvas.width = 64;
+          canvas.height = 64;
+          const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
+          ctx.drawImage(img, 0, 0, 64, 64);
+
+          values.image = canvas.toDataURL('image/png');
 
           imageViewer.src = values.image;
         }
