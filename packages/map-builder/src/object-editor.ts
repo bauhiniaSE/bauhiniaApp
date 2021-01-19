@@ -56,14 +56,15 @@ function createLabel(label: string, text: string) {
   element.innerText = text;
   return element;
 }
-
-const toBase64 = (file: File) =>
-  new Promise((resolve: (value: string) => void, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result as string);
-    reader.onerror = (error) => reject(error);
+async function readFileAsDataURL(file: File) {
+  const resultBase64 = await new Promise((resolve) => {
+    const fileReader = new FileReader();
+    fileReader.onload = (e) => resolve(fileReader.result);
+    fileReader.readAsDataURL(file);
   });
+
+  return resultBase64 as string;
+}
 
 export class ObjectEditor {
   private tile?: Item;
@@ -108,12 +109,18 @@ export class ObjectEditor {
       onchange: async (e) => {
         const t = e.target as HTMLInputElement;
         if (t.files) {
+          const file = t.files[0];
           const img = document.createElement('img');
-          img.src = await toBase64(t.files[0]);
           const canvas = document.createElement('canvas');
+          const result = await readFileAsDataURL(file);
+          img.src = result;
+
+          let ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
+          ctx.drawImage(img, 0, 0);
+
           canvas.width = 64;
           canvas.height = 64;
-          const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
+          ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
           ctx.drawImage(img, 0, 0, 64, 64);
 
           values.image = canvas.toDataURL('image/png');
