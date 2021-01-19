@@ -7,7 +7,7 @@ import { Weather } from './weather-constants';
 
 export class Facet {
   public borderingBubble: Bubble;
-  public temperature: number = 0;
+  public temperature: number = Parameters.facetStartingTemperature;
   public shadowed: boolean = false;
 
   public lowerHalf: Facet;
