@@ -8,8 +8,34 @@
   <title>New Blueprint</title>
 
   <style>
+     input,
+    button {
+      font-family: "Roboto", sans-serif;
+      background: #fdfffb;
+      box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+      margin-bottom: 50px;
+      margin-left: 10px;
+      margin-right: 10px;
+      color: #24616b;
+      padding: 25px;
+      font-size: inherit;
+      border: none;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      width: 250px;
+    }
+
+    input:hover,
+    button:hover {
+      background-color: #a4ccb9;
+      color: #133f46;
+    }
     canvas {
       border: 1px solid #000;
+      background-color: #a4ccb9;
+      /*width: 69%;*/
     }
 
     img {
@@ -22,26 +48,50 @@
       right: 0;
       top: 0;
       bottom: 0;
-      width: 300px;
+      width: 30%;
       border-left: 1px solid #000;
+      background-color: #133f46;
     }
 
     #tiles>div {
       width: 95px;
       height: 95px;
       border: 1px solid #000;
+    
     }
 
     .selected {
       border-color: #f00 !important;
     }
+    
+    body {
+      background-image: -webkit-linear-gradient(0deg, #045714, #24616b);
+      font-family: "Roboto", sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
   </style>
 </head>
 
 <body>
+  
+
+
   <canvas width="1200" height="700" id="builder"></canvas>
   <div id="tiles"></div>
-
+  <div>
+    <div class="flex">
+      
+        <input type="button" value="Simulate" id="simulate" />
+        <input type="button" value="Save" />
+        <form>
+        <button formaction="/maps">Back</button>
+        <button formaction="/">Exit</button>
+      </form>
+    </div>
+    <rect id="r1">Simulation results will be displayed here.</rect>
+    <br></br>
+  </div>
   <script src="/map-builder/map-builder.js"></script>
   <script>
     const tilesContainer = document.getElementById('tiles');
