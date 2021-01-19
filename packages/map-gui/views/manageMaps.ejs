@@ -216,8 +216,8 @@
       })
     });
 
-    Manager.listAllUserGames().then(maps => {
-      maps.forEach((map) => {
+    Manager.listAllUserGames('user').then(maps => {
+      maps.forEach((map, index) => {
         const element = document.createElement('a');
         element.href = `/map/edit?${map.id}`;
         element.innerText = `map ${index}`;

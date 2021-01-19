@@ -14,11 +14,11 @@ mapsUserRouter.get('/', (req, res) => {
 });
 
 newMapsRouter.get('/', (req, res) => {
-  res.render('editMap');
+  res.render('newMap');
 });
 
 editMapsRouter.get('/', (req, res) => {
-  res.render('newMap');
+  res.render('editMap');
 });
 
 export { mapsRouter, newMapsRouter, editMapsRouter, mapsUserRouter };
