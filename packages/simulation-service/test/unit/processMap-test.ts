@@ -54,6 +54,39 @@ describe('process map - test', () => {
     expect(s.bubbles.bubbles[29].y).equal(200);
   });
 
+  it('bubble creation', () => {
+    const s: Simulator = new Simulator();
+    const m: IMap = {
+      id: '',
+      height: 50,
+      width: 50,
+      tiles: [
+        {
+          id: 'gebouw',
+          widthWE: 1,
+          widthNS: 1,
+          height: 1,
+
+          canPlaceOn: false,
+          material: {
+            albedo: 5,
+            density: 10,
+          },
+          price: 110,
+          position: {
+            x: 11,
+            y: 3,
+            layer: 1,
+          },
+        },
+      ],
+    };
+    s.processMap(m);
+    expect(s.bubbles.bubbles.length).equal(1);
+    expect(s.facets.facets[0].borderingBubble).equal(s.bubbles.bubbles[0]);
+    s.simulateFromScratch(m, Direction.N, 60);
+  });
+
   it('simple processing', () => {
     const s: Simulator = new Simulator();
     const m: IMap = {

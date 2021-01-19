@@ -7,6 +7,6 @@ export class Weather {
   public static readonly airSpecificHeat: number = 1006; // [J/kgK]
   public static readonly ambientTemp: number = 25; // [*C]
   public static readonly sunPower: number = 1000 * 60 * 60 * 6; // [J]
-  public static readonly airDiffusivity: number = (19 * 10000) / 36; //[m2/h]
+  public static readonly airDiffusivity: number = (22 * 10000) / 36; //[m2/h]
   public static readonly latentVaporisationHeat: number = 10658000; // [J]
 }
