@@ -2,7 +2,6 @@
 import { IMap, IObjectOnMap } from 'bauhinia-api/map';
 
 import { Bubble } from './bubble';
-
 import { BubbleList } from './bubble-list';
 
 import { Direction } from './direction';
@@ -54,7 +53,7 @@ export class Simulator implements ISimulationService {
           Direction.TOP,
           0,
           surface.material.albedo,
-          false,
+          surface.material.plant,
           surface.material.density
         )
       );
@@ -70,7 +69,7 @@ export class Simulator implements ISimulationService {
           Direction.TOP,
           0,
           surface.material.albedo,
-          false,
+          surface.material.plant,
           surface.material.density
         )
       );
@@ -87,7 +86,7 @@ export class Simulator implements ISimulationService {
             Direction.W,
             0,
             building.material.albedo,
-            false,
+            building.material.plant,
             building.material.density
           )
         );
@@ -100,7 +99,7 @@ export class Simulator implements ISimulationService {
             Direction.S,
             0,
             building.material.albedo,
-            false,
+            building.material.plant,
             building.material.density
           )
         );
@@ -113,7 +112,7 @@ export class Simulator implements ISimulationService {
             Direction.E,
             0,
             building.material.albedo,
-            false,
+            building.material.plant,
             building.material.density
           )
         );
@@ -126,7 +125,7 @@ export class Simulator implements ISimulationService {
             Direction.N,
             0,
             building.material.albedo,
-            false,
+            building.material.plant,
             building.material.density
           )
         );
@@ -139,7 +138,7 @@ export class Simulator implements ISimulationService {
             Direction.TOP,
             building.height,
             building.material.albedo,
-            false,
+            building.material.plant,
             building.material.density
           )
         );
