@@ -76,6 +76,7 @@ describe('process map - test', () => {
           material: {
             albedo: 1,
             density: 2,
+            plant: true,
           },
           price: 0,
           position: {
@@ -146,6 +147,7 @@ describe('process map - test', () => {
           material: {
             albedo: 0,
             density: 2,
+            plant: true,
           },
           price: 0,
           position: {
@@ -164,6 +166,7 @@ describe('process map - test', () => {
           material: {
             albedo: 1,
             density: 2,
+            plant: true,
           },
           price: 0,
           position: {
@@ -182,6 +185,7 @@ describe('process map - test', () => {
           material: {
             albedo: 0,
             density: 2,
+            plant: true,
           },
           price: 0,
           position: {
@@ -225,6 +229,7 @@ describe('process map - test', () => {
           material: {
             albedo: 0,
             density: 2,
+            plant: true,
           },
           price: 0,
           position: {
@@ -243,6 +248,7 @@ describe('process map - test', () => {
           material: {
             albedo: 1,
             density: 2,
+            plant: true,
           },
           price: 0,
           position: {
@@ -261,6 +267,7 @@ describe('process map - test', () => {
           material: {
             albedo: 0,
             density: 2,
+            plant: true,
           },
           price: 0,
           position: {
