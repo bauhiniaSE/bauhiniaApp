@@ -52,6 +52,7 @@ export class TileRepository implements ITileRepository {
         canPlaceOn: object.canPlaceOn,
         albedo: object.material.albedo,
         density: object.material.density,
+        plant: object.material.plant,
         price: object.price,
       })
       .then(() => {
