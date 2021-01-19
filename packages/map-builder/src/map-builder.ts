@@ -110,7 +110,12 @@ export class MapBuilder {
   public selectedTile: string = '';
 
   constructor(private readonly canvas: HTMLCanvasElement) {
-    this.context = canvas.getContext('2d') as CanvasRenderingContext2D;
+    const context = canvas.getContext('2d');
+    if (context) {
+      this.context = context;
+    } else {
+      throw new Error('Your browser does not support canvas');
+    }
   }
 
   public async newBlueprint() {
