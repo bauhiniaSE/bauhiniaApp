@@ -1,17 +1,11 @@
-import html2canvas from 'html2canvas';
-
 export class SaveSystem {
-  public convertMapToPicture(doc: any): boolean {
+  public convertMapToPicture(src: string): boolean {
     //<script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
-    var container = doc.getElementById('grid_id');
-    html2canvas(container, { allowTaint: true }).then(function (canvas) {
-      var link = doc.createElement('a');
-      doc.body.appendChild(link);
-      link.download = 'html_image.jpg';
-      link.href = canvas.toDataURL();
-      link.target = '_blank';
-      link.click();
-    });
+    const link = document.createElement('a');
+    link.download = 'html_image.jpg';
+    link.href = src;
+    link.target = '_blank';
+    link.click();
     return true;
   }
 
