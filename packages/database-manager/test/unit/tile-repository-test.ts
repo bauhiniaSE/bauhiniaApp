@@ -10,6 +10,7 @@ let testItem: Item;
 class Material implements IMaterial {
   public albedo: number;
   public density: number;
+  public plant: boolean = true;
 }
 
 describe('tile-test', () => {

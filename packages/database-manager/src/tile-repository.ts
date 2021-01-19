@@ -99,6 +99,7 @@ export class TileRepository implements ITileRepository {
           returnItem.material = {
             albedo: childData.albedo,
             density: childData.density,
+            plant: childData.plant,
           };
           returnItem.price = childData.price;
           found = 0;
@@ -129,6 +130,7 @@ export class TileRepository implements ITileRepository {
         returnItem.material = {
           albedo: childData.albedo,
           density: childData.density,
+          plant: childData.plant,
         };
         returnItem.price = childData.price;
         listOfItems.push(returnItem);
@@ -153,6 +155,7 @@ export class Item implements IObject {
   public material = {
     albedo: 0,
     density: 0,
+    plant: false,
   };
   public price: number = 0;
 }

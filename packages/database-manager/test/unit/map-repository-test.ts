@@ -27,6 +27,7 @@ describe('map-test', () => {
       material: {
         albedo: 1,
         density: 2,
+        plant: true,
       },
       price: 10,
       position: {
@@ -112,6 +113,7 @@ describe('map-test', () => {
       material: {
         albedo: 1,
         density: 2,
+        plant: true,
       },
       price: 10,
       position: {
@@ -140,6 +142,7 @@ describe('map-test', () => {
       material: {
         albedo: 1,
         density: 2,
+        plant: true,
       },
       price: 10,
       position: {
@@ -182,6 +185,7 @@ describe('map-test', () => {
       material: {
         albedo: 1,
         density: 2,
+        plant: true,
       },
       price: 10,
       position: {
@@ -210,6 +214,7 @@ describe('map-test', () => {
       material: {
         albedo: 1,
         density: 2,
+        plant: true,
       },
       price: 10,
       position: {
@@ -248,6 +253,7 @@ describe('map-test', () => {
       material: {
         albedo: 1,
         density: 2,
+        plant: true,
       },
       price: 10,
       position: {
@@ -276,6 +282,7 @@ describe('map-test', () => {
       material: {
         albedo: 1,
         density: 2,
+        plant: true,
       },
       price: 10,
       position: {

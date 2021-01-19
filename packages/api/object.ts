@@ -17,4 +17,5 @@ export interface IObject {
 export interface IMaterial {
   albedo: number;
   density: number;
+  plant: boolean;
 }

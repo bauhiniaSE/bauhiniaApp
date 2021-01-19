@@ -14,7 +14,7 @@ const TileRepository = new TileRepositoryFactory();
 const tileSize = 64;
 
 export class Camera {
-  public static SPEED = 256;
+  public static SPEED = 512;
 
   public x: number = 0;
   public y: number = 0;
@@ -165,7 +165,23 @@ export class MapBuilder {
     return this.Map;
   }
   public toDataURL() {
-    return this.canvas.toDataURL();
+    const canvas = document.createElement('canvas');
+    canvas.width = 50 * 64;
+    canvas.height = 50 * 64;
+    const context = canvas.getContext('2d') as CanvasRenderingContext2D;
+    this.Map?.tiles.forEach((tile) => {
+      const x = tile.position.x * tileSize;
+      const y = tile.position.y * tileSize;
+      console.log(x, y);
+      context.drawImage(
+        this.imageLoader.getImage(tile.id) as HTMLImageElement, // image
+        Math.round(x),
+        Math.round(y),
+        tileSize,
+        tileSize
+      );
+    });
+    return canvas.toDataURL();
   }
 
   private mouseEvent(e: MouseEvent) {
@@ -186,6 +202,7 @@ export class MapBuilder {
       material: {
         albedo: t.material.albedo,
         density: t.material.density,
+        plant: t.material.plant,
       },
       position: {
         x: Math.round(x),
