@@ -160,6 +160,10 @@ export class MapBuilder {
       MapRepository.updateMap(this.Map);
     }
   }
+
+  public getMap() {
+    return this.Map;
+  }
   public toDataURL() {
     return this.canvas.toDataURL();
   }

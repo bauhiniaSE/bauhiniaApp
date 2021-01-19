@@ -130,7 +130,7 @@ export class ObjectEditor {
       id: 'albedo',
       type: 'number',
       oninput: (e) => {
-        values.material.albedo = +(e.target as HTMLInputElement).value % 100;
+        values.material.albedo = +(e.target as HTMLInputElement).value / 100;
       },
       value: values.material.albedo,
     });
