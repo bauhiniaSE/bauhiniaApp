@@ -8,7 +8,7 @@
   <title>New Blueprint</title>
 
   <style>
-     input,
+    input,
     button {
       font-family: "Roboto", sans-serif;
       background: #fdfffb;
@@ -32,10 +32,10 @@
       background-color: #a4ccb9;
       color: #133f46;
     }
+
     canvas {
       border: 1px solid #000;
       background-color: #a4ccb9;
-      /*width: 69%;*/
     }
 
     img {
@@ -57,13 +57,17 @@
       width: 95px;
       height: 95px;
       border: 1px solid #000;
-    
+
     }
 
     .selected {
       border-color: #f00 !important;
     }
-    
+
+    form {
+      display: inline-block;
+    }
+
     body {
       background-image: -webkit-linear-gradient(0deg, #045714, #24616b);
       font-family: "Roboto", sans-serif;
@@ -74,29 +78,31 @@
 </head>
 
 <body>
-  
-
-
   <canvas width="1200" height="700" id="builder"></canvas>
   <div id="tiles"></div>
   <div>
     <div class="flex">
-      
-        <input type="button" value="Simulate" id="simulate" />
-        <input type="button" value="Save" />
-        <form>
+      <input type="button" value="Simulate" id="simulate" />
+      <input type="button" value="Save" id="save" />
+      <form>
         <button formaction="/maps">Back</button>
         <button formaction="/">Exit</button>
       </form>
     </div>
     <rect id="r1">Simulation results will be displayed here.</rect>
-    <br></br>
   </div>
+
   <script src="/map-builder/map-builder.js"></script>
+  <script src="/simulation-service/simulation-service.js"></script>
   <script>
     const tilesContainer = document.getElementById('tiles');
+    const builder = document.getElementById('builder');
 
-    const mapBuilder = new MapBuilder(document.getElementById('builder'));
+    builder.width = Math.floor(window.innerWidth * 0.69);
+
+    const simulator = new Simulator();
+
+    const mapBuilder = new MapBuilder(builder);
     mapBuilder.newBlueprint().then(() => {
       let selected = null;
 
@@ -119,6 +125,22 @@
         tilesContainer.appendChild(element);
       });
     });
+
+    const simulate_btn = document.getElementById('simulate');
+    const save_btn = document.getElementById('save');
+
+    save_btn.onclick = () => {
+      mapBuilder.save();
+    }
+    simulate_btn.onclick = () => {
+      simulator.simulateFromScratch(mapBuilder.getMap(), 0, 60);
+      for (let x = 0; x < 50; x++) {
+        for (let y = 0; y < 50; y++) {
+          const temp = simulator.getTemperature(x, y);
+
+        }
+      }
+    }
   </script>
 </body>
 
