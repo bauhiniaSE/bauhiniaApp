@@ -83,13 +83,13 @@
   <div>
     <div class="flex">
       <input type="button" value="Simulate" id="simulate" />
+      <input type="button" value="Download project as picture" id="download" />
       <input type="button" value="Save" id="save" />
       <form>
         <button formaction="/maps">Back</button>
         <button formaction="/">Exit</button>
       </form>
     </div>
-    <rect id="r1">Simulation results will be displayed here.</rect>
   </div>
 
   <script src="/map-builder/map-builder.js"></script>
@@ -98,14 +98,9 @@
   <script>
     const tilesContainer = document.getElementById('tiles');
     const builder = document.getElementById('builder');
-
-    const saveSystem = new SaveSystem();
+    const save_btn = document.getElementById('save');
 
     builder.width = Math.floor(window.innerWidth * 0.69);
-
-    const simulator = new Simulator();
-    const simulationCanvas = document.createElement('canvas');
-    const simulationContext = simulationContext.getContext('2d');
 
     const mapBuilder = new MapBuilder(builder);
     mapBuilder.newBlueprint().then(() => {
@@ -131,12 +126,23 @@
       });
     });
 
-    const simulate_btn = document.getElementById('simulate');
-    const save_btn = document.getElementById('save');
-
     save_btn.onclick = () => {
       mapBuilder.save();
     }
+
+    const saveSystem = new SaveSystem();
+    const saveToImage = document.getElementById('download');
+
+    saveToImage.onclick = () => {
+      saveSystem.convertMapToPicture(mapBuilder.toDataURL());
+    }
+
+    const simulator = new Simulator();
+    const simulationCanvas = document.createElement('canvas');
+    const simulationContext = simulationContext.getContext('2d');
+
+    const simulate_btn = document.getElementById('simulate');
+
     simulate_btn.onclick = () => {
       simulator.simulateFromScratch(mapBuilder.getMap(), 0, 60);
       simulationCanvas.width = 64 * 50;

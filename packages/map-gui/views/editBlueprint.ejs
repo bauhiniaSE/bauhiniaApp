@@ -8,7 +8,7 @@
   <title>Edit Blueprint</title>
 
   <style>
-     input,
+    input,
     button {
       font-family: "Roboto", sans-serif;
       background: #fdfffb;
@@ -48,7 +48,7 @@
       right: 0;
       top: 0;
       bottom: 0;
-      width: 300px;
+      width: 30%;
       border-left: 1px solid #000;
       background-color: #133f46;
     }
@@ -57,14 +57,17 @@
       width: 95px;
       height: 95px;
       border: 1px solid #000;
+
     }
 
     .selected {
       border-color: #f00 !important;
     }
+
     form {
       display: inline-block;
     }
+
     body {
       background-image: -webkit-linear-gradient(0deg, #045714, #24616b);
       font-family: "Roboto", sans-serif;
@@ -80,20 +83,26 @@
   <div>
     <div class="flex">
       <input type="button" value="Simulate" id="simulate" />
+      <input type="button" value="Download project as picture" id="download" />
       <input type="button" value="Save" id="save" />
       <form>
         <button formaction="/maps">Back</button>
         <button formaction="/">Exit</button>
       </form>
     </div>
-    <rect id="r1">Simulation results will be displayed here.</rect>
   </div>
-  
+
   <script src="/map-builder/map-builder.js"></script>
+  <script src="/simulation-service/simulation-service.js"></script>
+  <script src="/save-system/save-system.js"></script>
   <script>
     const tilesContainer = document.getElementById('tiles');
+    const builder = document.getElementById('builder');
+    const save_btn = document.getElementById('save');
 
-    const mapBuilder = new MapBuilder(document.getElementById('builder'));
+    builder.width = Math.floor(window.innerWidth * 0.69);
+
+    const mapBuilder = new MapBuilder(builder);
     mapBuilder.editBlueprint(location.search.substr(1)).then(() => {
       let selected = null;
 
@@ -116,6 +125,39 @@
         tilesContainer.appendChild(element);
       });
     });
+
+    save_btn.onclick = () => {
+      mapBuilder.save();
+    }
+
+    const saveSystem = new SaveSystem();
+    const saveToImage = document.getElementById('download');
+
+    saveToImage.onclick = () => {
+      saveSystem.convertMapToPicture(mapBuilder.toDataURL());
+    }
+
+    const simulator = new Simulator();
+    const simulationCanvas = document.createElement('canvas');
+    const simulationContext = simulationContext.getContext('2d');
+
+    const simulate_btn = document.getElementById('simulate');
+
+    simulate_btn.onclick = () => {
+      simulator.simulateFromScratch(mapBuilder.getMap(), 0, 60);
+      simulationCanvas.width = 64 * 50;
+      simulationCanvas.height = 64 * 50;
+
+      for (let x = 0; x < 50; x++) {
+        for (let y = 0; y < 50; y++) {
+          const temp = simulator.getTemperature(x, y) - 25;
+          const d = 255 - temp / 10;
+          simulationContext.fillStyle = `rgb(255, ${d}, ${d})`;
+          simulationContext.fillRect(x * 64, y * 64, (x + 1) * 64, (y + 1) * 64);
+        }
+      }
+      saveSystem.convertMapToPicture(simulationCanvas.toDataURL());
+    }
   </script>
 </body>
 

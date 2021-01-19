@@ -6,7 +6,7 @@ import { registerRouter } from './controllers/RegisterController';
 
 import { objectsRouter } from './controllers/ObjectsController';
 import { blueprintRouter, editBlueprintRouter } from './controllers/BlueprintController';
-import { mapsRouter, newMapsRouter, editMapsRouter } from './controllers/MapsController';
+import { mapsRouter, newMapsRouter, editMapsRouter, mapsUserRouter } from './controllers/MapsController';
 
 const routes = Router();
 
@@ -16,6 +16,7 @@ routes.use('/register', registerRouter);
 
 routes.use('/object', objectsRouter);
 routes.use('/maps', mapsRouter);
+routes.use('/mapsUser', mapsUserRouter);
 routes.use('/map/new', newMapsRouter);
 routes.use('/map/edit', editMapsRouter);
 
