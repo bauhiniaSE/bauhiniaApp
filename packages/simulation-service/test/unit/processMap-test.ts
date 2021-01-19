@@ -93,7 +93,6 @@ describe('process map - test', () => {
     let secndSampleFound: boolean = false;
     let thirdSampleFound: boolean = false;
     s.facets.facets.forEach((facet) => {
-      //console.log(facet.y, facet.width);
       if (
         facet.x === 50 &&
         facet.y === 100 &&

@@ -34,7 +34,6 @@ describe('illuminate and crop - test', () => {
     fl.facets[2].albedo = 0.6;
     expect(fl.facets[0].temperature).equal(Parameters.facetStartingTemperature);
     fl.illuminateAndCrop(60, Direction.S);
-    //console.log(fl.facets[0].temperature, fl.facets[1].temperature, fl.facets[2].temperature);
     expect(fl.facets[0].direction).equal(Direction.S);
     expect(fl.facets[0].temperature > Parameters.facetStartingTemperature).to.be.true;
     expect(fl.facets[0].temperature).greaterThan(fl.facets[1].temperature + 1);
