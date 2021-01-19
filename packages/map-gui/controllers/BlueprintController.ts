@@ -1,17 +1,17 @@
 import { Router } from 'express';
 
-const templateRouter = Router();
+const blueprintRouter = Router();
 
-templateRouter.get('/', (req, res) => {
-  res.render('newTemplate');
+blueprintRouter.get('/', (req, res) => {
+  res.render('newBlueprint');
 });
 
-templateRouter.get('/template/new', (req, res) => {
-  res.render('newTemplate');
+blueprintRouter.get('/blueprint/new', (req, res) => {
+  res.render('newBlueprint');
 });
 
-templateRouter.get('/template/edit', (req, res) => {
-  res.render('editTemplate');
+blueprintRouter.get('/blueprint/edit', (req, res) => {
+  res.render('editBlueprint');
 });
 
-export { templateRouter };
+export { blueprintRouter };
