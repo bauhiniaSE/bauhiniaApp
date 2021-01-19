@@ -113,12 +113,12 @@ export class MapBuilder {
     this.context = canvas.getContext('2d') as CanvasRenderingContext2D;
   }
 
-  public async newTemplate() {
+  public async newBlueprint() {
     this.Map = new MapClass();
     this.Map.id = uuidv4();
     await this.initialize();
   }
-  public async editTemplate(id: string) {
+  public async editBlueprint(id: string) {
     const temp = await MapRepository.getMap(id, '');
     if (temp === 400) {
       console.log('map not found');

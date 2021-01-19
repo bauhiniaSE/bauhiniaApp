@@ -5,7 +5,7 @@ import { loginRouter } from './controllers/LoginController';
 import { registerRouter } from './controllers/RegisterController';
 
 import { objectsRouter } from './controllers/ObjectsController';
-import { templateRouter } from './controllers/TemplateController';
+import { blueprintRouter } from './controllers/BlueprintController';
 import { mapsRouter } from './controllers/MapsController';
 
 const routes = Router();
@@ -19,8 +19,8 @@ routes.use('/maps', mapsRouter);
 routes.use('/map/new', mapsRouter);
 routes.use('/map/edit', mapsRouter);
 
-routes.use('/template', templateRouter);
-routes.use('/template/new', templateRouter);
-routes.use('/template/edit', templateRouter);
+routes.use('/blueprint', blueprintRouter);
+routes.use('/blueprint/new', blueprintRouter);
+routes.use('/blueprint/edit', blueprintRouter);
 
 export default routes;
