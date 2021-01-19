@@ -107,15 +107,16 @@ export class MapBuilder {
   private previousElapsed: number = 0;
 
   public tiles?: Item[];
+  public selectedTile: string = '';
 
   constructor(private readonly canvas: HTMLCanvasElement) {
     this.context = canvas.getContext('2d') as CanvasRenderingContext2D;
   }
 
-  public newTemplate() {
+  public async newTemplate() {
     this.Map = new MapClass();
     this.Map.id = uuidv4();
-    this.initialize();
+    await this.initialize();
   }
   public async editTemplate(id: string) {
     const temp = await MapRepository.getMap(id, '');
@@ -123,7 +124,7 @@ export class MapBuilder {
       console.log('map not found');
     } else {
       this.Map = temp;
-      this.initialize();
+      await this.initialize();
     }
   }
 
@@ -134,8 +135,9 @@ export class MapBuilder {
     } else {
       this.Map = temp;
       this.Map.id = uuidv4();
+      this.Map.login = 'user';
       this.Map.isBlueprint = false;
-      this.initialize();
+      await this.initialize();
     }
   }
   public async editMap(id: string) {
@@ -144,7 +146,7 @@ export class MapBuilder {
       console.log('map not found');
     } else {
       this.Map = temp;
-      this.initialize();
+      await this.initialize();
     }
   }
 
@@ -157,12 +159,42 @@ export class MapBuilder {
     return this.canvas.toDataURL();
   }
 
+  private mouseEvent(e: MouseEvent) {
+    if (!this.camera) {
+      throw new Error('Camera does not exist');
+    }
+    const startCol = Math.floor(this.camera.x / tileSize);
+    const startRow = Math.floor(this.camera.y / tileSize);
+    const offsetX = -this.camera.x + startCol * tileSize;
+    const offsetY = -this.camera.y + startRow * tileSize;
+
+    const x = (e.x - tileSize / 2 - offsetX) / tileSize + startCol;
+    const y = (e.y - tileSize / 2 - offsetY) / tileSize + startRow;
+    const t = this.tiles?.find((el) => el.id === this.selectedTile) as Item;
+
+    this.Map?.tiles.push({
+      ...t,
+      material: {
+        albedo: t.material.albedo,
+        density: t.material.density,
+      },
+      position: {
+        x: Math.round(x),
+        y: Math.round(y),
+        layer: 0,
+      },
+    });
+    this.render();
+  }
+
   private async initialize() {
     if (this.Map && !this.initialized) {
       this.keyboard.listenForEvents([KEYS.LEFT, KEYS.RIGHT, KEYS.UP, KEYS.DOWN]);
       this.camera = new Camera(this.Map, this.canvas.width, this.canvas.height);
       this.tiles = await TileRepository.getAllTiles();
       this.imageLoader.loadImages(this.tiles.map((item) => [item.id, item.image]));
+      this.canvas.onclick = this.mouseEvent.bind(this);
+      this.render();
       this.initialized = true;
       window.requestAnimationFrame(this.tick.bind(this));
     }
@@ -179,7 +211,11 @@ export class MapBuilder {
     this.previousElapsed = elapsed;
 
     this.update(delta);
-    this.render();
+
+    // re-draw map if there has been scroll
+    if (this.hasScrolled) {
+      this.render();
+    }
   }
 
   private update(delta: number) {
@@ -220,28 +256,31 @@ export class MapBuilder {
       throw new Error('Map does not exist');
     }
 
-    // re-draw map if there has been scroll
-    if (this.hasScrolled) {
-      this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-      const startCol = Math.floor(this.camera.x / tileSize);
-      const endCol = startCol + this.camera.width / tileSize;
-      const startRow = Math.floor(this.camera.y / tileSize);
-      const endRow = startRow + this.camera.height / tileSize;
-      const offsetX = -this.camera.x + startCol * tileSize;
-      const offsetY = -this.camera.y + startRow * tileSize;
-
-      this.Map.tiles.forEach((tile) => {
+    const startCol = Math.floor(this.camera.x / tileSize);
+    const endCol = startCol + this.camera.width / tileSize;
+    const startRow = Math.floor(this.camera.y / tileSize);
+    const endRow = startRow + this.camera.height / tileSize;
+    const offsetX = -this.camera.x + startCol * tileSize;
+    const offsetY = -this.camera.y + startRow * tileSize;
+    this.Map.tiles.forEach((tile) => {
+      if (
+        tile.position.x >= startCol &&
+        tile.position.x <= endCol &&
+        tile.position.y >= startRow &&
+        tile.position.y <= endRow
+      ) {
         const x = (tile.position.x - startCol) * tileSize + offsetX;
         const y = (tile.position.y - startRow) * tileSize + offsetY;
-        if (x >= startCol && x <= endCol && y >= startRow && y <= endRow) {
-          this.context.drawImage(
-            this.imageLoader.getImage(tile.id) as HTMLImageElement, // image
-            Math.round(x),
-            Math.round(y)
-          );
-        }
-      });
-    }
+        this.context.drawImage(
+          this.imageLoader.getImage(tile.id) as HTMLImageElement, // image
+          Math.round(x),
+          Math.round(y),
+          tileSize,
+          tileSize
+        );
+      }
+    });
   }
 }

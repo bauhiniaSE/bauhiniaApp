@@ -15,8 +15,6 @@ routes.use('/login', loginRouter);
 routes.use('/register', registerRouter);
 
 routes.use('/object', objectsRouter);
-routes.use('/object/edit', objectsRouter);
-routes.use('/object/new', objectsRouter);
 routes.use('/maps', mapsRouter);
 routes.use('/map/new', mapsRouter);
 routes.use('/map/edit', mapsRouter);

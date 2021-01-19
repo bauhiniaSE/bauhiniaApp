@@ -2,7 +2,7 @@
   "compilerOptions": {
     "composite": true,
     "declarationMap": true,
-    "module": "commonjs",
+    "module": "es2020",
     "target": "ESNext",
     "noImplicitAny": true,
     "moduleResolution": "node",

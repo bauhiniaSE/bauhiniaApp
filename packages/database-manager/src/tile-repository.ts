@@ -121,6 +121,7 @@ export class TileRepository implements ITileRepository {
         const childData = childSnapshot.val();
         const returnItem: Item = new Item();
         returnItem.id = childData.id;
+        returnItem.image = childData.image;
         returnItem.widthWE = childData.widthWE;
         returnItem.widthNS = childData.widthNS;
         returnItem.height = childData.height;

@@ -166,12 +166,12 @@ export class MapRepository implements IMapRepository {
 }
 
 class Map implements IMap {
-  public login: string;
-  public isBlueprint: boolean;
+  public login: string = '';
+  public isBlueprint: boolean = true;
   public id: string;
-  public height: number;
-  public width: number;
-  public tiles: IObjectOnMap[];
+  public height: number = 50;
+  public width: number = 50;
+  public tiles: IObjectOnMap[] = [];
 }
 
 export { uuidv4, Map };
