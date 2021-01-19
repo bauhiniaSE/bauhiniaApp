@@ -156,6 +156,15 @@ export class ObjectEditor {
       value: values.price,
     });
 
+    const isPlant = createElement('input', {
+      id: 'plant',
+      type: 'number',
+      oninput: (e) => {
+        values.material.plant = +(e.target as HTMLInputElement).value === 1;
+      },
+      value: values.material.plant,
+    });
+
     const saveTile = createElement('input', {
       type: 'button',
       classes: ['submit_btn'],
@@ -176,6 +185,8 @@ export class ObjectEditor {
     editorHandle.appendChild(materialDensityHandler);
     editorHandle.appendChild(createLabel('price', 'price'));
     editorHandle.appendChild(priceHandler);
+    editorHandle.appendChild(createLabel('plant', 'is it a plant (1 | 0)'));
+    editorHandle.appendChild(isPlant);
     editorHandle.appendChild(saveTile);
 
     return editorHandle;
