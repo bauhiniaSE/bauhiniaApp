@@ -11,6 +11,7 @@ interface CreateElementOptions {
   id?: string;
   type?: string;
   value?: any;
+  src?: string;
   onclick?: (this: GlobalEventHandlers, ev: MouseEvent) => any;
   oninput?: (this: GlobalEventHandlers, ev: Event) => any;
   onchange?: (this: GlobalEventHandlers, ev: Event) => any;
@@ -26,6 +27,9 @@ function createElement<K extends keyof HTMLElementTagNameMap>(
   }
   if (options.id) {
     element.id = options.id;
+  }
+  if (options.src) {
+    (element as HTMLImageElement).src = options.src;
   }
   if (options.value) {
     (element as HTMLInputElement).value = options.value;
@@ -96,6 +100,7 @@ export class ObjectEditor {
     const editorHandle = createElement('div', { id: 'editorHandle' });
     const imageViewer = createElement('img', {
       id: 'img_view',
+      src: values.image,
     });
     const imageHandler = createElement('input', {
       id: 'image',
@@ -132,7 +137,7 @@ export class ObjectEditor {
       oninput: (e) => {
         values.material.albedo = +(e.target as HTMLInputElement).value / 100;
       },
-      value: values.material.albedo,
+      value: values.material.albedo * 100,
     });
     const materialDensityHandler = createElement('input', {
       id: 'density',
