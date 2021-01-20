@@ -16,8 +16,6 @@ describe('heat transfer - test', () => {
     f.assignBubble(b);
     f.temperature = 30;
 
-    expect(b.temperature).equal(Weather.ambientTemp);
-
     f.transferHeat();
     expect(b.temperature).greaterThan(Weather.ambientTemp);
   });
