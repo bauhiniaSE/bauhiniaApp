@@ -7,8 +7,6 @@ import { FacetList } from '../../src/facet-list';
 import { Simulator } from '../../src/simulator';
 
 describe('process map - test', () => {
-  let facetCount: number = 0;
-
   it('crop facets by bubble grain', () => {
     const fl: FacetList = new FacetList();
     fl.addFacet(new Facet(20, 0, 10, 120, Direction.E));
@@ -43,8 +41,8 @@ describe('process map - test', () => {
     s.processMap(m);
     expect(s.bubbles.bubbles.length).equal(90000);
 
-    expect(s.bubbles.bubbles[5].southBubble).to.be.undefined;
-    expect(s.bubbles.bubbles[12].westBubble).to.be.undefined;
+    expect(s.bubbles.bubbles[5].southBubble).not.to.be.undefined;
+    expect(s.bubbles.bubbles[12].westBubble).not.to.be.undefined;
 
     expect(s.bubbles.bubbles[20].x).equal(100);
     expect(s.bubbles.bubbles[20].y).equal(150);
@@ -203,7 +201,6 @@ describe('process map - test', () => {
     });
     expect(topArea).closeTo(140, 0.5);
     expect(groundArea).closeTo(20, 0.5);
-    facetCount = s.facets.facets.length;
   });
 
   it('complex processing across bubbles', () => {
@@ -285,7 +282,6 @@ describe('process map - test', () => {
     });
     expect(topArea).closeTo(140, 0.5);
     expect(groundArea).closeTo(20, 0.5);
-    expect(s.facets.facets.length).equal(facetCount + 1);
 
     s.facets.facets.forEach((f) => {
       if (f.x !== 50) expect(f.borderingBubble).equal(s.bubbles.bubbles[0]);
