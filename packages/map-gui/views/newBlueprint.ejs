@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Blueprint</title>
+
+  <style>
+    input,
+    button {
+      font-family: "Roboto", sans-serif;
+      background: #fdfffb;
+      box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+      margin-bottom: 50px;
+      margin-left: 10px;
+      margin-right: 10px;
+      color: #24616b;
+      padding: 25px;
+      font-size: inherit;
+      border: none;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      width: 250px;
+    }
+
+    input:hover,
+    button:hover {
+      background-color: #a4ccb9;
+      color: #133f46;
+    }
+
+    canvas {
+      border: 1px solid #000;
+      background-color: #a4ccb9;
+    }
+
+    img {
+      width: 90px;
+      height: 90px;
+    }
+
+    #tiles {
+      position: fixed;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 30%;
+      border-left: 1px solid #000;
+      background-color: #133f46;
+      text-align: center;
+    }
+
+    #tiles>div {
+      display: inline-block;
+      width: 95px;
+      height: 95px;
+      border: 1px solid #000;
+      margin: 5px;
+    }
+
+    .selected {
+      border-color: #f00 !important;
+    }
+
+    form {
+      display: inline-block;
+    }
+
+    body {
+      background-image: -webkit-linear-gradient(0deg, #045714, #24616b);
+      font-family: "Roboto", sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas width="1200" height="700" id="builder"></canvas>
+  <div id="tiles"></div>
+  <div>
+    <div class="flex">
+      <input type="button" value="Simulate" id="simulate" />
+      <input type="button" value="Download project as picture" id="download" />
+      <input type="button" value="Save" id="save" />
+      <form>
+        <button formaction="/maps">Back</button>
+        <button formaction="/">Exit</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="/map-builder/map-builder.js"></script>
+  <script src="/simulation-service/simulation-service.js"></script>
+  <script src="/save-system/save-system.js"></script>
+  <script>
+    const tilesContainer = document.getElementById('tiles');
+    const builder = document.getElementById('builder');
+    const save_btn = document.getElementById('save');
+
+    builder.width = Math.floor(window.innerWidth * 0.69);
+
+    const mapBuilder = new MapBuilder(builder);
+    mapBuilder.newBlueprint().then(() => {
+      let selected = null;
+
+      mapBuilder.tiles.forEach(tile => {
+        const element = document.createElement('div');
+        element.id = tile.id;
+        element.onclick = () => {
+          if (selected !== null) {
+            selected.className = '';
+          }
+          mapBuilder.selectedTile = tile.id;
+          element.className = 'selected';
+          selected = element;
+        }
+        const img = document.createElement('img');
+        img.src = tile.image;
+
+        element.appendChild(img);
+
+        tilesContainer.appendChild(element);
+      });
+    });
+
+    save_btn.onclick = () => {
+      mapBuilder.save();
+    }
+
+    const saveSystem = new SaveSystem();
+    const saveToImage = document.getElementById('download');
+
+    saveToImage.onclick = () => {
+      saveSystem.convertMapToPicture(mapBuilder.toDataURL());
+    }
+
+    const simulator = new Simulator();
+    const simulationCanvas = document.createElement('canvas');
+    const simulationContext = simulationCanvas.getContext('2d');
+
+    const simulate_btn = document.getElementById('simulate');
+
+    simulate_btn.onclick = () => {
+      simulator.simulateFromScratch(mapBuilder.getMap(), 0, 60);
+      simulationCanvas.width = 64 * 50;
+      simulationCanvas.height = 64 * 50;
+
+      for (let x = 0; x < 50; x++) {
+        for (let y = 0; y < 50; y++) {
+          const temp = simulator.getTemperature(x, y) - 25;
+          const d = 255 - temp / 10;
+          simulationContext.fillStyle = `rgb(255, ${d}, ${d})`;
+          simulationContext.fillRect(x * 64, y * 64, (x + 1) * 64, (y + 1) * 64);
+        }
+      }
+      saveSystem.convertMapToPicture(simulationCanvas.toDataURL());
+    }
+  </script>
+</body>
+
+</html>

@@ -3,6 +3,7 @@
   "description": "Component used to define simulation logic and run it on passed maps",
   "version": "1.0.0",
   "scripts": {
+    "build": "webpack --mode development",
     "test": "nyc npm run test:unit",
     "test:unit": "mocha \"test/unit/**/*.js\""
   },

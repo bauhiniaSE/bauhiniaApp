@@ -3,10 +3,11 @@
   "description": "Component used to define maps",
   "version": "1.0.0",
   "scripts": {
-    "test": "nyc npm run test:unit",
-    "test:unit": "mocha \"test/unit/**/*.js\""
+    "build": "webpack --mode development",
+    "docs": "typedoc --entryPoints ./src/map-builder.ts ./src/object-editor.ts --out docs"
   },
   "dependencies": {
+    "bauhinia-api": "1.0.0",
     "bauhinia-authentication": "1.0.0",
     "bauhinia-database-manager": "1.0.0"
   }

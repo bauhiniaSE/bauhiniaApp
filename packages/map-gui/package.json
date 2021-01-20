@@ -3,12 +3,13 @@
   "description": "Component used to create the views",
   "version": "1.0.0",
   "scripts": {
-    "start": "nodemon index.ts"
+    "start": "nodemon -r esm index.ts"
   },
   "main": "index.js",
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "esm": "3.2.25",
     "@types/express": "4.17.9",
     "@types/node": "^14.14.6",
     "body-parser": "1.19.0",

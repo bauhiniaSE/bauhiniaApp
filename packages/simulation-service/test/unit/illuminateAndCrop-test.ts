@@ -6,6 +6,7 @@ import { DirectionHandler } from '../../src/direction-handler';
 import { Facet } from '../../src/facet';
 
 import { FacetList } from '../../src/facet-list';
+import { Parameters } from '../../src/technical-parameters';
 
 describe('illuminate and crop - test', () => {
   it('facet cloning', () => {
@@ -18,10 +19,25 @@ describe('illuminate and crop - test', () => {
   it('illumination', () => {
     const fl: FacetList = new FacetList();
     fl.addFacet(new Facet(0, 0, 200, 100, Direction.S));
-    expect(fl.facets[0].temperature).equal(0);
+    expect(fl.facets[0].temperature).equal(Parameters.facetStartingTemperature);
     fl.illuminateAndCrop(60, Direction.S);
     expect(fl.facets[0].direction).equal(Direction.S);
-    expect(fl.facets[0].temperature > 0).to.be.true;
+    expect(fl.facets[0].temperature > Parameters.facetStartingTemperature).to.be.true;
+  });
+
+  it('illumination with evaporation', () => {
+    const fl: FacetList = new FacetList();
+    fl.addFacet(new Facet(0, 0, 200, 100, Direction.S));
+    fl.addFacet(new Facet(0, 0, 200, 100, Direction.S));
+    fl.addFacet(new Facet(0, 0, 200, 100, Direction.S));
+    fl.facets[1].evapot = true;
+    fl.facets[2].albedo = 0.6;
+    expect(fl.facets[0].temperature).equal(Parameters.facetStartingTemperature);
+    fl.illuminateAndCrop(60, Direction.S);
+    expect(fl.facets[0].direction).equal(Direction.S);
+    expect(fl.facets[0].temperature > Parameters.facetStartingTemperature).to.be.true;
+    expect(fl.facets[0].temperature).greaterThan(fl.facets[1].temperature + 1);
+    expect(fl.facets[0].temperature).greaterThan(fl.facets[2].temperature + 1);
   });
 
   it('illumination with horizontal crop', () => {

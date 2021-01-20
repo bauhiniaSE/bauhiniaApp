@@ -16,8 +16,6 @@ describe('heat transfer - test', () => {
     f.assignBubble(b);
     f.temperature = 30;
 
-    expect(b.temperature).equal(Weather.ambientTemp);
-
     f.transferHeat();
     expect(b.temperature).greaterThan(Weather.ambientTemp);
   });
@@ -25,6 +23,8 @@ describe('heat transfer - test', () => {
   it('horizontal bubble heat trasfer - temp 30C', () => {
     const s: Simulator = new Simulator();
     const m: IMap = {
+      login: '',
+      isBlueprint: true,
       id: '',
       height: 6 * Parameters.bubbleGrain,
       width: 6 * Parameters.bubbleGrain,
@@ -50,6 +50,8 @@ describe('heat transfer - test', () => {
   it('horizontal bubble heat trasfer - temp 40C', () => {
     const s: Simulator = new Simulator();
     const m: IMap = {
+      login: '',
+      isBlueprint: true,
       id: '',
       height: 6 * Parameters.bubbleGrain,
       width: 6 * Parameters.bubbleGrain,

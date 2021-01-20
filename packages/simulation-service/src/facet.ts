@@ -7,7 +7,7 @@ import { Weather } from './weather-constants';
 
 export class Facet {
   public borderingBubble: Bubble;
-  public temperature: number = 0;
+  public temperature: number = Parameters.facetStartingTemperature;
   public shadowed: boolean = false;
 
   public lowerHalf: Facet;
@@ -36,7 +36,7 @@ export class Facet {
   }
 
   public clone(): Facet {
-    return new Facet(
+    const clone: Facet = new Facet(
       this.x,
       this.y,
       this.height,
@@ -48,6 +48,10 @@ export class Facet {
       this.density,
       this.specificHeat
     );
+    if (this.borderingBubble !== undefined) {
+      clone.assignBubble(this.borderingBubble);
+    }
+    return clone;
   }
 
   public transferHeat(): void {

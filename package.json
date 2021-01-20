@@ -2,16 +2,18 @@
   "name": "bauhinia-parent",
   "private": true,
   "scripts": {
+    "rimraf": "npx rimraf node_modules packages/*/node_modules",
     "all": "npm run clean && npm run build && npm run lint && npm run test",
     "postinstall": "lerna bootstrap --no-ci && link-parent-bin",
     "lint": "eslint . --resolve-plugins-relative-to . --ext .ts,.tsx",
     "lint:log": "eslint . --resolve-plugins-relative-to . --ext .ts,.tsx -f compact -o lint.log",
     "lint:fix": "eslint . --resolve-plugins-relative-to . --ext .ts,.tsx --fix",
-    "clean": "rimraf \"packages/*/+(test|src)/**/*+(.d.ts|.js|.map)\" \"packages/*/{.nyc_output,reports,coverage,src-generated,*.tsbuildinfo,dist,*+(.d.ts|.js|.map)}\"",
+    "clean": "rimraf \"packages/*/+(test|src)/**/*+(.d.ts|.js|.map)\" \"packages/*/{.nyc_output,reports,coverage,src-generated,*.tsbuildinfo,dist,!(webpack.config)+(.d.ts|.js|.map)}\"",
     "build": "tsc -b && lerna run build",
     "test": "lerna run test --stream --concurrency 4",
     "release": "lerna version",
-    "start:client": "cd packages/map-gui && npm run start && cd ../.."
+    "start:client": "cd packages/map-gui && npm run start && cd ../..",
+    "docs": "lerna run docs"
   },
   "repository": {
     "type": "git",
@@ -47,10 +49,15 @@
     "rimraf": "3.0.2",
     "sinon": "9.2.0",
     "sinon-chai": "3.5.0",
-    "source-map-support": "0.5.19",
-    "typescript": "4.0.3"
+    "ts-loader": "8.0.14",
+    "ts-node": "^9.1.1",
+    "typedoc": "^0.20.16",
+    "typescript": "^4.1.3",
+    "webpack": "5.15.0",
+    "webpack-cli": "4.3.1"
   },
   "dependencies": {
+    "esm": "^3.2.25",
     "firebase": "^8.2.2"
   }
 }

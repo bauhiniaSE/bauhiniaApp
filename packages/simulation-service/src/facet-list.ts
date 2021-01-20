@@ -153,6 +153,21 @@ export class FacetList {
         facet.temperature +=
           (Weather.sunPower * (1 - facet.albedo) * incidenceSin) / (facet.density * facet.specificHeat);
       }
+      if (facet.evapot) {
+        const ambTempK: number = 273.15 + Weather.ambientTemp;
+        const pws: number = Math.exp(77.345 + 0.0057 * ambTempK - 7235 / ambTempK) / Math.pow(ambTempK, 8.2);
+        const qs: number = (0.62198 * pws) / (Weather.atmPressure - pws);
+
+        const evapotHeatFlux: number =
+          Weather.latentVaporisationHeat *
+          Weather.airDensity *
+          0.5 *
+          (11.8 + Weather.windVelocity * 4.2) *
+          qs *
+          (1 - Weather.airHumidity);
+
+        facet.temperature -= evapotHeatFlux / (facet.density * facet.specificHeat);
+      }
     });
   }
 
@@ -161,11 +176,14 @@ export class FacetList {
   }
 
   public illuminateAndCrop(sunAngle: number, sunDirection: Direction) {
+    if (sunDirection === Direction.TOP) {
+      sunDirection = Direction.N;
+      sunAngle = 90;
+    }
     //SETUP
     const castingWalls: Facet[] = [];
     const toSunWalls: Facet[] = [];
     const shadows: Shadow[] = [];
-    const passives: Facet[] = [];
 
     const vertCropped: Facet[] = [];
     const result: Facet[] = [];
@@ -185,7 +203,7 @@ export class FacetList {
           toSunWalls.push(facet);
           break;
         default:
-          passives.push(facet);
+          result.push(facet);
       }
     });
 
@@ -361,7 +379,6 @@ export class FacetList {
     }
 
     this.facets = result;
-    this.facets = this.facets.concat(passives);
     this.facets = this.facets.concat(castingWalls);
 
     this.consolidateFacets();

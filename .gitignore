@@ -11,6 +11,7 @@ reports
 packages/report.*.json
 
 packages/*/**/*.js
+!webpack.config.js
 packages/*/**/*.d.ts
 
 packages/*/dist

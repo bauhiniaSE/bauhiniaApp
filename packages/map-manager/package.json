@@ -3,8 +3,7 @@
   "description": "Component used to give user access to maps, list possible maps to play, list user's saved games, create a new game",
   "version": "1.0.0",
   "scripts": {
-    "test": "nyc npm run test:unit",
-    "test:unit": "mocha \"test/unit/**/*.js\""
+    "build": "webpack --mode development"
   },
   "dependencies": {
     "bauhinia-api": "1.0.0",

@@ -6,4 +6,4 @@ homeRouter.get('/', (req, res) => {
   res.render('home');
 });
 
-export default homeRouter;
+export { homeRouter };

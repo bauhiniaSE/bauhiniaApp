@@ -168,17 +168,6 @@
   <div class="flex">
     <form>
       <div class="dropdown">
-        <form>
-          <button class="dropbtn" formaction="/blueprint/new">New Blueprint</button>
-        </form>
-      </div>
-
-      <div class="dropdown">
-        <button class="dropbtn">Manage Blueprints</button>
-        <div class="dropdown-content" id="editBlueprints"></div>
-      </div>
-
-      <div class="dropdown">
         <button class="dropbtn">Map to Blueprint</button>
         <div class="dropdown-content" id="newMaps"></div>
       </div>
@@ -187,28 +176,16 @@
         <button class="dropbtn">Manage Maps</button>
         <div class="dropdown-content" id="editMaps"></div>
       </div>
-
-      <div class="dropdown">
-        <form>
-          <button class="dropbtn" formaction="/object">Manage Objects</button>
-        </form>
-      </div>
     </form>
   </div>
 
   <script src="/map-manager/map-manager.js"></script>
   <script>
-    const editBlueprints = document.getElementById('editBlueprints');
     const newMaps = document.getElementById('newMaps');
     const editMaps = document.getElementById('editMaps');
 
     Manager.listAllBlueprints().then(blueprints => {
       blueprints.forEach((blueprint, index) => {
-        const blue = document.createElement('a');
-        blue.href = `/blueprint/edit?${blueprint.id}`;
-        blue.innerText = `blueprint ${index}`;
-        editBlueprints.appendChild(blue);
-
         const map = document.createElement('a');
         map.href = `/map/new?${blueprint.id}`;
         map.innerText = `blueprint ${index}`;
@@ -217,14 +194,13 @@
     });
 
     Manager.listAllUserGames('user').then(maps => {
-      maps.forEach((map, index) => {
+      maps.forEach((map) => {
         const element = document.createElement('a');
         element.href = `/map/edit?${map.id}`;
         element.innerText = `map ${index}`;
         editMaps.appendChild(element);
       })
     });
-
   </script>
 </body>
 

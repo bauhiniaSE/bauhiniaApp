@@ -10,4 +10,4 @@ registerRouter.get('/register', (req, res) => {
   res.render('registerUser');
 });
 
-export default registerRouter;
+export { registerRouter };

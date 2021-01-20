@@ -2,6 +2,7 @@
 
 export interface IObject {
   id: string;
+  image: string;
   widthWE: number;
   widthNS: number;
   height?: number;
@@ -16,4 +17,5 @@ export interface IObject {
 export interface IMaterial {
   albedo: number;
   density: number;
+  plant: boolean;
 }

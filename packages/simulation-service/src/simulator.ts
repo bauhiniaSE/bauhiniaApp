@@ -2,7 +2,6 @@
 import { IMap, IObjectOnMap } from 'bauhinia-api/map';
 
 import { Bubble } from './bubble';
-
 import { BubbleList } from './bubble-list';
 
 import { Direction } from './direction';
@@ -16,11 +15,14 @@ export class Simulator implements ISimulationService {
   public facets: FacetList = new FacetList();
   public bubbles: BubbleList = new BubbleList();
 
-  public simulateFromScratch(map: IMap, sunDirection: Direction): void {
+  public simulateFromScratch(map: IMap, sunDirection: Direction, sunlightAngle?: number): void {
+    Weather.sunlightAngle = sunlightAngle || 60;
     this.processMap(map);
-    this.facets.illuminateAndCrop(Weather.sunlightAngle, sunDirection);
-    this.facets.facetHeatTransfer();
-    this.bubbles.horizontalHeatTransfer();
+    if (this.facets.facets.length > 0) {
+      this.facets.illuminateAndCrop(Weather.sunlightAngle, sunDirection);
+      this.facets.facetHeatTransfer();
+      this.bubbles.horizontalHeatTransfer();
+    }
   }
 
   public getTemperature(x: number, y: number, altitude?: number): number {
@@ -28,12 +30,12 @@ export class Simulator implements ISimulationService {
   }
 
   public processMap(map: IMap): void {
-    let buildings: IObjectOnMap[] = [];
+    let buildings3D: IObjectOnMap[] = [];
     let groundToCrop: IObjectOnMap[] = [];
     let groundReady: IObjectOnMap[] = [];
 
     map.tiles.forEach((object) => {
-      if (object.height !== undefined && object.height !== 0) buildings.push(object);
+      if (object.height !== undefined && object.height !== 0) buildings3D.push(object);
       else if (!object.canPlaceOn) groundReady.push(object);
       else groundToCrop.push(object);
     });
@@ -51,7 +53,7 @@ export class Simulator implements ISimulationService {
           Direction.TOP,
           0,
           surface.material.albedo,
-          false,
+          surface.material.plant,
           surface.material.density
         )
       );
@@ -67,13 +69,13 @@ export class Simulator implements ISimulationService {
           Direction.TOP,
           0,
           surface.material.albedo,
-          false,
+          surface.material.plant,
           surface.material.density
         )
       );
     });
 
-    buildings.forEach((building) => {
+    buildings3D.forEach((building) => {
       if (building.height !== undefined) {
         this.facets.addFacet(
           new Facet(
@@ -84,7 +86,7 @@ export class Simulator implements ISimulationService {
             Direction.W,
             0,
             building.material.albedo,
-            false,
+            building.material.plant,
             building.material.density
           )
         );
@@ -97,7 +99,7 @@ export class Simulator implements ISimulationService {
             Direction.S,
             0,
             building.material.albedo,
-            false,
+            building.material.plant,
             building.material.density
           )
         );
@@ -110,7 +112,7 @@ export class Simulator implements ISimulationService {
             Direction.E,
             0,
             building.material.albedo,
-            false,
+            building.material.plant,
             building.material.density
           )
         );
@@ -123,7 +125,7 @@ export class Simulator implements ISimulationService {
             Direction.N,
             0,
             building.material.albedo,
-            false,
+            building.material.plant,
             building.material.density
           )
         );
@@ -136,7 +138,7 @@ export class Simulator implements ISimulationService {
             Direction.TOP,
             building.height,
             building.material.albedo,
-            false,
+            building.material.plant,
             building.material.density
           )
         );

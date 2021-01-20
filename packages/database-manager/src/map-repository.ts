@@ -4,6 +4,8 @@ import { IMap, IObjectOnMap } from 'bauhinia-api/map';
 
 import { IMapRepository } from '../map-repository';
 
+import { uuidv4 } from './uuid';
+
 const firebaseConfig = {
   apiKey: 'AIzaSyAL6nH17dJATWEMvOHNiqtO9KAqRwrZ658',
   authDomain: 'bauhiniaapp.firebaseapp.com',
@@ -19,13 +21,28 @@ export class MapRepository implements IMapRepository {
   private readonly firebaseApp;
   private readonly database;
 
-  constructor(name: string) {
-    this.firebaseApp = firebase.initializeApp(firebaseConfig, name);
+  constructor() {
+    this.firebaseApp = firebase.initializeApp(firebaseConfig, uuidv4());
     this.database = this.firebaseApp.database();
   }
 
-  public async addMap(map: IMap) {
-    const key = this.database.ref('maps').push().key as string;
+  public async updateMap(map: IMap) {
+    let key: string = '';
+    let itemFound = 200;
+    await this.database.ref('maps').once('value', (snapshot) => {
+      snapshot.forEach((childSnapshot) => {
+        const childData = childSnapshot.val();
+        if (childData.id === map.id && childData.login === map.login) {
+          key = childSnapshot.key as string;
+          itemFound = 0;
+        }
+      });
+    });
+
+    if (itemFound === 200) {
+      key = this.database.ref('maps').push().key as string;
+    }
+
     const addSuccessful = await this.database
       .ref(`maps/${key}`)
       .set({
@@ -38,12 +55,12 @@ export class MapRepository implements IMapRepository {
       })
       .then(() => {
         console.log('Synchronization succeeded');
-        return true;
+        return 0;
       })
       .catch((error) => {
         console.log('Synchronization failed');
         console.log(error);
-        return false;
+        return 600;
       });
 
     return addSuccessful;
@@ -51,16 +68,15 @@ export class MapRepository implements IMapRepository {
 
   public async removeMap(id: string, login: string) {
     let key: string;
-    let removeSuccessful = false;
+    let removeSuccessful = 200;
     await this.database.ref('maps').once('value', (snapshot) => {
       snapshot.forEach((childSnapshot) => {
         const childData = childSnapshot.val();
-        if (childData.id === id) {
-          if (childData.login === login) {
-            key = childSnapshot.key as string;
-            this.database.ref('maps/' + key).remove();
-            removeSuccessful = true;
-          }
+        if (childData.id === id && childData.login === login) {
+          key = childSnapshot.key as string;
+          this.database.ref('maps/' + key).remove();
+          removeSuccessful = 0;
+          return;
         }
       });
     });
@@ -69,56 +85,21 @@ export class MapRepository implements IMapRepository {
   }
 
   public async getMap(id: string, login: string) {
-    const returnMap = new Map();
+    let returnMap: Map = new Map();
     await this.database.ref('maps').once('value', (snapshot) => {
       snapshot.forEach((childSnapshot) => {
-        const childData = childSnapshot.val();
-        if (childData.id === id) {
-          if (childData.login === login) {
-            returnMap.id = childData.id;
-            returnMap.height = childData.height;
-            returnMap.width = childData.width;
-            returnMap.tiles = [];
-            returnMap.tiles = childData.tiles;
-          }
+        const childData = childSnapshot.val() as Map;
+        if (childData.id === id && childData.login === login) {
+          returnMap = childData;
+          return;
         }
       });
     });
 
     if (JSON.stringify(returnMap) === JSON.stringify({})) {
-      throw new Error('Map does not exist');
+      return 400;
     } else {
       return returnMap;
-    }
-  }
-
-  public async updateMap(map: IMap) {
-    let key: string = '';
-    let itemFound = false;
-    await this.database.ref('maps').once('value', (snapshot) => {
-      snapshot.forEach((childSnapshot) => {
-        const childData = childSnapshot.val();
-        if (childData.id === map.id) {
-          if (childData.login === map.login) {
-            key = childSnapshot.key as string;
-            itemFound = true;
-          }
-        }
-      });
-    });
-
-    if (itemFound) {
-      await this.database.ref(`maps/${key}`).set({
-        id: map.id,
-        height: map.height,
-        width: map.width,
-        tiles: map.tiles,
-        login: map.login,
-        isBlueprint: map.isBlueprint,
-      });
-      return true;
-    } else {
-      return false;
     }
   }
 
@@ -129,7 +110,6 @@ export class MapRepository implements IMapRepository {
         const childData = childSnapshot.val();
         if (childData.isBlueprint) {
           const returnMap: Map = new Map();
-          returnMap.tiles = [];
           returnMap.id = childData.id;
           returnMap.height = childData.height;
           returnMap.width = childData.width;
@@ -141,11 +121,7 @@ export class MapRepository implements IMapRepository {
       });
     });
 
-    if (listOfMaps.length === 0) {
-      throw Error('No blueprints found');
-    } else {
-      return listOfMaps;
-    }
+    return listOfMaps;
   }
 
   public async getAllUserMaps(login: string) {
@@ -153,7 +129,7 @@ export class MapRepository implements IMapRepository {
     await this.database.ref('maps').once('value', (snapshot) => {
       snapshot.forEach((childSnapshot) => {
         const childData = childSnapshot.val();
-        if (childData.login === login) {
+        if (childData.login === login && !childData.isBlueprint) {
           const returnMap: Map = new Map();
           returnMap.tiles = [];
           returnMap.id = childData.id;
@@ -167,11 +143,7 @@ export class MapRepository implements IMapRepository {
       });
     });
 
-    if (listOfMaps.length === 0) {
-      throw Error('No user maps found');
-    } else {
-      return listOfMaps;
-    }
+    return listOfMaps;
   }
 
   public async getAllUserMapsIds(login: string) {
@@ -185,11 +157,7 @@ export class MapRepository implements IMapRepository {
       });
     });
 
-    if (listOfIds.length === 0) {
-      throw Error('No user maps ids found');
-    } else {
-      return listOfIds;
-    }
+    return listOfIds;
   }
 
   public terminate() {
@@ -198,10 +166,12 @@ export class MapRepository implements IMapRepository {
 }
 
 class Map implements IMap {
-  public login: string;
-  public isBlueprint: boolean;
+  public login: string = '';
+  public isBlueprint: boolean = true;
   public id: string;
-  public height: number;
-  public width: number;
-  public tiles: IObjectOnMap[];
+  public height: number = 50;
+  public width: number = 50;
+  public tiles: IObjectOnMap[] = [];
 }
+
+export { uuidv4, Map };
