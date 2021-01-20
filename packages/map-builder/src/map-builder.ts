@@ -39,14 +39,21 @@ export class Camera {
 export class ImageLoader {
   private readonly images: Record<string, HTMLImageElement> = {};
 
-  public loadImages(images: Array<[string, string]>) {
-    images.forEach((image) => this.loadImage(image[0], image[1]));
+  public async loadImages(images: Array<[string, string]>) {
+    for (const image of images) {
+      await this.loadImage(image[0], image[1]);
+    }
   }
 
   public loadImage(key: string, image: string) {
-    const img = new Image();
-    img.src = image;
-    this.images[key] = img;
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.src = image;
+      this.images[key] = img;
+      img.onload = () => {
+        resolve(1);
+      };
+    });
   }
 
   public getImage(key: string) {
@@ -172,7 +179,6 @@ export class MapBuilder {
     this.Map?.tiles.forEach((tile) => {
       const x = tile.position.x * tileSize;
       const y = tile.position.y * tileSize;
-      console.log(x, y);
       context.drawImage(
         this.imageLoader.getImage(tile.id) as HTMLImageElement, // image
         Math.round(x),
@@ -195,22 +201,24 @@ export class MapBuilder {
 
     const x = (e.x - tileSize / 2 - offsetX) / tileSize + startCol;
     const y = (e.y - tileSize / 2 - offsetY) / tileSize + startRow;
-    const t = this.tiles?.find((el) => el.id === this.selectedTile) as Item;
+    const t = this.tiles?.find((el) => el.id === this.selectedTile);
 
-    this.Map?.tiles.push({
-      ...t,
-      material: {
-        albedo: t.material.albedo,
-        density: t.material.density,
-        plant: t.material.plant,
-      },
-      position: {
-        x: Math.round(x),
-        y: Math.round(y),
-        layer: 0,
-      },
-    });
-    this.render();
+    if (t) {
+      this.Map?.tiles.push({
+        ...t,
+        material: {
+          albedo: t.material.albedo,
+          density: t.material.density,
+          plant: t.material.plant,
+        },
+        position: {
+          x: Math.round(x),
+          y: Math.round(y),
+          layer: 0,
+        },
+      });
+      this.render();
+    }
   }
 
   private async initialize() {
@@ -218,7 +226,7 @@ export class MapBuilder {
       this.keyboard.listenForEvents([KEYS.LEFT, KEYS.RIGHT, KEYS.UP, KEYS.DOWN]);
       this.camera = new Camera(this.Map, this.canvas.width, this.canvas.height);
       this.tiles = await TileRepository.getAllTiles();
-      this.imageLoader.loadImages(this.tiles.map((item) => [item.id, item.image]));
+      await this.imageLoader.loadImages(this.tiles.map((item) => [item.id, item.image]));
       this.canvas.onclick = this.mouseEvent.bind(this);
       this.render();
       this.initialized = true;
@@ -290,7 +298,7 @@ export class MapBuilder {
     const endRow = startRow + this.camera.height / tileSize;
     const offsetX = -this.camera.x + startCol * tileSize;
     const offsetY = -this.camera.y + startRow * tileSize;
-    this.Map.tiles.forEach((tile) => {
+    this.Map.tiles.forEach((tile, i) => {
       if (
         tile.position.x >= startCol &&
         tile.position.x <= endCol &&
@@ -299,13 +307,18 @@ export class MapBuilder {
       ) {
         const x = (tile.position.x - startCol) * tileSize + offsetX;
         const y = (tile.position.y - startRow) * tileSize + offsetY;
-        this.context.drawImage(
-          this.imageLoader.getImage(tile.id) as HTMLImageElement, // image
-          Math.round(x),
-          Math.round(y),
-          tileSize,
-          tileSize
-        );
+        const img = this.imageLoader.getImage(tile.id);
+        if (img) {
+          this.context.drawImage(
+            img, // image
+            Math.round(x),
+            Math.round(y),
+            tileSize,
+            tileSize
+          );
+        } else {
+          delete this.Map?.tiles[i];
+        }
       }
     });
   }
