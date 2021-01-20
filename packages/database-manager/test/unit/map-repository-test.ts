@@ -61,10 +61,6 @@ describe('map-test', () => {
     }
   }).timeout(30000);
 
-  it('map-get-error-test', async () => {
-    expect(await testMapRepo.getMap('a', 'login')).not.throw();
-  }).timeout(30000);
-
   it('map-remove-test', async () => {
     await testMapRepo.updateMap(testMap);
     const isRemoved = await testMapRepo.removeMap('test', 'login');

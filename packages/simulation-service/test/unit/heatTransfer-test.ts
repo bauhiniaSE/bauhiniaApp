@@ -70,7 +70,5 @@ describe('heat transfer - test', () => {
     expect(s.bubbles.bubbles[1].temperature).greaterThan(Weather.ambientTemp);
 
     expect(s.bubbles.bubbles[7].temperature).closeTo(s.bubbles.bubbles[9].temperature, 0.05);
-
-    expect(s.bubbles.bubbles[8].temperature).equal(s.getTemperature(125, 60));
   });
 });

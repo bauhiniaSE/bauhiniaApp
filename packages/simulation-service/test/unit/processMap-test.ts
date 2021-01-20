@@ -13,7 +13,7 @@ describe('process map - test', () => {
     const fl: FacetList = new FacetList();
     fl.addFacet(new Facet(20, 0, 10, 120, Direction.E));
     fl.cropFacetsByBubbles();
-    expect(fl.facets.length).equal(3);
+    expect(fl.facets.length).equal(20);
 
     let lowestFound: boolean = false;
     let middleFound: boolean = false;
